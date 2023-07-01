@@ -10,18 +10,18 @@ public class MyFrame extends JFrame implements KeyListener{
     JLabel label;
     
     MyFrame(){
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(500, 500);
-        this.setLayout(null);
-        this.addKeyListener(this);
+        super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        super.setSize(500, 500);
+        super.setLayout(null);
+        super.addKeyListener(this);
 
         this.label = new JLabel();
         this.label.setBounds(0,0,100, 100);
         this.label.setBackground(Color.red);
         this.label.setOpaque(true);
 
-        this.add(label);
-        this.setVisible(true);
+        super.add(label);
+        super.setVisible(true);
     }
 
     //karena class ini implement KeyListener, maka harus override the implemented method nya

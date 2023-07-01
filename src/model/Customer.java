@@ -30,10 +30,9 @@ public class Customer extends User {
         this.transactionList = transactionList;
     }
 
-
     @Override
     public String toString() {
-        return "{" +
+        return super.toString() + " {" +
             " favList='" + getFavList() + "'" +
             ", transactionList='" + getTransactionList() + "'" +
             "}";
