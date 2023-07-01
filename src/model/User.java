@@ -1,9 +1,10 @@
 package model;
 
-public abstract class User {
+public class User {
     private String username;
     private String fullname;
     private String password;
+    private String address;
     private GenderType gender;
     private String phoneNumber;
     private String email;
@@ -45,6 +46,14 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public GenderType getGender() {
