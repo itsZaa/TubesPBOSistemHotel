@@ -1,38 +1,28 @@
 package model;
 
-public class RoomOrder {
-    private int roomOrderId;
-    private double orderPrice;
+public class RoomOrder extends Order {
+    private RoomType roomType;
+    private String roomNumber;
 
-    public RoomOrder() {
+    public RoomOrder(int quantity, RoomType roomType) {
+        super(quantity, roomType.getPrice() * quantity);
+        this.roomType = roomType;
     }
 
-    public RoomOrder(int roomOrderId, double orderPrice) {
-        this.roomOrderId = roomOrderId;
-        this.orderPrice = orderPrice;
+    public RoomType getRoomType() {
+        return roomType;
     }
 
-    public int getRoomOrderId() {
-        return this.roomOrderId;
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
     }
 
-    public void setRoomOrderId(int roomOrderId) {
-        this.roomOrderId = roomOrderId;
+    public String getRoomNumber() {
+        return roomNumber;
     }
 
-    public double getOrderPrice() {
-        return this.orderPrice;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
-    public void setOrderPrice(double orderPrice) {
-        this.orderPrice = orderPrice;
-    }
-
-    @Override
-    public String toString() {
-        return "{" +
-                " roomOrderId='" + getRoomOrderId() + "'" +
-                ", orderPrice='" + getOrderPrice() + "'" +
-                "}";
-    }
 }

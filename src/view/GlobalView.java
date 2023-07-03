@@ -8,8 +8,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class GlobalView {
-
-
     public JFrame frame () {
         JFrame form = new JFrame("Aplikasi Sistem Hotel");
         form.setSize(500,500);
