@@ -1,60 +1,23 @@
 package model;
 
-public class FnBOrder {
-    private int orderId;
-    private String menuName;
-    private double orderPrice;
-    private int quantity;
+public class FnBOrder extends Order {
+    private FnBMenu food;
 
-    public FnBOrder() {
+    public FnBOrder(int quantity, FnBMenu food) {
+        super(quantity, food.getPrice() * quantity);
+        this.food = food;
     }
 
-    public FnBOrder(int orderId, String menuName, double orderPrice, int quantity) {
-        this.orderId = orderId;
-        this.menuName = menuName;
-        this.orderPrice = orderPrice;
-        this.quantity = quantity;
+    public FnBMenu getFood() {
+        return food;
     }
 
-    public int getOrderId() {
-        return this.orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getMenuName() {
-        return this.menuName;
-    }
-
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
-    public double getOrderPrice() {
-        return this.orderPrice;
-    }
-
-    public void setOrderPrice(double orderPrice) {
-        this.orderPrice = orderPrice;
-    }
-
-    public int getQuantity() {
-        return this.quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setFood(FnBMenu food) {
+        this.food = food;
     }
 
     @Override
     public String toString() {
-        return "{" +
-                " orderId='" + getOrderId() + "'" +
-                ", menuName='" + getMenuName() + "'" +
-                ", orderPrice='" + getOrderPrice() + "'" +
-                ", quantity='" + getQuantity() + "'" +
-                "}";
+        return "FnBOrder [food=" + food + "]";
     }
 }
