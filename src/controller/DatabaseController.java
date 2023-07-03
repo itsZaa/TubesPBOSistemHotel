@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import model.Customer;
 import model.User;
 import model.GenderType;
+import model.RoomType;
 import model.UserType;
 
 //class ini digunakan untuk nampung fungsi berisi query-query ke DB
@@ -158,4 +159,32 @@ public class DatabaseController {
     //         return (false);
     //     }
     // }
+
+    public ArrayList<RoomType> getRoom() {
+        ArrayList<RoomType> roomList = new ArrayList<>();
+
+        String query = "SELECT room_type_id, type_name, price, number_of_room FROM Room_Type";
+
+        conn.connect();
+        try {
+
+            Statement stmt = conn.con.createStatement();
+            ResultSet resultSet = stmt.executeQuery(query);
+
+            while (resultSet.next()) {
+                int roomTypeId = resultSet.getInt("room_type_id");
+                String typeName = resultSet.getString("type_name");
+                double price = resultSet.getDouble("price");
+                int room = resultSet.getInt("number_of_room");
+
+                RoomType roomType = new RoomType(roomTypeId, typeName, price, room);
+                roomList.add(roomType);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        conn.disconnect();
+
+        return roomList;
+    }
 }

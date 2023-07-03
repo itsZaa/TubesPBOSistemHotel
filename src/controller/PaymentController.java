@@ -25,18 +25,18 @@ public class PaymentController {
 
     public String getTransactionListAsString(ArrayList<Order> transaction) {
         StringBuilder sb = new StringBuilder();
-        sb.append("Transaction List :\n\n");
+        sb.append(" Transaction List :\n\n");
 
         for (Order order : transaction) {
              if (order instanceof RoomOrder) {
                 RoomOrder roomOrder = (RoomOrder) order;
-                sb.append(roomOrder.getRoomType().getTypeName()).append(" x").append(roomOrder.getQuantity()).append(" : ").append(roomOrder.getOrderPrice()).append("\n");
+                sb.append(" ").append(roomOrder.getRoomType().getTypeName()).append(" x").append(roomOrder.getQuantity()).append(" : ").append(roomOrder.getOrderPrice()).append("\n");
              } else if (order instanceof FnBOrder) {
                 FnBOrder fnbOrder = (FnBOrder) order;
-                sb.append(fnbOrder.getFood().getMenuName()).append(" x").append(fnbOrder.getQuantity()).append(" : ").append(fnbOrder.getOrderPrice()).append("\n");
+                sb.append(" ").append(fnbOrder.getFood().getMenuName()).append(" x").append(fnbOrder.getQuantity()).append(" : ").append(fnbOrder.getOrderPrice()).append("\n");
              } else if (order instanceof LaundryOrder) {
                 LaundryOrder laundryOrder = (LaundryOrder) order;
-                sb.append(laundryOrder.getLaundry().getLaundryName()).append(" x").append(laundryOrder.getQuantity()).append(" : ").append(laundryOrder.getOrderPrice()).append("\n");
+                sb.append(" ").append(laundryOrder.getLaundry().getLaundryName()).append(" x").append(laundryOrder.getQuantity()).append(" : ").append(laundryOrder.getOrderPrice()).append("\n");
              }
         }
  

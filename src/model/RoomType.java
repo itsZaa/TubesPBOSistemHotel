@@ -4,14 +4,16 @@ public class RoomType {
     private int roomTypeId;
     private String typeName;
     private double price;
+    private int numberOfRoom;
 
     public RoomType() {
     }
 
-    public RoomType(int roomTypeId, String typeName, double price) {
+    public RoomType(int roomTypeId, String typeName, double price, int room) {
         this.roomTypeId = roomTypeId;
         this.typeName = typeName;
         this.price = price;
+        this.numberOfRoom = room;
     }
 
     public int getRoomTypeId() {
@@ -38,12 +40,21 @@ public class RoomType {
         this.price = price;
     }
 
+    public int getNumberOfRoom() {
+        return this.numberOfRoom;
+    }
+
+    public void setNumberOfRoom(int room) {
+        this.numberOfRoom = room;
+    }
+
     @Override
     public String toString() {
         return "{" +
                 " roomTypeId='" + getRoomTypeId() + "'" +
                 ", typeName='" + getTypeName() + "'" +
                 ", price='" + getPrice() + "'" +
+                ", total room='" + getNumberOfRoom() + "'" +
                 "}";
     }
 }

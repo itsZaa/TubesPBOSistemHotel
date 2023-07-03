@@ -28,20 +28,21 @@ public class PaymentView {
 
         JTextArea transaksiTextArea = new JTextArea();
         transaksiTextArea.setEditable(false);
-        transaksiTextArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+        transaksiTextArea.setFont(new GlobalView().bodyFont());
         transaksiTextArea.setText(new PaymentController().getTransactionListAsString(transaction));
 
         JScrollPane scrollPane = new JScrollPane(transaksiTextArea);
-        scrollPane.setBounds(10, 10, 400, 200);
+        scrollPane.setBounds(10, 10, 467, 400);
         panel.add(scrollPane);
 
-        JLabel totalTransaksiLabel = new JLabel(
-                "Total Transaction: " + new PaymentController().countTotalTransaction(transaction));
-        totalTransaksiLabel.setBounds(10, 220, 150, 20);
+        JLabel totalTransaksiLabel = 
+        new JLabel("Total Transaction: Rp " + new PaymentController().countTotalTransaction(transaction));
+        totalTransaksiLabel.setFont(new GlobalView().bodyFontBold());
+        totalTransaksiLabel.setBounds(10, 420, 300, 25);
         panel.add(totalTransaksiLabel);
 
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.setBounds(200, 220, 90, 25);
+        cancelButton.setBounds(300, 420, 90, 25);
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -51,7 +52,7 @@ public class PaymentView {
         panel.add(cancelButton);
 
         JButton payButton = new JButton("Pay");
-        payButton.setBounds(300, 220, 70, 25);
+        payButton.setBounds(400, 420, 70, 25);
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,8 +72,8 @@ public class PaymentView {
     public static void main(String[] args) {
         ArrayList<Order> transaksi = new ArrayList<>();
 
-        RoomType room1 = new RoomType(1, "Suite", 100000);
-        RoomType room2 = new RoomType(2, "kos-kosan", 60000);
+        RoomType room1 = new RoomType(1, "Suite", 100000, 10);
+        RoomType room2 = new RoomType(2, "kos-kosan", 60000, 10);
 
         Order order1 = new RoomOrder(2, room1);
         Order order2 = new RoomOrder(1, room2);

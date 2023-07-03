@@ -18,18 +18,23 @@ public class GlobalView {
     }
 
     public Font headerFont () {
-        Font font  = new Font(Font.SANS_SERIF, Font.BOLD, 22);
+        Font font  = new Font(Font.MONOSPACED, Font.BOLD, 22);
         return font;
     }
 
     public Font bodyFont () {
-        Font font  = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+        Font font  = new Font(Font.MONOSPACED, Font.PLAIN, 14);
+        return font;
+    }
+
+    public Font bodyFontBold () {
+        Font font  = new Font(Font.MONOSPACED, Font.BOLD, 14);
         return font;
     }
 
     public JLabel labelHeader(String text) {
         JLabel label = new JLabel(text);
-        label.setBounds(0, 20, 500, 30);
+        label.setBounds(0, 10, 500, 30);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(headerFont());
 
