@@ -9,7 +9,8 @@ public class Customer extends User {
     public Customer() {
     }
 
-    public Customer(ArrayList<Favorite> favList, ArrayList<Transaction> transactionList) {
+    public Customer(String username, String fullname, String password, GenderType gender, String phoneNumber, String email, UserType type, ArrayList<Favorite> favList, ArrayList<Transaction> transactionList) {
+        super(username, fullname, password, gender, phoneNumber, email, type);
         this.favList = favList;
         this.transactionList = transactionList;
     }
