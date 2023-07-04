@@ -12,6 +12,8 @@ import model.GenderType;
 import model.RoomType;
 import model.UserType;
 import model.Laundry;
+import model.PaymentMethod;
+import model.RoomTransaction;
 
 //class ini digunakan untuk nampung fungsi berisi query-query ke DB
 public class DatabaseController {
@@ -181,7 +183,49 @@ public class DatabaseController {
         return (menuList);
     }
 
-    // //GET TRANSAKSI
+    public PaymentMethod getPaymentMethod(String name){
+        PaymentMethod paymentMethod = new PaymentMethod();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM payment_method WHERE name='" + name + "'";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                paymentMethod.setPaymentMethodId(rs.getInt("payment_method_id"));
+                paymentMethod.setName(rs.getString("name"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (paymentMethod);
+    }
+
+    //GET TRANSAKSI
+    public RoomTransaction getRoomTransaction(String username){
+        RoomTransaction transaction = new RoomTransaction();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM room_transaction WHERE username='" + username + "'";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                transaction.setRoomTransactionId(rs.getInt("room_transaction_id"));
+                transaction.setDateBooked(rs.getTimestamp("date_booked").toLocalDateTime().toLocalDate());
+                transaction.setDateCheckIn(rs.getTimestamp("date_check_in").toLocalDateTime().toLocalDate());
+                transaction.setDateCheckOut(rs.getTimestamp("date_check_out").toLocalDateTime().toLocalDate());
+
+                String paymentMethodName = rs.getString("payment_method").toUpperCase();
+                PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
+
+                transaction.setPaymentMethod(paymentMethod);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (transaction);
+    }
+
+
     // public boolean insertRoomTransaction(String username, Transaction
     // transaction) {
     // conn.connect();

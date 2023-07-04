@@ -14,18 +14,29 @@ import javax.swing.JTextField;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import controller.DatabaseController;
+import controller.LaundryController;
+
+import model.GenderType;
 import model.Laundry;
 import model.Order;
+import model.RoomTransaction;
+import model.User;
+import model.Customer;
+import model.UserType;
+import model.Transaction;
 
 public class LaundryMenuView {
     private ArrayList<Laundry> menuList;
     private ArrayList<Order> orderList;
+    private Customer customer;
 
-    public LaundryMenuView() {
+    public LaundryMenuView(Customer customer) {
         menuList = new DatabaseController().getAllLaundry();
         orderList = new ArrayList<>();
+        this.customer = customer;
 
         JFrame frame = new GlobalView().frame();
 
@@ -35,18 +46,29 @@ public class LaundryMenuView {
         JLabel title = new GlobalView().labelHeader("Laundry List");
         panel.add(title);
 
-        JRadioButton buttonStandard = new JRadioButton("Standard");
-        buttonStandard.setBounds(10, 40, 100, 30);
+        if (new LaundryController(customer).getLamaInap() <= 1) {
+            JRadioButton buttonExpress = new JRadioButton("Express");
+            buttonExpress.setBounds(10, 40, 100, 30);
 
-        JRadioButton buttonExpress = new JRadioButton("Express");
-        buttonExpress.setBounds(115, 40, 100, 30);
+            ButtonGroup buttonGroup = new ButtonGroup();
+            buttonGroup.add(buttonExpress);
+            panel.add(buttonExpress);
+        } else {
+            JRadioButton buttonStandard = new JRadioButton("Standard");
+            buttonStandard.setBounds(10, 40, 100, 30);
 
-        ButtonGroup buttonGroup = new ButtonGroup();
-        buttonGroup.add(buttonStandard);
-        buttonGroup.add(buttonExpress);
+            JRadioButton buttonExpress = new JRadioButton("Express");
+            buttonExpress.setBounds(115, 40, 100, 30);
 
-        panel.add(buttonStandard);
-        panel.add(buttonExpress);
+            ButtonGroup buttonGroup = new ButtonGroup();
+            buttonGroup.add(buttonStandard);
+            buttonGroup.add(buttonExpress);
+
+            panel.add(buttonStandard);
+            panel.add(buttonExpress);
+        }
+
+        
 
         JLabel nameLabel = new GlobalView().labelBody("Berat pakaian (kg): ", 10, 85, 200, 25);
         panel.add(nameLabel);
@@ -63,7 +85,7 @@ public class LaundryMenuView {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+
                 JOptionPane.showMessageDialog(null, "Cancel button clicked!");
             }
         });
@@ -74,7 +96,7 @@ public class LaundryMenuView {
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                 
+
                 JOptionPane.showMessageDialog(null, "Pay button clicked!");
             }
         });
@@ -85,6 +107,18 @@ public class LaundryMenuView {
     }
 
     public static void main(String[] args) {
-        new LaundryMenuView();
+        // dummy customer
+        // ceritanya suatu customer yg udh check in ingin pesan laundry.
+
+        ArrayList transaction = new ArrayList<Transaction>();
+
+        RoomTransaction roomTransaction = new RoomTransaction(0, null, 0, null, LocalDate.of(2023, 7, 4), LocalDate.of(2023, 7, 5), null, null, 0);
+
+        transaction.add(roomTransaction);
+
+        Customer ucup = new Customer("ucup123", "Ucuuuuup", "siPalingGanteng", GenderType.MALE, "08123",
+                "ucup@gmail.com", UserType.CUSTOMER, null, transaction);
+
+        new LaundryMenuView(ucup);
     }
 }
