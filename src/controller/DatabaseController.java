@@ -11,6 +11,7 @@ import model.User;
 import model.GenderType;
 import model.RoomType;
 import model.UserType;
+import model.Laundry;
 
 //class ini digunakan untuk nampung fungsi berisi query-query ke DB
 public class DatabaseController {
@@ -152,6 +153,27 @@ public class DatabaseController {
                 fnbMenu.setPrice(rs.getDouble("price"));
                
                 menuList.add(fnbMenu);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (menuList);
+    }
+
+    //SELECT ALL from laundry menu
+    public ArrayList<Laundry> getAllLaundry(){
+        ArrayList<Laundry> menuList = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM laundry";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                Laundry laundry = new Laundry();
+                laundry.setLaundryName(rs.getString("laundry_name"));
+                laundry.setPrice(rs.getDouble("price"));
+               
+                menuList.add(laundry);
             }
         } catch (SQLException e) {
             e.printStackTrace();
