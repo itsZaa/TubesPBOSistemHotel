@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import model.Customer;
 import model.FnBMenu;
@@ -12,8 +13,12 @@ import model.GenderType;
 import model.RoomType;
 import model.UserType;
 import model.Laundry;
+import model.LaundryTransaction;
 import model.PaymentMethod;
 import model.RoomTransaction;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 //class ini digunakan untuk nampung fungsi berisi query-query ke DB
 public class DatabaseController {
@@ -129,8 +134,8 @@ public class DatabaseController {
     // DELETE
     public static boolean deleteUser(String username) {
         try {
-        conn.connect();
-        String query = "DELETE FROM users WHERE Username='" + username + "'";
+            conn.connect();
+            String query = "DELETE FROM users WHERE Username='" + username + "'";
             Statement stmt = conn.con.createStatement();
             stmt.executeUpdate(query);
             return (true);
@@ -153,7 +158,7 @@ public class DatabaseController {
                 fnbMenu.setMenuName(rs.getString("menu_name"));
                 fnbMenu.setMenuType(rs.getString("menu_type"));
                 fnbMenu.setPrice(rs.getDouble("price"));
-               
+
                 menuList.add(fnbMenu);
             }
         } catch (SQLException e) {
@@ -162,8 +167,8 @@ public class DatabaseController {
         return (menuList);
     }
 
-    //SELECT ALL from laundry menu
-    public ArrayList<Laundry> getAllLaundry(){
+    // SELECT ALL from laundry menu
+    public ArrayList<Laundry> getAllLaundry() {
         ArrayList<Laundry> menuList = new ArrayList<>();
         try {
             conn.connect();
@@ -174,7 +179,7 @@ public class DatabaseController {
                 Laundry laundry = new Laundry();
                 laundry.setLaundryName(rs.getString("laundry_name"));
                 laundry.setPrice(rs.getDouble("price"));
-               
+
                 menuList.add(laundry);
             }
         } catch (SQLException e) {
@@ -183,7 +188,7 @@ public class DatabaseController {
         return (menuList);
     }
 
-    public PaymentMethod getPaymentMethod(String name){
+    public PaymentMethod getPaymentMethod(String name) {
         PaymentMethod paymentMethod = new PaymentMethod();
         try {
             conn.connect();
@@ -200,8 +205,8 @@ public class DatabaseController {
         return (paymentMethod);
     }
 
-    //GET TRANSAKSI
-    public RoomTransaction getRoomTransaction(String username){
+    // GET ROOM TRANSACTION
+    public RoomTransaction getRoomTransaction(String username) {
         RoomTransaction transaction = new RoomTransaction();
         try {
             conn.connect();
@@ -225,6 +230,53 @@ public class DatabaseController {
         return (transaction);
     }
 
+    // GET LAUNDRY
+    public Laundry getLaundry(String laundryName) {
+        Laundry laundry = new Laundry();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM laundry WHERE laundry_name='" + laundryName + "'";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                laundry.setLaundryName(rs.getString("laundry_name"));
+                laundry.setPrice(rs.getDouble("price"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (laundry);
+    }
+
+    // CREATE LAUNDRY TRANSACTION
+    public boolean insertLaundryTransaction(LaundryTransaction transaction) {
+        try {
+            conn.connect();
+            String query = "INSERT INTO laundry_transaction VALUES(?,?,?,?,?,?,?,?,?)";
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, transaction.getTransactionId());
+            stmt.setString(2, transaction.getUser().getUsername());
+            stmt.setInt(3, transaction.getRoomNumber());
+            stmt.setString(4, transaction.getOrderStatus().name());
+            stmt.setDouble(5, transaction.getTotalPrice());
+            stmt.setString(6, null);
+
+            LocalDate dateOrder = transaction.getDateOrder();
+            LocalDateTime currentDateTime = LocalDateTime.of(dateOrder, LocalTime.now());
+            Timestamp timestamp = Timestamp.valueOf(currentDateTime);
+
+            stmt.setTimestamp(7, timestamp);
+            
+            stmt.setTimestamp(8, null);
+            stmt.setString(9, transaction.getLaundry().getLaundryName());
+
+            stmt.executeUpdate();
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        }
+    }
 
     // public boolean insertRoomTransaction(String username, Transaction
     // transaction) {
