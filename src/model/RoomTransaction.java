@@ -9,14 +9,18 @@ public class RoomTransaction extends Transaction {
     private LocalDate dateCheckIn;
     private LocalDate dateCheckOut;
     private PaymentMethod paymentMethod;
-    private ArrayList<RoomOrder> orderList;
+    private ArrayList<Order> orderList;
     private double totalPrice;
 
     public RoomTransaction() {
     }
 
-    public RoomTransaction(int transactionId, User user, int roomTransactionId, LocalDate dateBooked,
-            LocalDate dateCheckIn, LocalDate dateCheckOut, PaymentMethod paymentMethod, ArrayList<RoomOrder> orderList,
+    public RoomTransaction(User user) {
+        super("",user);
+    }
+
+    public RoomTransaction(String transactionId, User user, int roomTransactionId, LocalDate dateBooked,
+            LocalDate dateCheckIn, LocalDate dateCheckOut, PaymentMethod paymentMethod, ArrayList<Order> orderList,
             double totalPrice) {
         super(transactionId, user);
         this.roomTransactionId = roomTransactionId;
@@ -68,11 +72,11 @@ public class RoomTransaction extends Transaction {
         this.paymentMethod = paymentMethod;
     }
 
-    public ArrayList<RoomOrder> getOrderList() {
+    public ArrayList<Order> getOrderList() {
         return orderList;
     }
 
-    public void setOrderList(ArrayList<RoomOrder> orderList) {
+    public void setOrderList(ArrayList<Order> orderList) {
         this.orderList = orderList;
     }
 
