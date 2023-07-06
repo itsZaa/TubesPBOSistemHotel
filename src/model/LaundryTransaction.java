@@ -13,7 +13,7 @@ public class LaundryTransaction extends Transaction {
     public LaundryTransaction() {
     }
 
-    public LaundryTransaction(int transactionId, User user, int roomNumber, double totalPrice, OrderStatus orderStatus, LocalDate dateOrder, LocalDate dateDelivered, Laundry laundry) {
+    public LaundryTransaction(String transactionId, User user, int roomNumber, double totalPrice, OrderStatus orderStatus, LocalDate dateOrder, LocalDate dateDelivered, Laundry laundry) {
         super(transactionId, user);
         this.roomNumber = roomNumber;
         this.totalPrice = totalPrice;

@@ -1,10 +1,8 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class GlobalView {
@@ -12,6 +10,7 @@ public class GlobalView {
         JFrame form = new JFrame("Aplikasi Sistem Hotel");
         form.setSize(500,500);
         form.setLayout(null);
+        form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         form.setLocationRelativeTo(null);
 
         return form;
@@ -34,7 +33,7 @@ public class GlobalView {
 
     public JLabel labelHeader(String text) {
         JLabel label = new JLabel(text);
-        label.setBounds(0, 10, 500, 30);
+        label.setBounds(0, 10, 480, 30);
         label.setHorizontalAlignment(SwingConstants.CENTER);
         label.setFont(headerFont());
 
