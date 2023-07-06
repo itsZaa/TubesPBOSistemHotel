@@ -149,6 +149,9 @@ public class SignUpView {
                     }
                 }
             }
-        })
+        });
+    }
+}
+
 
 
