@@ -1,6 +1,6 @@
 package model;
 
-public abstract class Order {
+public class Order {
     private int quantity;
     private double orderPrice;
 

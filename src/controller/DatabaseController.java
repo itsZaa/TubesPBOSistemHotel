@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import model.Customer;
 import model.FnBMenu;
+import model.FnBTransaction;
 import model.User;
 import model.GenderType;
 import model.RoomType;
@@ -266,7 +267,7 @@ public class DatabaseController {
             Timestamp timestamp = Timestamp.valueOf(currentDateTime);
 
             stmt.setTimestamp(7, timestamp);
-            
+
             stmt.setTimestamp(8, null);
             stmt.setString(9, transaction.getLaundry().getLaundryName());
 
@@ -297,6 +298,33 @@ public class DatabaseController {
             e.printStackTrace();
         }
         return (paymentMethods);
+    }
+
+    // CREATE FNB TRANSACTION
+    public boolean insertFnBTransaction(FnBTransaction transaction) {
+        try {
+            conn.connect();
+            String query = "INSERT INTO fnb_transaction VALUES(?,?,?,?,?,?,?)";
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setString(1, transaction.getTransactionId());
+            stmt.setString(2, transaction.getUser().getUsername());
+            stmt.setInt(3, transaction.getRoomNumber());
+            stmt.setString(4, transaction.getStatus().name());
+            stmt.setDouble(5, transaction.getTotalPrice());
+            stmt.setString(6, transaction.getPaymentMethod().getName());
+
+            LocalDate dateOrder = transaction.getTransactionDate();
+            LocalDateTime currentDateTime = LocalDateTime.of(dateOrder, LocalTime.now());
+            Timestamp timestamp = Timestamp.valueOf(currentDateTime);
+
+            stmt.setTimestamp(7, timestamp);
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // public boolean insertRoomTransaction(String username, Transaction
