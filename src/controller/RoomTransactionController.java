@@ -1,20 +1,25 @@
 package controller;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import model.RoomType;
+import java.util.Random;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class RoomTransactionController {
-    private DatabaseHandler dbHandler;
 
-    public RoomTransactionController() {
-        dbHandler = new DatabaseHandler();
+    public String generateTransactionID() {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("ddMMyyHHmmss"));
+
+        Random random = new Random();
+        int randomNumber = random.nextInt((int) Math.pow(10, 5));
+
+        return "ROOM_" + formattedDateTime + "_" + String.format("%0" + 5 + "d", randomNumber);
     }
 
-    public ArrayList<RoomType> getRoom () {
-        return null;
+    public boolean checkRoomAvailability () {
+        
     }
+
 }
-
