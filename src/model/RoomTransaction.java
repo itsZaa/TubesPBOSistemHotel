@@ -14,22 +14,9 @@ public class RoomTransaction extends Transaction {
 
     public RoomTransaction() {
     }
-
+  
     public RoomTransaction(User user) {
         super("",user);
-    }
-
-    public RoomTransaction(String transactionId, User user, int roomTransactionId, LocalDate dateBooked,
-            LocalDate dateCheckIn, LocalDate dateCheckOut, PaymentMethod paymentMethod, ArrayList<Order> orderList,
-            double totalPrice) {
-        super(transactionId, user);
-        this.roomTransactionId = roomTransactionId;
-        this.dateBooked = dateBooked;
-        this.dateCheckIn = dateCheckIn;
-        this.dateCheckOut = dateCheckOut;
-        this.paymentMethod = paymentMethod;
-        this.orderList = orderList;
-        this.totalPrice = totalPrice;
     }
 
     public int getRoomTransactionId() {

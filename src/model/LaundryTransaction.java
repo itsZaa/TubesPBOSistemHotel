@@ -1,28 +1,28 @@
 package model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 public class LaundryTransaction extends Transaction {
     private int roomNumber;
     private double totalPrice;
     private OrderStatus orderStatus;
-    private ArrayList<LaundryOrder> orderList;
     private LocalDate dateOrder;
     private LocalDate dateDelivered;
+    private Laundry laundry;
+    private PaymentMethod paymentMethod;
 
     public LaundryTransaction() {
     }
 
-    public LaundryTransaction(int transactionId, User user, int roomNumber, double totalPrice, OrderStatus orderStatus,
-            ArrayList<LaundryOrder> orderList, LocalDate dateOrder, LocalDate dateDelivered) {
+    public LaundryTransaction(String transactionId, User user, int roomNumber, double totalPrice, OrderStatus orderStatus, LocalDate dateOrder, LocalDate dateDelivered, Laundry laundry, PaymentMethod paymentMethod) {
         super(transactionId, user);
         this.roomNumber = roomNumber;
         this.totalPrice = totalPrice;
         this.orderStatus = orderStatus;
-        this.orderList = orderList;
         this.dateOrder = dateOrder;
         this.dateDelivered = dateDelivered;
+        this.laundry = laundry;
+        this.paymentMethod = paymentMethod;
     }
 
     public int getRoomNumber() {
@@ -49,14 +49,6 @@ public class LaundryTransaction extends Transaction {
         this.orderStatus = orderStatus;
     }
 
-    public ArrayList<LaundryOrder> getOrderList() {
-        return orderList;
-    }
-
-    public void setorderList(ArrayList<LaundryOrder> orderList) {
-        this.orderList = orderList;
-    }
-
     public LocalDate getDateOrder() {
         return dateOrder;
     }
@@ -73,15 +65,27 @@ public class LaundryTransaction extends Transaction {
         this.dateDelivered = dateDelivered;
     }
 
+    public Laundry getLaundry() {
+        return laundry;
+    }
+
+    public void setLaundry(Laundry laundry) {
+        this.laundry = laundry;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     @Override
     public String toString() {
-        return "{" +
-                " roomNumber='" + getRoomNumber() + "'" +
-                ", totalPrice='" + getTotalPrice() + "'" +
-                ", orderStatus='" + getOrderStatus() + "'" +
-                ", orderList='" + getOrderList() + "'" +
-                ", dateOrder='" + getDateOrder() + "'" +
-                ", dateDelivered='" + getDateDelivered() + "'" +
-                "}";
+        return "LaundryTransaction [roomNumber=" + roomNumber + ", totalPrice=" + totalPrice + ", orderStatus="
+                + orderStatus + ", dateOrder=" + dateOrder + ", dateDelivered=" + dateDelivered
+                + ", laundry=" + laundry + "]";
     }
+    
 }
