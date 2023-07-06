@@ -51,7 +51,7 @@ public class LaundryMenuView {
         this.user = user;
         this.laundry = new Laundry();
 
-        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(18, 0))) {
+        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 0))) {
             JFrame frame = new GlobalView().frame();
 
             JPanel panel = new JPanel();
@@ -138,7 +138,7 @@ public class LaundryMenuView {
                 @Override
                 public void actionPerformed(ActionEvent e) {
 
-                    JOptionPane.showMessageDialog(null, "Cancel button clicked!");
+                    JOptionPane.showMessageDialog(null, "Pemesanan dibatalkan!");
                 }
             });
             cancelButton.setBounds(300, 420, 90, 25);
@@ -149,10 +149,12 @@ public class LaundryMenuView {
             orderButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // create object ransaction
-                    laundryController.createLaundryTransaction(user, beratLaundry, roomNumber, laundry);
 
-                    
+                    boolean paid = new LaundryPaymentView().pay(user, laundry, beratLaundry, roomNumber);
+
+                    if(paid){
+                        frame.dispose();
+                    }
                 }
             });
             orderButton.setBounds(400, 420, 70, 25);

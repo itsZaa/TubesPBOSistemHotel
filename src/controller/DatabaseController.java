@@ -254,12 +254,12 @@ public class DatabaseController {
             conn.connect();
             String query = "INSERT INTO laundry_transaction VALUES(?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = conn.con.prepareStatement(query);
-            stmt.setInt(1, transaction.getTransactionId());
+            stmt.setString(1, transaction.getTransactionId());
             stmt.setString(2, transaction.getUser().getUsername());
             stmt.setInt(3, transaction.getRoomNumber());
             stmt.setString(4, transaction.getOrderStatus().name());
             stmt.setDouble(5, transaction.getTotalPrice());
-            stmt.setString(6, null);
+            stmt.setString(6, transaction.getPaymentMethod().getName());
 
             LocalDate dateOrder = transaction.getDateOrder();
             LocalDateTime currentDateTime = LocalDateTime.of(dateOrder, LocalTime.now());
@@ -276,6 +276,27 @@ public class DatabaseController {
             e.printStackTrace();
             return (false);
         }
+    }
+
+    //GET Payment Method
+    public ArrayList<PaymentMethod> getAllPaymentMethod() {
+        ArrayList<PaymentMethod> paymentMethods = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM payment_method";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                PaymentMethod paymentMethod = new PaymentMethod();
+                paymentMethod.setPaymentMethodId(rs.getInt("payment_method_id"));
+                paymentMethod.setName(rs.getString("name"));
+                
+                paymentMethods.add(paymentMethod);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (paymentMethods);
     }
 
     // public boolean insertRoomTransaction(String username, Transaction

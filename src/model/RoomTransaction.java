@@ -15,7 +15,7 @@ public class RoomTransaction extends Transaction {
     public RoomTransaction() {
     }
 
-    public RoomTransaction(int transactionId, User user, int roomTransactionId, LocalDate dateBooked,
+    public RoomTransaction(String transactionId, User user, int roomTransactionId, LocalDate dateBooked,
             LocalDate dateCheckIn, LocalDate dateCheckOut, PaymentMethod paymentMethod, ArrayList<RoomOrder> orderList,
             double totalPrice) {
         super(transactionId, user);

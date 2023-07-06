@@ -1,22 +1,22 @@
 package model;
 
 public abstract class Transaction {
-    private int transactionId;
+    private String transactionId;
     private User user;
 
     public Transaction() {
     }
 
-    public Transaction(int transactionId, User user) {
+    public Transaction(String transactionId, User user) {
         this.transactionId = transactionId;
         this.user = user;
     }
 
-    public int getTransactionId() {
+    public String getTransactionId() {
         return this.transactionId;
     }
 
-    public void setTransactionId(int transactionId) {
+    public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
     }
 

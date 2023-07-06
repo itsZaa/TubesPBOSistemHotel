@@ -9,11 +9,12 @@ public class LaundryTransaction extends Transaction {
     private LocalDate dateOrder;
     private LocalDate dateDelivered;
     private Laundry laundry;
+    private PaymentMethod paymentMethod;
 
     public LaundryTransaction() {
     }
 
-    public LaundryTransaction(int transactionId, User user, int roomNumber, double totalPrice, OrderStatus orderStatus, LocalDate dateOrder, LocalDate dateDelivered, Laundry laundry) {
+    public LaundryTransaction(String transactionId, User user, int roomNumber, double totalPrice, OrderStatus orderStatus, LocalDate dateOrder, LocalDate dateDelivered, Laundry laundry, PaymentMethod paymentMethod) {
         super(transactionId, user);
         this.roomNumber = roomNumber;
         this.totalPrice = totalPrice;
@@ -21,6 +22,7 @@ public class LaundryTransaction extends Transaction {
         this.dateOrder = dateOrder;
         this.dateDelivered = dateDelivered;
         this.laundry = laundry;
+        this.paymentMethod = paymentMethod;
     }
 
     public int getRoomNumber() {
@@ -71,12 +73,19 @@ public class LaundryTransaction extends Transaction {
         this.laundry = laundry;
     }
 
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
     @Override
     public String toString() {
         return "LaundryTransaction [roomNumber=" + roomNumber + ", totalPrice=" + totalPrice + ", orderStatus="
                 + orderStatus + ", dateOrder=" + dateOrder + ", dateDelivered=" + dateDelivered
                 + ", laundry=" + laundry + "]";
     }
-
     
 }
