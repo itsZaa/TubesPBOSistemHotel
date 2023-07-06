@@ -14,7 +14,7 @@ public class FnBTransaction extends Transaction {
     public FnBTransaction() {
     }
 
-    public FnBTransaction(int transactionId, User user, int roomNumber, OrderStatus status, PaymentMethod paymentMethod,
+    public FnBTransaction(String transactionId, User user, int roomNumber, OrderStatus status, PaymentMethod paymentMethod,
             ArrayList<FnBOrder> orderList, LocalDate transactionDate, double totalPrice) {
         super(transactionId, user);
         this.roomNumber = roomNumber;
