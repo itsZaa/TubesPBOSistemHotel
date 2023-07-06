@@ -11,6 +11,7 @@ import model.User;
 import model.UserType;
 
 import controller.DatabaseController;
+import controller.RoomTransactionController;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -23,7 +24,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -92,23 +92,32 @@ public class RoomTransactionView {
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LocalDate checkInDate = checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                boolean available = true;
+                String transactionId = new RoomTransactionController().generateTransactionID();
+                LocalDate checkInDate = checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault())
+                        .toLocalDate();
 
                 int stayDuration = Integer.parseInt(stayDurationField.getText());
                 ArrayList<Order> orderList = new ArrayList<>();
 
                 for (RoomType room : roomType) {
-                    //get quantity room
                     int quantity = Integer.parseInt(roomFields.get(roomType.indexOf(room)).getText());
-                    RoomOrder roomOrder = new RoomOrder(quantity, room, stayDuration);
-                    orderList.add(roomOrder);
+                    available = new RoomTransactionController().checkRoom(checkInDate, stayDuration, room, quantity);
+                    if (available) {
+                        RoomOrder roomOrder = new RoomOrder(quantity, room, stayDuration);
+                        orderList.add(roomOrder);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Sorry, the room "+ room.getTypeName() +" is full");
+                    }
+                    ;
                 }
-                transaction.setOrderList(orderList);
-                new PaymentView(transaction.getOrderList());
 
-                //query here
-
-                frame.dispose();
+                if (available) {
+                    transaction.setOrderList(orderList);
+                    new DatabaseController().insertTransaction(transaction);
+                    new PaymentView(transaction.getOrderList());
+                    frame.dispose();
+                }
             }
         });
 
