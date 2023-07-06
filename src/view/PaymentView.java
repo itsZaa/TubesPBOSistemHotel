@@ -2,14 +2,19 @@ package view;
 
 import controller.PaymentController;
 import model.Order;
-import model.RoomOrder;
-import model.RoomType;
 
-import javax.swing.*;
-import java.awt.*;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class PaymentView {
     private ArrayList<Order> transaction;
@@ -35,8 +40,8 @@ public class PaymentView {
         scrollPane.setBounds(10, 10, 467, 400);
         panel.add(scrollPane);
 
-        JLabel totalTransaksiLabel = 
-        new JLabel("Total Transaction: Rp " + new PaymentController().countTotalTransaction(transaction));
+        JLabel totalTransaksiLabel = new JLabel(
+                "Total Transaction: Rp " + new PaymentController().countTotalTransaction(transaction));
         totalTransaksiLabel.setFont(new GlobalView().bodyFontBold());
         totalTransaksiLabel.setBounds(10, 420, 300, 25);
         panel.add(totalTransaksiLabel);
@@ -46,6 +51,7 @@ public class PaymentView {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(null, "Payment Cancelled");
                 frame.dispose();
             }
         });
@@ -56,33 +62,33 @@ public class PaymentView {
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Handle pay button action here
-                // Add your payment logic or method call
+                boolean proceed = showConfirmationDialog("Are you sure you want to proceed the payment?");
+                if (proceed) {
+                    showNotification("Payment successful!", JOptionPane.INFORMATION_MESSAGE);
 
+                    // add query
+
+                    showNotification("Transaction completed!", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    showNotification("Payment canceled.", JOptionPane.WARNING_MESSAGE);
+                }
                 frame.dispose();
             }
         });
         panel.add(payButton);
 
-        frame.setContentPane(panel); // Set the panel as the content pane
-        frame.setLocationRelativeTo(null); // Centers the frame on the screen
+        frame.setContentPane(panel);
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        ArrayList<Order> transaksi = new ArrayList<>();
-
-        RoomType room1 = new RoomType(1, "Suite", 100000, 10);
-        RoomType room2 = new RoomType(2, "kos-kosan", 60000, 10);
-
-        Order order1 = new RoomOrder(2, room1);
-        Order order2 = new RoomOrder(1, room2);
-        Order order3 = new RoomOrder(5, room1);
-
-        transaksi.add(order1);
-        transaksi.add(order2);
-        transaksi.add(order3);
-
-        new PaymentView(transaksi);
+    private boolean showConfirmationDialog(String message) {
+        int confirmation = JOptionPane.showConfirmDialog(null, message, "Confirmation", JOptionPane.YES_NO_OPTION);
+        return confirmation == JOptionPane.YES_OPTION;
     }
+
+    private void showNotification(String message, int messageType) {
+        JOptionPane.showMessageDialog(null, message, "Notification", messageType);
+    }
+
 }

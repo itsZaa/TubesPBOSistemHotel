@@ -260,7 +260,7 @@ public class DatabaseController {
             stmt.setInt(3, transaction.getRoomNumber());
             stmt.setString(4, transaction.getOrderStatus().name());
             stmt.setDouble(5, transaction.getTotalPrice());
-            stmt.setString(6, null);
+            stmt.setString(6, transaction.getPaymentMethod().getName());
 
             LocalDate dateOrder = transaction.getDateOrder();
             LocalDateTime currentDateTime = LocalDateTime.of(dateOrder, LocalTime.now());
@@ -279,7 +279,7 @@ public class DatabaseController {
         }
     }
 
-     //GET Payment Method
+    //GET Payment Method
     public ArrayList<PaymentMethod> getAllPaymentMethod() {
         ArrayList<PaymentMethod> paymentMethods = new ArrayList<>();
         try {

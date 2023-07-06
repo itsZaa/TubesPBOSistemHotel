@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import model.FnBOrder;
-import model.LaundryOrder;
 import model.Order;
 import model.PaymentMethod;
 import model.RoomOrder;
@@ -34,9 +33,6 @@ public class PaymentController {
              } else if (order instanceof FnBOrder) {
                 FnBOrder fnbOrder = (FnBOrder) order;
                 sb.append(" ").append(fnbOrder.getFood().getMenuName()).append(" x").append(fnbOrder.getQuantity()).append(" : ").append(fnbOrder.getOrderPrice()).append("\n");
-             } else if (order instanceof LaundryOrder) {
-                LaundryOrder laundryOrder = (LaundryOrder) order;
-                sb.append(" ").append(laundryOrder.getLaundry().getLaundryName()).append(" x").append(laundryOrder.getQuantity()).append(" : ").append(laundryOrder.getOrderPrice()).append("\n");
              }
         }
  
