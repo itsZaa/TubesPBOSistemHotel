@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public abstract class Transaction {
     private String transactionId;
     private User user;
@@ -27,6 +29,8 @@ public abstract class Transaction {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public abstract ArrayList<Order> getOrderList();
 
     @Override
     public String toString() {

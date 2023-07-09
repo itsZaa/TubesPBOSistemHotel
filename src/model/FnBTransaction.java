@@ -7,7 +7,7 @@ public class FnBTransaction extends Transaction {
     private int roomNumber;
     private OrderStatus status;
     private PaymentMethod paymentMethod;
-    private ArrayList<FnBOrder> orderList;
+    private ArrayList<Order> orderList;
     private LocalDate transactionDate;
     private double totalPrice;
 
@@ -49,7 +49,8 @@ public class FnBTransaction extends Transaction {
         this.paymentMethod = paymentMethod;
     }
 
-    public ArrayList<FnBOrder> getOrderList() {
+    @Override
+    public ArrayList<Order> getOrderList() {
         return this.orderList;
     }
 
