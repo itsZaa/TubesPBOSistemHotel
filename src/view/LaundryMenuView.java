@@ -51,7 +51,7 @@ public class LaundryMenuView {
         this.user = user;
         this.laundry = new Laundry();
 
-        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 0))) {
+        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(18, 0))) {
             JFrame frame = new GlobalView().frame();
 
             JPanel panel = new JPanel();

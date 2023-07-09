@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RoomTransaction extends Transaction {
+public class RoomTransaction extends Transaction implements OrderListInterface{
     private Date dateCheckIn;
     private int duration;
     private TransactionStatus status;

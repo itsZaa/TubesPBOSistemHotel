@@ -2,7 +2,9 @@ package view;
 
 import controller.DatabaseController;
 import controller.PaymentController;
+import model.FnBTransaction;
 import model.PaymentMethod;
+import model.RoomTransaction;
 import model.Transaction;
 import observer.PaymentObserver;
 
@@ -29,7 +31,14 @@ public class PaymentView {
         JTextArea transaksiTextArea = new JTextArea();
         transaksiTextArea.setEditable(false);
         transaksiTextArea.setFont(new GlobalView().bodyFont());
-        transaksiTextArea.setText(new PaymentController().getTransactionListAsString(transaction.getOrderList()));
+
+        if(transaction instanceof RoomTransaction){
+            RoomTransaction roomTransaction = (RoomTransaction) transaction;
+            transaksiTextArea.setText(new PaymentController().getTransactionListAsString(roomTransaction.getOrderList()));
+        }else if(transaction instanceof FnBTransaction){
+            FnBTransaction fnbTransaction = (FnBTransaction) transaction;
+            transaksiTextArea.setText(new PaymentController().getTransactionListAsString(fnbTransaction.getOrderList()));
+        }
 
         JScrollPane scrollPane = new JScrollPane(transaksiTextArea);
         scrollPane.setBounds(10, 10, 467, 250);
@@ -61,7 +70,17 @@ public class PaymentView {
             yPosition += 30;
         }
 
-        JLabel totalTransaksiLabel = new JLabel("Total Transaction: Rp " + new PaymentController().countTotalTransaction(transaction.getOrderList()));
+        JLabel totalTransaksiLabel = null;
+        if(transaction instanceof RoomTransaction){
+            RoomTransaction roomTransaction = (RoomTransaction) transaction;
+            totalTransaksiLabel = new JLabel("Total Transaction: Rp " + new PaymentController().countTotalTransaction(roomTransaction.getOrderList()));
+        }else if(transaction instanceof FnBTransaction){
+            FnBTransaction fnbTransaction = (FnBTransaction) transaction;
+            totalTransaksiLabel = new JLabel("Total Transaction: Rp " + new PaymentController().countTotalTransaction(fnbTransaction.getOrderList()));
+        }
+        
+
+
         totalTransaksiLabel.setFont(new GlobalView().bodyFontBold());
         totalTransaksiLabel.setBounds(10, 420, 300, 25);
         panel.add(totalTransaksiLabel);
