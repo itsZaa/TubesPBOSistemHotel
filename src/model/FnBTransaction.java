@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class FnBTransaction extends Transaction {
+public class FnBTransaction extends Transaction implements OrderListInterface{
     private int roomNumber;
     private OrderStatus status;
     private PaymentMethod paymentMethod;

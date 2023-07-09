@@ -5,6 +5,8 @@ import controller.PaymentController;
 import model.Order;
 import model.PaymentMethod;
 import model.RoomOrder;
+import model.FnBTransaction;
+import model.PaymentMethod;
 import model.RoomTransaction;
 import model.Transaction;
 import observer.PaymentObserver;
@@ -32,7 +34,14 @@ public class PaymentView {
         JTextArea transaksiTextArea = new JTextArea();
         transaksiTextArea.setEditable(false);
         transaksiTextArea.setFont(new GlobalView().bodyFont());
-        transaksiTextArea.setText(new PaymentController().getTransactionListAsString(transaction.getOrderList()));
+
+        if(transaction instanceof RoomTransaction){
+            RoomTransaction roomTransaction = (RoomTransaction) transaction;
+            transaksiTextArea.setText(new PaymentController().getTransactionListAsString(roomTransaction.getOrderList()));
+        }else if(transaction instanceof FnBTransaction){
+            FnBTransaction fnbTransaction = (FnBTransaction) transaction;
+            transaksiTextArea.setText(new PaymentController().getTransactionListAsString(fnbTransaction.getOrderList()));
+        }
 
         JScrollPane scrollPane = new JScrollPane(transaksiTextArea);
         scrollPane.setBounds(10, 10, 467, 250);
@@ -74,6 +83,7 @@ public class PaymentView {
 
         JLabel totalTransaksiLabel = new JLabel(
                 "Total Transaction: Rp " + new PaymentController().countTotalTransaction(transaction.getOrderList()));
+
         totalTransaksiLabel.setFont(new GlobalView().bodyFontBold());
         totalTransaksiLabel.setBounds(10, 420, 300, 25);
         panel.add(totalTransaksiLabel);

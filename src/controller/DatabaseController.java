@@ -6,9 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-
-import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
-
+import model.Order;
 import model.Customer;
 import model.FnBMenu;
 import model.FnBTransaction;
@@ -24,6 +22,7 @@ import model.RoomTransaction;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 
 //class ini digunakan untuk nampung fungsi berisi query-query ke DB
 public class DatabaseController {
@@ -58,6 +57,8 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
         return (users);
     }
@@ -88,6 +89,8 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
         return (user);
     }
@@ -112,6 +115,8 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
             return (false);
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
     }
 
@@ -133,6 +138,8 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
             return (false);
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
     }
 
@@ -147,8 +154,10 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
             return (false);
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
-    }
+    } 
 
     // SELECT ALL from fnb_menu
     public ArrayList<FnBMenu> getAllFnBMenu() {
@@ -168,6 +177,8 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
         return (menuList);
     }
@@ -189,6 +200,8 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
         return (menuList);
     }
@@ -206,37 +219,40 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
         return (paymentMethod);
     }
+  
+    public RoomTransaction getRoomTransaction(String username) {
+        RoomTransaction transaction = new RoomTransaction();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM room_transaction WHERE username='" + username + "'";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                transaction.setTransactionId(rs.getString("room_transaction_id"));
+                transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
+                transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
+                transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+                transaction.setDateCheckIn(new Date(rs.getTimestamp("date_check_in").getTime()));
+                transaction.setDuration(rs.getInt("stay_duration"));
 
-    // GET ROOM TRANSACTION
-    // public RoomTransaction getRoomTransaction(String username) {
-    // RoomTransaction transaction = new RoomTransaction();
-    // try {
-    // conn.connect();
-    // String query = "SELECT * FROM room_transaction WHERE username='" + username +
-    // "'";
-    // Statement stmt = conn.con.createStatement();
-    // ResultSet rs = stmt.executeQuery(query);
-    // while (rs.next()) {
-    // transaction.setRoomTransactionId(rs.getInt("room_transaction_id"));
-    // transaction.setDateBooked(rs.getTimestamp("date_booked").toLocalDateTime().toLocalDate());
-    // transaction.setDateCheckIn(rs.getTimestamp("date_check_in").toLocalDateTime().toLocalDate());
-    // transaction.setDateCheckOut(rs.getTimestamp("date_check_out").toLocalDateTime().toLocalDate());
+                String paymentMethodName = rs.getString("payment_method").toUpperCase();
+                PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
 
-    // String paymentMethodName = rs.getString("payment_method").toUpperCase();
-    // PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
+                transaction.setPaymentMethod(paymentMethod);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); 
+        }
+        return (transaction);
+    }
 
-    // transaction.setPaymentMethod(paymentMethod);
-    // }
-    // } catch (SQLException e) {
-    // e.printStackTrace();
-    // }
-    // return (transaction);
-    // }
-
-    // GET LAUNDRY
     public Laundry getLaundry(String laundryName) {
         Laundry laundry = new Laundry();
         try {
@@ -250,6 +266,8 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
         return (laundry);
     }
@@ -329,6 +347,8 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
             return (false);
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
     }
 
@@ -349,6 +369,8 @@ public class DatabaseController {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
         return (paymentMethods);
     }
@@ -377,6 +399,8 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
     }
 
