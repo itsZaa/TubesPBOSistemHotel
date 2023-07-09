@@ -130,9 +130,14 @@ public class RoomTransactionView implements PaymentObserver {
                     }
                     checkInDate = checkInDate.plusDays(1);
                 }
+                transaction.setOrderList(orderList);
+
+                if(transaction.getOrderList().isEmpty()){
+                    available = false;
+                    JOptionPane.showMessageDialog(null, "You need to add some Order Buddy :))", null, JOptionPane.WARNING_MESSAGE);
+                }
 
                 if (available) {
-                    transaction.setOrderList(orderList);
                     PaymentView paymentView = new PaymentView();
                     paymentView.setPaymentObserver(RoomTransactionView.this);
                     succeed = paymentView.payment(transaction);
@@ -149,13 +154,9 @@ public class RoomTransactionView implements PaymentObserver {
         frame.setVisible(true);
     }
 
-    public void handlePaymentSuccess() {
-        frame.dispose();
-    }
-
     @Override
     public void onPaymentSuccess() {
-        handlePaymentSuccess();
+        frame.dispose();
     }
 
     public static void main(String[] args) {
