@@ -88,9 +88,9 @@ public class RoomTransactionView implements PaymentObserver {
             @Override
             public void actionPerformed(ActionEvent e) {
                 boolean available = true;
-                String transactionId = new RoomTransactionController().generateTransactionID();
-                LocalDate checkInDate = checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault())
-                        .toLocalDate();
+                transaction.setTransactionId(new RoomTransactionController().generateTransactionID());
+                transaction.setDateCheckIn(checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault())
+                        .toLocalDate());
 
                 int stayDuration = Integer.parseInt(stayDurationField.getText());
                 ArrayList<Order> orderList = new ArrayList<>();
@@ -100,18 +100,18 @@ public class RoomTransactionView implements PaymentObserver {
                     // available = new RoomTransactionController().checkRoom(checkInDate,
                     // stayDuration, room, quantity);
                     if (available) {
+                        if(quantity > 0) {
                         RoomOrder roomOrder = new RoomOrder(quantity, room, stayDuration);
                         orderList.add(roomOrder);
+                        }
                     } else {
                         JOptionPane.showMessageDialog(frame, "Sorry, the room " + room.getTypeName() + " is full");
                     }
                 }
 
-                // if (available) {
-                // boolean paid = new
                 transaction.setOrderList(orderList);
                 PaymentView paymentView = new PaymentView();
-                paymentView.setPaymentObserver(RoomTransactionView.this); // Set the observer
+                paymentView.setPaymentObserver(RoomTransactionView.this);
                 succeed = paymentView.payment(transaction);
 
                 if (succeed) {

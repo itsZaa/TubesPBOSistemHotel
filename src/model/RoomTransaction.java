@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class RoomTransaction extends Transaction implements OrderListInterface{
-    private Date dateCheckIn;
+public class RoomTransaction extends Transaction {
+    private LocalDate dateCheckIn;
     private int duration;
     private TransactionStatus status;
     private ArrayList<Order> orderList;
@@ -58,11 +58,11 @@ public class RoomTransaction extends Transaction implements OrderListInterface{
         this.totalPrice = totalPrice;
     }
 
-    public Date getDateCheckIn() {
+    public LocalDate getDateCheckIn() {
         return dateCheckIn;
     }
 
-    public void setDateCheckIn(Date dateCheckIn) {
+    public void setDateCheckIn(LocalDate dateCheckIn) {
         this.dateCheckIn = dateCheckIn;
     }
 
