@@ -111,13 +111,13 @@ public class PaymentView {
                         roomTransaction.setPaymentMethod(payment);
                         success = new DatabaseController().insertRoomTransaction(roomTransaction);
                         if (success) {
-                            // for (Order order : transaction.getOrderList()) {
-                            //     RoomOrder roomOrder = (RoomOrder) order;
-                            //     if (new DatabaseController().insertRoomOrder(transaction.getTransactionId(), roomOrder)) {
-                            //     } else {
-                            //         JOptionPane.showMessageDialog(null, "Something went wrong", null, JOptionPane.ERROR_MESSAGE);
-                            //     }
-                            // }
+                            for (Order order : transaction.getOrderList()) {
+                                RoomOrder roomOrder = (RoomOrder) order;
+                                if (new DatabaseController().insertRoomOrder(transaction.getTransactionId(), roomOrder)) {
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Something went wrong", null, JOptionPane.ERROR_MESSAGE);
+                                }
+                            }
                         }
                     }
                     showNotification("Payment successful!", JOptionPane.INFORMATION_MESSAGE);
