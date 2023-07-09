@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 //import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -41,12 +42,12 @@ public class LaundryController {
         int lamaInap = 0;
 
         RoomTransaction selected = findTransaction();
-        Date getDateCheckIn = selected.getDateCheckIn(); // Get the check-in date
+        LocalDate getDateCheckIn = selected.getDateCheckIn(); // Get the check-in date
         int duration = selected.getDuration(); // Get the duration in days
-        Date currentDate = new Date(); // Get the current date
+        LocalDate currentDate = LocalDate.now(); // Get the current date
 
-        long diffInMillis = currentDate.getTime() - getDateCheckIn.getTime();
-        long durationInDays = TimeUnit.MILLISECONDS.toDays(diffInMillis) + duration;
+        long diffInDays = ChronoUnit.DAYS.between(getDateCheckIn, currentDate);
+        long durationInDays = diffInDays + duration;
 
         lamaInap = (int) durationInDays;
 

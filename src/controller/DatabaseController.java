@@ -237,7 +237,7 @@ public class DatabaseController {
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
                 transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
                 transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
-                transaction.setDateCheckIn(new Date(rs.getTimestamp("date_check_in").getTime()));
+                transaction.setDateCheckIn(rs.getDate("date_check_in").toLocalDate());
                 transaction.setDuration(rs.getInt("stay_duration"));
 
                 String paymentMethodName = rs.getString("payment_method").toUpperCase();
