@@ -23,6 +23,31 @@ public class RoomTransaction extends Transaction {
         super("",user);
     }
 
+    
+
+    public RoomTransaction(LocalDate dateCheckIn, int duration, TransactionStatus status, ArrayList<Order> orderList, Date dateBooked, Date timeStampCheckIn, Date timeStampCheckOut, double totalPrice) {
+        this.dateCheckIn = dateCheckIn;
+        this.duration = duration;
+        this.status = status;
+        this.orderList = orderList;
+        this.dateBooked = dateBooked;
+        this.totalPrice = totalPrice;
+    }
+
+    public RoomTransaction(String transactionId, User user, LocalDate dateCheckIn, int duration,
+            TransactionStatus status, ArrayList<Order> orderList, Date dateBooked, Date timeStampCheckIn,
+            Date timeStampCheckOut, double totalPrice) {
+        super(transactionId, user);
+        this.dateCheckIn = dateCheckIn;
+        this.duration = duration;
+        this.status = status;
+        this.orderList = orderList;
+        this.dateBooked = dateBooked;
+        this.timeStampCheckIn = timeStampCheckIn;
+        this.timeStampCheckOut = timeStampCheckOut;
+        this.totalPrice = totalPrice;
+    }
+
     public Date getDateBooked() {
         return dateBooked;
     }

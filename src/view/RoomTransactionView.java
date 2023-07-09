@@ -13,13 +13,21 @@ import model.User;
 import model.UserType;
 import observer.PaymentObserver;
 
-import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
 
 public class RoomTransactionView implements PaymentObserver {
     private JFrame frame;
@@ -44,11 +52,18 @@ public class RoomTransactionView implements PaymentObserver {
         checkInDateChooser.setCalendar(Calendar.getInstance());
         checkInLabel.setBounds(10, 55, 120, 25);
         checkInDateChooser.setBounds(140, 55, 200, 25);
+
+        Date today = Calendar.getInstance().getTime();
+        checkInDateChooser.setDate(today);
+        checkInDateChooser.setMinSelectableDate(today);
+        checkInDateChooser.getDateEditor().getUiComponent().setEnabled(false);
+        checkInDateChooser.getDateEditor().getUiComponent().setBackground(UIManager.getColor("TextField.background"));
+
         frame.add(checkInLabel);
         frame.add(checkInDateChooser);
 
         JLabel stayDurationLabel = new JLabel("Stay Duration:");
-        JTextField stayDurationField = new JTextField("0");
+        JTextField stayDurationField = new JTextField("1");
         stayDurationLabel.setBounds(10, 85, 120, 25);
         stayDurationField.setBounds(140, 85, 200, 25);
         frame.add(stayDurationLabel);
@@ -89,30 +104,39 @@ public class RoomTransactionView implements PaymentObserver {
             public void actionPerformed(ActionEvent e) {
                 boolean available = true;
                 transaction.setTransactionId(new RoomTransactionController().generateTransactionID());
-                transaction.setDateCheckIn(checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault())
-                        .toLocalDate());
+                LocalDate checkInDate = checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                transaction.setDateCheckIn(checkInDate);
 
                 int stayDuration = Integer.parseInt(stayDurationField.getText());
+                transaction.setDuration(stayDuration);
                 ArrayList<Order> orderList = new ArrayList<>();
 
-                for (RoomType room : roomTypes) {
-                    int quantity = Integer.parseInt(roomFields.get(roomTypes.indexOf(room)).getText());
-                    // available = new RoomTransactionController().checkRoom(checkInDate,
-                    // stayDuration, room, quantity);
-                    if (available) {
-                        if(quantity > 0) {
-                        RoomOrder roomOrder = new RoomOrder(quantity, room, stayDuration);
-                        orderList.add(roomOrder);
+                // if checkindate < date now
+
+                for (int i = 0; i < stayDuration && available; i++) {
+                    for (RoomType room : roomTypes) {
+                        int quantity = Integer.parseInt(roomFields.get(roomTypes.indexOf(room)).getText());
+                        if (quantity > 0) {
+                            available = new RoomTransactionController().checkAvailability(checkInDate, room, quantity);
+                            if (available) {
+                                RoomOrder roomOrder = new RoomOrder(quantity, room, checkInDate);
+                                orderList.add(roomOrder);
+                            } else {
+                                JOptionPane.showMessageDialog(frame, "Sorry, the room " + room.getTypeName()
+                                        + " is not available");
+                            }
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Sorry, the room " + room.getTypeName() + " is full");
                     }
+                    checkInDate = checkInDate.plusDays(1);
                 }
 
-                transaction.setOrderList(orderList);
-                PaymentView paymentView = new PaymentView();
-                paymentView.setPaymentObserver(RoomTransactionView.this);
-                succeed = paymentView.payment(transaction);
+                if (available) {
+                    transaction.setOrderList(orderList);
+                    PaymentView paymentView = new PaymentView();
+                    paymentView.setPaymentObserver(RoomTransactionView.this);
+                    succeed = paymentView.payment(transaction);
+                }
 
                 if (succeed) {
                     frame.dispose();

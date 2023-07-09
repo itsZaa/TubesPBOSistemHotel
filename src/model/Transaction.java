@@ -50,8 +50,6 @@ public abstract class Transaction {
                 "}";
     }
 
-    public abstract ArrayList<Order> getOrderList();
-
     public void setOrderList(ArrayList<Order> order) {
         this.order = order;
     }

@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.util.ArrayList;
 import model.Order;
 import model.Customer;
@@ -23,6 +24,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
+
+import javax.swing.JOptionPane;
 
 //class ini digunakan untuk nampung fungsi berisi query-query ke DB
 public class DatabaseController {
@@ -300,15 +303,17 @@ public class DatabaseController {
     }
     
 
-    public boolean insertRoomOrder(String id, RoomOrder order) {
+    public boolean insertRoomOrder(String id, RoomOrder order, LocalDate date) {
         try {
             conn.connect();
-            String query = "INSERT INTO room_order (?,?,?,?)";
+            String query = "INSERT INTO room_order (room_transaction_id, room_number, room_type, quantity, price, date) VALUES (?,?,?,?,?,?)";
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setString(1, id);
-            stmt.setString(2, order.getRoomType().toString());
-            stmt.setString(3, null);
-            stmt.setDouble(4, order.getOrderPrice());
+            stmt.setNull(2, Types.INTEGER);
+            stmt.setString(3, order.getRoomType().getTypeName());
+            stmt.setInt(4, order.getQuantity());
+            stmt.setDouble(5, order.getOrderPrice());
+            stmt.setDate(6, java.sql.Date.valueOf(date));
             stmt.executeUpdate();
             conn.disconnect();
             return true;
@@ -319,6 +324,50 @@ public class DatabaseController {
         }
     }
     
+    public int checkRoomAvailable(LocalDate date, RoomType roomType) {
+        int availableQuantity = roomType.getNumberOfRoom();
+        try {
+            conn.connect();
+            String query = "SELECT SUM(quantity) AS total_quantity FROM room_order WHERE date = ? AND room_type = ?";
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setDate(1, java.sql.Date.valueOf(date));
+            stmt.setString(2, roomType.getTypeName());
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                int totalQuantity = rs.getInt("total_quantity");
+                availableQuantity -= totalQuantity;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+        return availableQuantity;
+    }
+    
+
+
+    // public ArrayList <RoomTransaction> getRoomTransactionbyDate(LocalDate date) {
+    //     ArrayList <RoomTransaction> transactionList = new ArrayList<>();
+    //     try {
+    //         conn.connect();
+    //         String query = "SELECT * FROM room_transaction WHERE date_check_in = date";
+    //         Statement stmt = conn.con.createStatement();
+    //         ResultSet rs = stmt.executeQuery(query);
+    //         while (rs.next()) {
+                
+    //             paymentMethod.setPaymentMethodId(rs.getInt("payment_method_id"));
+    //             paymentMethod.setName(rs.getString("name"));
+
+    //             paymentMethods.add(paymentMethod);
+    //         }
+    //     } catch (SQLException e) {
+    //         e.printStackTrace();
+    //     } finally {
+    //         conn.disconnect(); // Close the database connection
+    //     }
+    //     return transactionList;
+    // }
 
     // CREATE LAUNDRY TRANSACTION
     public boolean insertLaundryTransaction(LaundryTransaction transaction) {
