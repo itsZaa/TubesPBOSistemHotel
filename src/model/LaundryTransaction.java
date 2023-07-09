@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class LaundryTransaction extends Transaction {
     private int roomNumber;
@@ -79,6 +80,11 @@ public class LaundryTransaction extends Transaction {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    @Override
+    public ArrayList<Order> getOrderList() {
+        return null;
     }
 
     @Override
