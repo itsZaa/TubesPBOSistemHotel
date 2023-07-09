@@ -6,28 +6,29 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 public class GlobalView {
-    public JFrame frame () {
+    public JFrame frame() {
         JFrame form = new JFrame("Aplikasi Sistem Hotel");
-        form.setSize(500,500);
+        form.setSize(500, 500);
         form.setLayout(null);
         form.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         form.setLocationRelativeTo(null);
+        form.setResizable(false);
 
         return form;
     }
 
-    public Font headerFont () {
-        Font font  = new Font(Font.MONOSPACED, Font.BOLD, 22);
+    public Font headerFont() {
+        Font font = new Font(Font.MONOSPACED, Font.BOLD, 22);
         return font;
     }
 
-    public Font bodyFont () {
-        Font font  = new Font(Font.MONOSPACED, Font.PLAIN, 14);
+    public Font bodyFont() {
+        Font font = new Font(Font.MONOSPACED, Font.PLAIN, 14);
         return font;
     }
 
-    public Font bodyFontBold () {
-        Font font  = new Font(Font.MONOSPACED, Font.BOLD, 14);
+    public Font bodyFontBold() {
+        Font font = new Font(Font.MONOSPACED, Font.BOLD, 14);
         return font;
     }
 
@@ -49,6 +50,6 @@ public class GlobalView {
     }
 
     // public JTextField input () {
-        
+
     // }
 }

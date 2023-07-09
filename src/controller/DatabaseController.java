@@ -404,6 +404,32 @@ public class DatabaseController {
         }
     }
 
+    // SELECT ROOM NUMBER LIST FROM ROOM TRANSACTION BY USERNAME
+    public ArrayList<Integer> getRoomNumberOrdered(String username) {
+        try {
+            conn.connect();
+            ArrayList<Integer> numbers = new ArrayList<>();
+            String query = "SELECT ro.room_number "
+                    + "FROM room_order ro "
+                    + "JOIN room_transaction rt ON ro.room_transaction_id = rt.room_transaction_id "
+                    + "WHERE rt.username = ?";
+
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int roomNumber = resultSet.getInt("room_number");
+                numbers.add(roomNumber);
+            }
+
+            return numbers;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     // public boolean insertRoomTransaction(String username, Transaction
     // transaction) {
     // conn.connect();
