@@ -30,8 +30,6 @@ public abstract class Transaction {
         this.user = user;
     }
 
-    public abstract ArrayList<Order> getOrderList();
-
     @Override
     public String toString() {
         return "{" +
