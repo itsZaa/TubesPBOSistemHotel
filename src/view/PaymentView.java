@@ -2,19 +2,24 @@ package view;
 
 import controller.DatabaseController;
 import controller.PaymentController;
-import model.Order;
-import model.PaymentMethod;
-import model.RoomOrder;
-import model.FnBTransaction;
 import model.PaymentMethod;
 import model.RoomTransaction;
 import model.Transaction;
 import observer.PaymentObserver;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class PaymentView {
     private PaymentMethod payment;
@@ -74,7 +79,8 @@ public class PaymentView {
             x += 75;
         }
 
-        JLabel totalTransaksiLabel = new JLabel( "Total Transaction: Rp " + new PaymentController().countTotalTransaction(transaction.getOrderList()));
+        JLabel totalTransaksiLabel = new JLabel(
+                "Total Transaction: Rp " + new PaymentController().countTotalTransaction (transaction.getOrderList()));
 
         totalTransaksiLabel.setFont(new GlobalView().bodyFontBold());
         totalTransaksiLabel.setBounds(10, 420, 300, 25);
@@ -99,18 +105,7 @@ public class PaymentView {
                 boolean proceed = showConfirmationDialog("Are you sure you want to proceed with the payment?");
                 if (proceed) {
                     if (transaction instanceof RoomTransaction) {
-                        RoomTransaction roomTransaction = (RoomTransaction) transaction;
-                        roomTransaction.setPaymentMethod(payment);
-                        success = new DatabaseController().insertRoomTransaction(roomTransaction);
-                        if (success) {
-                            for (Order order : transaction.getOrderList()) {
-                                RoomOrder roomOrder = (RoomOrder) order;
-                                if (new DatabaseController().insertRoomOrder(transaction.getTransactionId(), roomOrder)) {
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "Something went wrong", null, JOptionPane.ERROR_MESSAGE);
-                                }
-                            }
-                        }
+                        success = new PaymentController().insertRoomOrder(transaction, payment);
                     }
                     showNotification("Payment successful!", JOptionPane.INFORMATION_MESSAGE);
                     showNotification("Transaction completed!", JOptionPane.INFORMATION_MESSAGE);
