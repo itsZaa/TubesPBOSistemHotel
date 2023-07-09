@@ -3,6 +3,7 @@ package controller;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -12,13 +13,16 @@ import model.FnBTransaction;
 import model.Order;
 import model.OrderStatus;
 import model.PaymentMethod;
+import model.RoomTransaction;
 import model.User;
 
 public class FnBController {
     private DatabaseController dbController;
+    private User user;
 
-    public FnBController() {
+    public FnBController(User user) {
         dbController = new DatabaseController();
+        this.user = user;
     }
 
     public String getFnBMenu() {
@@ -59,7 +63,7 @@ public class FnBController {
         return totalPrice;
     }
 
-    public void createFnBTransaction(User user, int roomNumber, PaymentMethod paymentMethod, ArrayList<Order> orderList) {
+    public void createFnBTransaction(int roomNumber, PaymentMethod paymentMethod, ArrayList<Order> orderList) {
         ArrayList<FnBOrder> fnbOrders = castingOrder(orderList);
 
         String id = "FNB_";
@@ -87,5 +91,27 @@ public class FnBController {
                 countTotalPrice(fnbOrders));
 
         dbController.insertFnBTransaction(transaction);
+    }
+
+    private RoomTransaction findTransaction() {
+        RoomTransaction selected = dbController.getRoomTransaction(user.getUsername());
+
+        return selected;
+    }
+
+    public boolean isUserCheckIn(){
+        RoomTransaction transaction = findTransaction();
+
+        if (transaction.getDateCheckIn() != null){
+            return true;
+        }
+
+        return false;
+    }
+
+    public ArrayList<Integer> getUserRooms(){
+        ArrayList<Integer> roomList = dbController.getRoomNumberOrdered(user.getUsername());
+
+        return roomList;
     }
 }

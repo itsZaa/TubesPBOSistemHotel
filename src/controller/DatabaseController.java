@@ -279,7 +279,7 @@ public class DatabaseController {
         }
     }
 
-    //GET Payment Method
+    // GET Payment Method
     public ArrayList<PaymentMethod> getAllPaymentMethod() {
         ArrayList<PaymentMethod> paymentMethods = new ArrayList<>();
         try {
@@ -291,7 +291,7 @@ public class DatabaseController {
                 PaymentMethod paymentMethod = new PaymentMethod();
                 paymentMethod.setPaymentMethodId(rs.getInt("payment_method_id"));
                 paymentMethod.setName(rs.getString("name"));
-                
+
                 paymentMethods.add(paymentMethod);
             }
         } catch (SQLException e) {
@@ -324,6 +324,32 @@ public class DatabaseController {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    // SELECT ROOM NUMBER LIST FROM ROOM TRANSACTION BY USERNAME
+    public ArrayList<Integer> getRoomNumberOrdered(String username) {
+        try {
+            conn.connect();
+            ArrayList<Integer> numbers = new ArrayList<>();
+            String query = "SELECT ro.room_number "
+                    + "FROM room_order ro "
+                    + "JOIN room_transaction rt ON ro.room_transaction_id = rt.room_transaction_id "
+                    + "WHERE rt.username = ?";
+
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setString(1, username);
+            ResultSet resultSet = stmt.executeQuery();
+
+            while (resultSet.next()) {
+                int roomNumber = resultSet.getInt("room_number");
+                numbers.add(roomNumber);
+            }
+
+            return numbers;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
