@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class FnBTransaction extends Transaction{
     private int roomNumber;
     private OrderStatus status;
-    private PaymentMethod paymentMethod;
     private ArrayList<Order> orderList;
     private LocalDate transactionDate;
     private double totalPrice;
@@ -15,11 +14,10 @@ public class FnBTransaction extends Transaction{
     }
 
     public FnBTransaction(String transactionId, User user, int roomNumber, OrderStatus status, PaymentMethod paymentMethod,
-            ArrayList<FnBOrder> orderList, LocalDate transactionDate, double totalPrice) {
+            ArrayList<Order> orderList, LocalDate transactionDate, double totalPrice) {
         super(transactionId, user);
         this.roomNumber = roomNumber;
         this.status = status;
-        this.paymentMethod = paymentMethod;
         this.orderList = orderList;
         this.transactionDate = transactionDate;
         this.totalPrice = totalPrice;
@@ -41,20 +39,12 @@ public class FnBTransaction extends Transaction{
         this.status = status;
     }
 
-    public PaymentMethod getPaymentMethod() {
-        return this.paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
     @Override
     public ArrayList<Order> getOrderList() {
         return this.orderList;
     }
 
-    public void setOrderList(ArrayList<FnBOrder> orderList) {
+    public void setOrderList(ArrayList<Order> orderList) {
         this.orderList = orderList;
     }
 

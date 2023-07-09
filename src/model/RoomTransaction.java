@@ -14,7 +14,6 @@ public class RoomTransaction extends Transaction {
     private Date timeStampCheckIn;
     private Date timeStampCheckOut;
 
-    private PaymentMethod paymentMethod;
     private double totalPrice;
 
     public RoomTransaction() {
@@ -30,15 +29,6 @@ public class RoomTransaction extends Transaction {
 
     public void setDateBooked(Date dateBooked) {
         this.dateBooked = dateBooked;
-    }
-
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 
     @Override
@@ -93,7 +83,7 @@ public class RoomTransaction extends Transaction {
     @Override
     public String toString() {
         return "RoomTransaction [ dateCheckIn=" + dateCheckIn
-                + ", duration=" + duration + ", orderList=" + orderList + ", paymentMethod=" + paymentMethod
+                + ", duration=" + duration + ", orderList=" + orderList
                 + ", totalPrice=" + totalPrice + ", dateBooked=" + dateBooked + ", timeStampCheckIn=" + timeStampCheckIn
                 + ", timeStampCheckOut=" + timeStampCheckOut + "]";
     }
