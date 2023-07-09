@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+
+import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
+
 import model.Customer;
 import model.FnBMenu;
 import model.FnBTransaction;
@@ -16,6 +19,7 @@ import model.UserType;
 import model.Laundry;
 import model.LaundryTransaction;
 import model.PaymentMethod;
+import model.RoomOrder;
 import model.RoomTransaction;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -207,29 +211,30 @@ public class DatabaseController {
     }
 
     // GET ROOM TRANSACTION
-    public RoomTransaction getRoomTransaction(String username) {
-        RoomTransaction transaction = new RoomTransaction();
-        try {
-            conn.connect();
-            String query = "SELECT * FROM room_transaction WHERE username='" + username + "'";
-            Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                transaction.setRoomTransactionId(rs.getInt("room_transaction_id"));
-                transaction.setDateBooked(rs.getTimestamp("date_booked").toLocalDateTime().toLocalDate());
-                transaction.setDateCheckIn(rs.getTimestamp("date_check_in").toLocalDateTime().toLocalDate());
-                transaction.setDateCheckOut(rs.getTimestamp("date_check_out").toLocalDateTime().toLocalDate());
+    // public RoomTransaction getRoomTransaction(String username) {
+    // RoomTransaction transaction = new RoomTransaction();
+    // try {
+    // conn.connect();
+    // String query = "SELECT * FROM room_transaction WHERE username='" + username +
+    // "'";
+    // Statement stmt = conn.con.createStatement();
+    // ResultSet rs = stmt.executeQuery(query);
+    // while (rs.next()) {
+    // transaction.setRoomTransactionId(rs.getInt("room_transaction_id"));
+    // transaction.setDateBooked(rs.getTimestamp("date_booked").toLocalDateTime().toLocalDate());
+    // transaction.setDateCheckIn(rs.getTimestamp("date_check_in").toLocalDateTime().toLocalDate());
+    // transaction.setDateCheckOut(rs.getTimestamp("date_check_out").toLocalDateTime().toLocalDate());
 
-                String paymentMethodName = rs.getString("payment_method").toUpperCase();
-                PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
+    // String paymentMethodName = rs.getString("payment_method").toUpperCase();
+    // PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
 
-                transaction.setPaymentMethod(paymentMethod);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return (transaction);
-    }
+    // transaction.setPaymentMethod(paymentMethod);
+    // }
+    // } catch (SQLException e) {
+    // e.printStackTrace();
+    // }
+    // return (transaction);
+    // }
 
     // GET LAUNDRY
     public Laundry getLaundry(String laundryName) {
@@ -248,6 +253,54 @@ public class DatabaseController {
         }
         return (laundry);
     }
+
+    public boolean insertRoomTransaction(RoomTransaction transaction) {
+        try {
+            conn.connect();
+            String query = "INSERT INTO room_transaction VALUES(?,?,?,?,?,?,?,?,?)";
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setString(1, transaction.getTransactionId());
+            stmt.setString(2, transaction.getUser().getUsername());
+            LocalDate checkInDate = transaction.getDateCheckIn();
+            java.sql.Date sqlDate = java.sql.Date.valueOf(checkInDate);
+            stmt.setDate(3, sqlDate);
+            stmt.setInt(4, transaction.getDuration());
+            stmt.setString(5, "booked");
+            stmt.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
+            stmt.setTimestamp(7, null);
+            stmt.setTimestamp(8, null);
+            stmt.setString(9, transaction.getPaymentMethod().getName());
+    
+            stmt.executeUpdate();
+            conn.disconnect();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            conn.disconnect();
+            return false;
+        }
+    }
+    
+
+    public boolean insertRoomOrder(String id, RoomOrder order) {
+        try {
+            conn.connect();
+            String query = "INSERT INTO room_order (?,?,?,?)";
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setString(1, id);
+            stmt.setString(2, order.getRoomType().toString());
+            stmt.setString(3, null);
+            stmt.setDouble(4, order.getOrderPrice());
+            stmt.executeUpdate();
+            conn.disconnect();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            conn.disconnect();
+            return false;
+        }
+    }
+    
 
     // CREATE LAUNDRY TRANSACTION
     public boolean insertLaundryTransaction(LaundryTransaction transaction) {
@@ -279,7 +332,7 @@ public class DatabaseController {
         }
     }
 
-    //GET Payment Method
+    // GET Payment Method
     public ArrayList<PaymentMethod> getAllPaymentMethod() {
         ArrayList<PaymentMethod> paymentMethods = new ArrayList<>();
         try {
@@ -291,7 +344,7 @@ public class DatabaseController {
                 PaymentMethod paymentMethod = new PaymentMethod();
                 paymentMethod.setPaymentMethodId(rs.getInt("payment_method_id"));
                 paymentMethod.setName(rs.getString("name"));
-                
+
                 paymentMethods.add(paymentMethod);
             }
         } catch (SQLException e) {
