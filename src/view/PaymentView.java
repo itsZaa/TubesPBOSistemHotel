@@ -1,7 +1,9 @@
 package view;
 
 import controller.DatabaseController;
+import controller.LaundryController;
 import controller.PaymentController;
+import model.LaundryTransaction;
 import model.PaymentMethod;
 import model.RoomTransaction;
 import model.Transaction;
