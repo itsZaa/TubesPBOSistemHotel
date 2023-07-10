@@ -36,7 +36,6 @@ import model.Transaction;
 public class LaundryMenuView {
     private LaundryController laundryController;
     private ArrayList<Laundry> menuList;
-    private ArrayList<Order> orderList;
     private User user;
 
     // butuh utk insert laundry_transaction db
@@ -46,8 +45,6 @@ public class LaundryMenuView {
 
     public LaundryMenuView(User user) {
         this.laundryController = new LaundryController(user);
-        menuList = new DatabaseController().getAllLaundry();
-        orderList = new ArrayList<>();
         this.user = user;
         this.laundry = new Laundry();
 

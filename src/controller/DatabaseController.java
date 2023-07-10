@@ -12,6 +12,7 @@ import model.Customer;
 import model.FnBMenu;
 import model.FnBTransaction;
 import model.User;
+import model.OrderStatus;
 import model.GenderType;
 import model.RoomType;
 import model.UserType;
@@ -299,6 +300,8 @@ public class DatabaseController {
             e.printStackTrace();
             conn.disconnect();
             return false;
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
     }
     
@@ -321,6 +324,8 @@ public class DatabaseController {
             e.printStackTrace();
             conn.disconnect();
             return false;
+        } finally {
+            conn.disconnect(); // Close the database connection
         }
     }
     
@@ -399,6 +404,44 @@ public class DatabaseController {
         } finally {
             conn.disconnect(); // Close the database connection
         }
+    }
+
+    //GET UNPROCESSED LAUNDRY TRANSACTION
+    public ArrayList<LaundryTransaction> getUnprocessedLaundryTransactions(){
+        ArrayList<LaundryTransaction> transactions = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM laundry_transaction WHERE status = waiting";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                LaundryTransaction transaction = new LaundryTransaction();
+                transaction.setTransactionId(rs.getString("laundry_transaction_id"));
+                transaction.setUser(getUser(rs.getString("username")));
+                transaction.setRoomNumber(rs.getInt("room_number"));
+
+                String status = rs.getString("status");
+                transaction.setOrderStatus(OrderStatus.valueOf(status.toUpperCase()));
+
+                transaction.setTotalPrice(rs.getDouble("total_price"));
+
+                transaction.setPaymentMethod(getPaymentMethod(rs.getString("payment_method")));
+
+    
+                transaction.setDateOrder(rs.getTimestamp("date_order").toLocalDateTime().toLocalDate());
+
+                transaction.setDateDelivered(rs.getTimestamp("date_delivered").toLocalDateTime().toLocalDate());
+
+                transaction.setLaundry(getLaundry(rs.getString("laundry_name")));
+
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+        return (transactions);
     }
 
     // GET Payment Method
