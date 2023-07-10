@@ -15,7 +15,6 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -91,7 +90,7 @@ public class PaymentView {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Payment Cancelled");
+                new GlobalView().warning("Payment Cancelled");
                 frame.dispose();
             }
         });
@@ -102,18 +101,18 @@ public class PaymentView {
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean proceed = showConfirmationDialog("Are you sure you want to proceed with the payment?");
+                boolean proceed = new GlobalView().confirmation("Are you sure you want to proceed with the payment?");
                 if (proceed) {
                     if (transaction instanceof RoomTransaction) {
                         success = new PaymentController().insertRoomOrder(transaction, payment);
                     }
-                    showNotification("Payment successful!", JOptionPane.INFORMATION_MESSAGE);
-                    showNotification("Transaction completed!", JOptionPane.INFORMATION_MESSAGE);
                     if (paymentObserver != null) {
                         paymentObserver.onPaymentSuccess();
                     }
+                    new GlobalView().notif("Payment successful!");
+                    new GlobalView().notif("Transaction completed!");
                 } else {
-                    showNotification("Payment canceled.", JOptionPane.WARNING_MESSAGE);
+                    new GlobalView().warning("Payment canceled.");
                 }
                 frame.dispose();
             }
@@ -124,14 +123,5 @@ public class PaymentView {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         return success;
-    }
-
-    private boolean showConfirmationDialog(String message) {
-        int confirmation = JOptionPane.showConfirmDialog(null, message, "Confirmation", JOptionPane.YES_NO_OPTION);
-        return confirmation == JOptionPane.YES_OPTION;
-    }
-
-    private void showNotification(String message, int messageType) {
-        JOptionPane.showMessageDialog(null, message, "Notification", messageType);
     }
 }
