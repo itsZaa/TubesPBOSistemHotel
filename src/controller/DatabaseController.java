@@ -411,7 +411,7 @@ public class DatabaseController {
         ArrayList<LaundryTransaction> transactions = new ArrayList<>();
         try {
             conn.connect();
-            String query = "SELECT * FROM laundry_transaction WHERE status = waiting";
+            String query = "SELECT * FROM laundry_transaction WHERE status = 'waiting'";
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
@@ -430,7 +430,7 @@ public class DatabaseController {
     
                 transaction.setDateOrder(rs.getTimestamp("date_order").toLocalDateTime().toLocalDate());
 
-                transaction.setDateDelivered(rs.getTimestamp("date_delivered").toLocalDateTime().toLocalDate());
+                transaction.setDateDelivered(null);
 
                 transaction.setLaundry(getLaundry(rs.getString("laundry_name")));
 

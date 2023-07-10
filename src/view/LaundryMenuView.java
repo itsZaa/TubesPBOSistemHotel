@@ -169,7 +169,7 @@ public class LaundryMenuView {
     public static void main(String[] args) {
         // dummy user
         // ceritanya suatu customer yg udh check in ingin pesan laundry.
-        User user = new DatabaseController().getUser("otong123");
+        User user = new DatabaseController().getUser("nico.js");
         new LaundryMenuView(user);
     }
 }
