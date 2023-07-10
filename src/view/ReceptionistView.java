@@ -17,10 +17,10 @@ public class ReceptionistView {
     private JFrame frame;
 
     public ReceptionistView(Staff staff) {
-        createGUI();
+        initComponent();
     }
 
-    private void createGUI() {
+    private void initComponent() {
         frame = new GlobalView().frame();
 
         JLabel label = new GlobalView().labelHeader("Receptionist Menu");

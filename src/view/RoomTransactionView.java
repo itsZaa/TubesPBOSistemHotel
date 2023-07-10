@@ -4,6 +4,7 @@ import com.toedter.calendar.JDateChooser;
 
 import controller.DatabaseController;
 import controller.RoomTransactionController;
+
 import model.GenderType;
 import model.Order;
 import model.RoomOrder;
@@ -11,13 +12,12 @@ import model.RoomTransaction;
 import model.RoomType;
 import model.User;
 import model.UserType;
+
 import observer.PaymentObserver;
 
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,9 +25,11 @@ import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RoomTransactionView implements PaymentObserver {
     private JFrame frame;
@@ -91,7 +93,7 @@ public class RoomTransactionView implements PaymentObserver {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Transaction cancelled");
+                new GlobalView().warning("Transaction cancelled");
                 frame.dispose();
             }
         });
@@ -112,8 +114,6 @@ public class RoomTransactionView implements PaymentObserver {
                 transaction.setDuration(stayDuration);
                 ArrayList<Order> orderList = new ArrayList<>();
 
-                // if checkindate < date now
-
                 for (int i = 0; i < stayDuration && available; i++) {
                     for (RoomType room : roomTypes) {
                         int quantity = Integer.parseInt(roomFields.get(roomTypes.indexOf(room)).getText());
@@ -123,7 +123,7 @@ public class RoomTransactionView implements PaymentObserver {
                                 RoomOrder roomOrder = new RoomOrder(quantity, room, checkInDate);
                                 orderList.add(roomOrder);
                             } else {
-                                JOptionPane.showMessageDialog(frame, "Sorry, the room " + room.getTypeName()
+                                new GlobalView().error("Sorry, the room " + room.getTypeName()
                                         + " is not available");
                             }
                         }
@@ -134,7 +134,7 @@ public class RoomTransactionView implements PaymentObserver {
 
                 if(transaction.getOrderList().isEmpty()){
                     available = false;
-                    JOptionPane.showMessageDialog(null, "You need to add some Order Buddy :))", null, JOptionPane.WARNING_MESSAGE);
+                    new GlobalView().warning("You need to add some Order Buddy :))");
                 }
 
                 if (available) {
