@@ -54,33 +54,42 @@ public class SignInView {
         submit.setBounds(300, 200, 180, 50);
         submit.setFont(font1);
         submit.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        // submit.addActionListener(new ActionListener(){
-        //     @Override
-        //     public void actionPerformed(ActionEvent ae) {
-        //         //String result = controller.SignInController(,tfUserName.getText(),pass.getText());
-        //         if(result.equals("Login Berhasil!")){
-        //             frame.dispose();
-        //             JOptionPane.showMessageDialog(null,result);
-        //             //masukin tujuan dibawah
-        //             if (tipeUser.equals("customers")) {
-        //                 new MainView();                        
-        //             } else if(tipeUser.equals("admin")) {
-        //                 new MainView();
-        //             } else if(tipeUser.equals("staff")) {
-        //                 new MainView();
-        //             }
-        //         }else if(result.equals("Password Salah!")){
-        //             JOptionPane.showMessageDialog(null,result);
-        //             pass.setText("");
-        //             pass.requestFocus();
-        //         }else{
-        //             JOptionPane.showMessageDialog(null,result);
-        //             tfUserName.setText("");
-        //             pass.setText("");
-        //             tfUserName.requestFocus();
-        //         }
-        //     }  
-        // });
+        submit.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                String result = controller.SignInController(tfUserName.getText(),pass.getText());
+                if(result.equals("customer")){
+                    frame.dispose();
+                    JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Customer");
+                    new MainView(); // GANTI JDI TUJUAN CUSTOMER!
+                }else if(result.equals("receptionist")){
+                    frame.dispose();
+                    JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Receptionist");
+                    new MainView(); //Menu receptionist
+                }else if(result.equals("manager")){
+                    frame.dispose();
+                    JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Manager");
+                    new MainView();//Menu manager
+                }else if(result.equals("staff_fnb")){
+                    frame.dispose();
+                    JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Staff FNB");
+                    new MainView(); //menu staff_fnb
+                }else if(result.equals("staff_laundry")){
+                    frame.dispose();
+                    JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Staff Laundry");
+                    new MainView();//menu staff laundry
+                }else if(result.equals("Password Salah!")){
+                    JOptionPane.showMessageDialog(null,result);
+                    pass.setText("");
+                    pass.requestFocus();
+                }else{
+                    JOptionPane.showMessageDialog(null,result);
+                    tfUserName.setText("");
+                    pass.setText("");
+                    tfUserName.requestFocus();
+                }
+            }  
+        });
 
         JButton back = new JButton("Kembali");
         back.setBounds(100, 200, 180, 50);
@@ -90,7 +99,7 @@ public class SignInView {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 frame.dispose();
-                new MainView();
+                new ChooseMenu();
             } 
         });
 
