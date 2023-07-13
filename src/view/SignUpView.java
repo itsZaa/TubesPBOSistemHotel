@@ -1,16 +1,18 @@
 package view;
-import controller.RegisterController;
+import controller.SignUpController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import model.Customer;
 
 public class SignUpView {
+    Customer data;
     public static void main(String[] args) {
         new SignUpView();
     }
     public SignUpView(){
-    //SignUpController controller = new SignUpController();
+    SignUpController controller = new SignUpController();
         JFrame frame = new JFrame("Form Sign Up");
         frame.setSize(600, 700);
         frame.setLocationRelativeTo(null);
@@ -132,14 +134,24 @@ public class SignUpView {
         submit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                if (tfUsername.getText().isEmpty()||tfFullName.getText().isEmpty()||tfEmail.getText().isEmpty()||pass.getPassword().equals("")||tfAlamat.getText().isEmpty()||maleRadioButton.getText().isEmpty()||femaleRadioButton.getText().isEmpty()||tfNoTelp.getText().isEmpty()) {
+                String gender = null;
+                if(maleRadioButton.isSelected()){
+                    gender = "Male";
+                }
+                else if(femaleRadioButton.isSelected()){
+                    gender = "Female";
+                }
+                else{
+                    gender = null;
+                }
+                if (tfUsername.getText().isEmpty()||tfFullName.getText().isEmpty()||tfEmail.getText().isEmpty()||pass.getPassword().equals("")||tfAlamat.getText().isEmpty()||tfNoTelp.getText().isEmpty()) {
                     JOptionPane.showMessageDialog(null, "Semua kolom wajib diisi!");
                 } else {
-                    String kondisi = controller.register(tfUsername.getText(),tfFullName.getText(),tfEmail.getText(),pass.getPassword(),tfAlamat.getText(),maleRadioButton.getText(),femaleRadioButton.getText(),tfNoTelp.getText());
+                    String kondisi = controller.SignUp(tfUsername.getText(),tfFullName.getText(),tfEmail.getText(),pass.getText(),tfAlamat.getText(),gender,tfNoTelp.getText());
                     JOptionPane.showMessageDialog(null, kondisi);
                     if (kondisi.equals("Berhasil melakukan registrasi")) {
                         frame.dispose();
-                        new MainView();
+                        new SignInView();
                     } else if (kondisi.equals("Username sudah digunakan")) {
                         tfUsername.setText("");
                         tfUsername.requestFocus();

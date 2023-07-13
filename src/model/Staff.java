@@ -9,7 +9,8 @@ public class Staff extends User {
     public Staff() {
     }
 
-    public Staff(int staffId, String NIK, double salary, StaffType staffType) {
+    public Staff(int staffId, String NIK, double salary, StaffType staffType, String username, String fullname, String password, GenderType gender, String phoneNumber, String email, UserType type) {
+        super(username,fullname,password,gender,phoneNumber,email,type);
         this.staffId = staffId;
         this.NIK = NIK;
         this.salary = salary;
