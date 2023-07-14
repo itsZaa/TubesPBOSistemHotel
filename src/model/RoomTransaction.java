@@ -107,10 +107,15 @@ public class RoomTransaction extends Transaction {
 
     @Override
     public String toString() {
-        return "RoomTransaction [ dateCheckIn=" + dateCheckIn
-                + ", duration=" + duration + ", orderList=" + orderList
-                + ", totalPrice=" + totalPrice + ", dateBooked=" + dateBooked + ", timeStampCheckIn=" + timeStampCheckIn
-                + ", timeStampCheckOut=" + timeStampCheckOut + "]";
+
+        return "Transaction ID: \t" + super.getTransactionId() +
+                "\n   Username: \t" + super.getUser().getUsername() +
+                "\n   Order List: \t" + orderList +
+                "\n   Lama Inap: \t" + duration +
+                "\n   Total Price: \t" + totalPrice +
+                "\n   Tanggal Booking : \t" + dateBooked +
+                "\n   Time CheckIn: \t" + timeStampCheckIn +
+                "\n   Time CheckOut: \t" + timeStampCheckOut + "\n";
     }
 
     
