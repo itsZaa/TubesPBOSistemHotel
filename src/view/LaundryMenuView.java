@@ -80,11 +80,23 @@ public class LaundryMenuView {
                 panel.add(buttonStandard);
                 panel.add(buttonExpress);
 
-                if (buttonExpress.isSelected()) {
-                    this.laundry = this.laundryController.getLaundryType("Express");
-                } else {
-                    this.laundry = this.laundryController.getLaundryType("Standard");
-                }
+                buttonExpress.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (buttonExpress.isSelected()) {
+                            laundry = laundryController.getLaundryType("Express");
+                        }
+                    }
+                });
+                
+                buttonStandard.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (buttonStandard.isSelected()) {
+                            laundry = laundryController.getLaundryType("Standard");
+                        }
+                    }
+                });
             }
 
             // input berat pakaian
@@ -169,7 +181,7 @@ public class LaundryMenuView {
     public static void main(String[] args) {
         // dummy user
         // ceritanya suatu customer yg udh check in ingin pesan laundry.
-        User user = new DatabaseController().getUser("nico.js");
+        User user = new DatabaseController().getUser("marcelandrean");
         new LaundryMenuView(user);
     }
 }
