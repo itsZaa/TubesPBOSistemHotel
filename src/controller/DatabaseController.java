@@ -378,7 +378,7 @@ public class DatabaseController {
     public boolean insertLaundryTransaction(LaundryTransaction transaction) {
         try {
             conn.connect();
-            String query = "INSERT INTO laundry_transaction VALUES(?,?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO laundry_transaction VALUES(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement stmt = conn.con.prepareStatement(query);
             stmt.setString(1, transaction.getTransactionId());
             stmt.setString(2, transaction.getUser().getUsername());
@@ -396,7 +396,44 @@ public class DatabaseController {
             stmt.setTimestamp(8, null);
             stmt.setString(9, transaction.getLaundry().getLaundryName());
 
+            if(transaction.getLaundry().getLaundryName().equals("Express")){
+                
+                LocalDateTime estimationDone = currentDateTime.plusHours(10);
+                
+                Timestamp timestampEstimationDone = Timestamp.valueOf(estimationDone);
+
+                stmt.setTimestamp(10, timestampEstimationDone);
+
+            }else if(transaction.getLaundry().getLaundryName().equals("Standard")){
+                LocalDateTime estimationDone = currentDateTime.plusHours(24);
+                
+                Timestamp timestampEstimationDone = Timestamp.valueOf(estimationDone);
+
+                stmt.setTimestamp(10, timestampEstimationDone);
+            }
+
             stmt.executeUpdate();
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+    }
+
+    //update laundry transaction
+    public boolean updateLaundryTransaction(LaundryTransaction laundryTransaction) {
+        try {
+            conn.connect();
+
+            LocalDateTime currentDateTime = LocalDateTime.now();
+
+            String query = "UPDATE laundry_transaction SET status='" + OrderStatus.DELIVERED + "', date_delivered='" + Timestamp.valueOf(currentDateTime) + "' WHERE laundry_transaction_id = '" + laundryTransaction.getTransactionId() + "';";
+
+
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
             return (true);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -411,7 +448,7 @@ public class DatabaseController {
         ArrayList<LaundryTransaction> transactions = new ArrayList<>();
         try {
             conn.connect();
-            String query = "SELECT * FROM laundry_transaction WHERE status = 'waiting'";
+            String query = "SELECT * FROM laundry_transaction WHERE status = 'waiting' ORDER BY estimation_done";
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
