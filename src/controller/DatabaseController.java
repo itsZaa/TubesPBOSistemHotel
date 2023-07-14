@@ -187,6 +187,43 @@ public class DatabaseController {
         return (menuList);
     }
 
+
+    //get fnb transaction list
+    public ArrayList<FnBTransaction> getFnBTransactionList(User user){
+        ArrayList<FnBTransaction> transactions = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM fnb_transaction WHERE username = '" + user.getUsername() + "'";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                FnBTransaction transaction = new FnBTransaction();
+
+                transaction.setTransactionId(rs.getString("fnb_transaction_id"));
+                transaction.setUser(user);
+                transaction.setRoomNumber(rs.getInt("room_number"));
+                transaction.setStatus(OrderStatus.valueOf(rs.getString("status")));
+                transaction.setTotalPrice(rs.getDouble("total_price"));
+
+                String paymentMethodName = rs.getString("payment_method").toUpperCase();
+                PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
+
+                transaction.setPaymentMethod(paymentMethod);
+
+                transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime().toLocalDate());
+
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+        return (transactions);
+    }
+
+
+
     // SELECT ALL from laundry menu
     public ArrayList<Laundry> getAllLaundry() {
         ArrayList<Laundry> menuList = new ArrayList<>();
@@ -256,6 +293,41 @@ public class DatabaseController {
         }
         return (transaction);
     }
+
+    //get room transaction list
+    public ArrayList<RoomTransaction> getRoomTransactionList(User user){
+        ArrayList<RoomTransaction> transactions = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM room_transaction WHERE username = '" + user.getUsername() + "'";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                RoomTransaction transaction = new RoomTransaction();
+
+                transaction.setTransactionId(rs.getString("room_transaction_id"));
+                transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
+                transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
+                transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+                transaction.setDateCheckIn(rs.getDate("date_check_in").toLocalDate());
+                transaction.setDuration(rs.getInt("stay_duration"));
+
+                String paymentMethodName = rs.getString("payment_method").toUpperCase();
+                PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
+
+                transaction.setPaymentMethod(paymentMethod);
+
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+        return (transactions);
+    }
+
+
 
     public Laundry getLaundry(String laundryName) {
         Laundry laundry = new Laundry();
@@ -449,6 +521,46 @@ public class DatabaseController {
         try {
             conn.connect();
             String query = "SELECT * FROM laundry_transaction WHERE status = 'waiting' ORDER BY estimation_done";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                LaundryTransaction transaction = new LaundryTransaction();
+                transaction.setTransactionId(rs.getString("laundry_transaction_id"));
+                transaction.setUser(getUser(rs.getString("username")));
+                transaction.setRoomNumber(rs.getInt("room_number"));
+
+                String status = rs.getString("status");
+                transaction.setOrderStatus(OrderStatus.valueOf(status.toUpperCase()));
+
+                transaction.setTotalPrice(rs.getDouble("total_price"));
+
+                transaction.setPaymentMethod(getPaymentMethod(rs.getString("payment_method")));
+
+    
+                transaction.setDateOrder(rs.getTimestamp("date_order").toLocalDateTime().toLocalDate());
+
+                transaction.setDateDelivered(null);
+
+                transaction.setLaundry(getLaundry(rs.getString("laundry_name")));
+
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+        return (transactions);
+    }
+
+
+    //get laundry transaction list
+    //GET UNPROCESSED LAUNDRY TRANSACTION
+    public ArrayList<LaundryTransaction> getLaundryTransactionList(User user){
+        ArrayList<LaundryTransaction> transactions = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM laundry_transaction WHERE username = '" + user.getUsername() + "' ORDER BY estimation_done";
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
