@@ -54,9 +54,12 @@ public class HistoryTransactionView {
         panel.add(scrollPane, BorderLayout.CENTER); // Add the scroll pane to the center region of the panel
 
         JPanel footerPanel = new JPanel();
-        JButton processButton = new JButton("Process");
-        footerPanel.add(processButton);
+        JButton backButton = new JButton("Back");
+        footerPanel.add(backButton);
 
+        backButton.addActionListener(e -> {
+            frame.dispose();
+        });
 
 
         frame.setContentPane(panel);
@@ -73,30 +76,6 @@ public class HistoryTransactionView {
         }
         return indentedString.toString();
     }
-
-    // private void updateTransactionPanel() {
-    //     // Clear the text area panel
-    //     textAreaPanel.removeAll();
-
-    //     // Displaying items from the updated queue on the panel
-    //     int transactionNumber = 1;
-
-    //     for (LaundryTransaction transaction : queueLaundryTransaction) {
-    //         String transactionInfo = transaction.toString();
-    //         String indentedTransactionInfo = addIndentation(transactionInfo, "    ");
-
-    //         JTextArea textArea = new JTextArea(transactionNumber + "." + indentedTransactionInfo);
-    //         textArea.setLineWrap(true);
-    //         textArea.setWrapStyleWord(true);
-    //         textArea.setEditable(false);
-    //         textAreaPanel.add(textArea);
-    //         transactionNumber++;
-    //     }
-
-    //     // Repaint the panel to reflect the changes
-    //     textAreaPanel.revalidate();
-    //     textAreaPanel.repaint();
-    // }
 
     public static void main(String[] args) {
         new HistoryTransactionView(new DatabaseController().getUser("nico.js"));

@@ -66,13 +66,14 @@ public class FnBTransaction extends Transaction{
 
     @Override
     public String toString() {
-        return "{" +
-                " roomNumber='" + getRoomNumber() + "'" +
-                ", status='" + getStatus() + "'" +
-                ", paymentMethod='" + getPaymentMethod() + "'" +
-                ", orderList='" + getOrderList() + "'" +
-                ", transactionDate='" + getTransactionDate() + "'" +
-                ", totalPrice='" + getTotalPrice() + "'" +
-                "}";
+
+        return "Transaction ID: \t" + super.getTransactionId() +
+                "\n   Username: \t" + super.getUser().getUsername() +
+                "\n   Room Number: \t" + roomNumber +
+                "\n   Status: \t\t" + status +
+                "\n   Total Price: \t" + totalPrice +
+                "\n   Payment Method: \t" + getPaymentMethod() +
+                "\n   Transaction Date: \t" + getTransactionDate() +
+                "\n   Order List: \t" + getOrderList() + "\n";
     }
 }

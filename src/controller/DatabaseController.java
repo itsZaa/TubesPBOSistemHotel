@@ -199,6 +199,7 @@ public class DatabaseController {
             while (rs.next()) {
                 FnBTransaction transaction = new FnBTransaction();
 
+                transaction.setUser(getUser(user.getUsername()));
                 transaction.setTransactionId(rs.getString("fnb_transaction_id"));
                 transaction.setUser(user);
                 transaction.setRoomNumber(rs.getInt("room_number"));
@@ -305,6 +306,7 @@ public class DatabaseController {
             while (rs.next()) {
                 RoomTransaction transaction = new RoomTransaction();
 
+                transaction.setUser(getUser(user.getUsername()));
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
                 transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
