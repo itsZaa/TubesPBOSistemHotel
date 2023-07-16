@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class LaundryTransaction extends Transaction {
     private int roomNumber;
@@ -82,10 +83,20 @@ public class LaundryTransaction extends Transaction {
     }
 
     @Override
+    public ArrayList<Order> getOrderList() {
+        return null;
+    }
+
+    @Override
     public String toString() {
-        return "LaundryTransaction [roomNumber=" + roomNumber + ", totalPrice=" + totalPrice + ", orderStatus="
-                + orderStatus + ", dateOrder=" + dateOrder + ", dateDelivered=" + dateDelivered
-                + ", laundry=" + laundry + "]";
+        return "Transaction ID: \t" + super.getTransactionId() +
+               "\n   Username: \t" + super.getUser().getUsername() +
+               "\n   Room Number: \t" + roomNumber +
+               "\n   Status: \t\t" + orderStatus +
+               "\n   Total Price: \t" + totalPrice +
+               "\n   Payment Method: \t" + paymentMethod.getName() +
+               "\n   Date Order: \t" + dateOrder +
+               "\n   Laundry Type: \t" + laundry.getLaundryName() + "\n";
     }
     
 }

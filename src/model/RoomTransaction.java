@@ -2,14 +2,18 @@ package model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RoomTransaction extends Transaction {
-    private int roomTransactionId; // belom ada di class diagram
-    private LocalDate dateBooked;
     private LocalDate dateCheckIn;
-    private LocalDate dateCheckOut;
-    private PaymentMethod paymentMethod;
+    private int duration;
+    private TransactionStatus status;
     private ArrayList<Order> orderList;
+
+    private Date dateBooked;
+    private Date timeStampCheckIn;
+    private Date timeStampCheckOut;
+
     private double totalPrice;
 
     public RoomTransaction() {
@@ -19,46 +23,40 @@ public class RoomTransaction extends Transaction {
         super("",user);
     }
 
-    public int getRoomTransactionId() {
-        return roomTransactionId;
+    
+
+    public RoomTransaction(LocalDate dateCheckIn, int duration, TransactionStatus status, ArrayList<Order> orderList, Date dateBooked, Date timeStampCheckIn, Date timeStampCheckOut, double totalPrice) {
+        this.dateCheckIn = dateCheckIn;
+        this.duration = duration;
+        this.status = status;
+        this.orderList = orderList;
+        this.dateBooked = dateBooked;
+        this.totalPrice = totalPrice;
     }
 
-    public void setRoomTransactionId(int roomTransactionId) {
-        this.roomTransactionId = roomTransactionId;
+    public RoomTransaction(String transactionId, User user, LocalDate dateCheckIn, int duration,
+            TransactionStatus status, ArrayList<Order> orderList, Date dateBooked, Date timeStampCheckIn,
+            Date timeStampCheckOut, double totalPrice) {
+        super(transactionId, user);
+        this.dateCheckIn = dateCheckIn;
+        this.duration = duration;
+        this.status = status;
+        this.orderList = orderList;
+        this.dateBooked = dateBooked;
+        this.timeStampCheckIn = timeStampCheckIn;
+        this.timeStampCheckOut = timeStampCheckOut;
+        this.totalPrice = totalPrice;
     }
 
-    public LocalDate getDateBooked() {
+    public Date getDateBooked() {
         return dateBooked;
     }
 
-    public void setDateBooked(LocalDate dateBooked) {
+    public void setDateBooked(Date dateBooked) {
         this.dateBooked = dateBooked;
     }
 
-    public LocalDate getDateCheckIn() {
-        return dateCheckIn;
-    }
-
-    public void setDateCheckIn(LocalDate dateCheckIn) {
-        this.dateCheckIn = dateCheckIn;
-    }
-
-    public LocalDate getDateCheckOut() {
-        return dateCheckOut;
-    }
-
-    public void setDateCheckOut(LocalDate dateCheckOut) {
-        this.dateCheckOut = dateCheckOut;
-    }
-
-    public PaymentMethod getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
+    @Override
     public ArrayList<Order> getOrderList() {
         return orderList;
     }
@@ -75,16 +73,50 @@ public class RoomTransaction extends Transaction {
         this.totalPrice = totalPrice;
     }
 
+    public LocalDate getDateCheckIn() {
+        return dateCheckIn;
+    }
+
+    public void setDateCheckIn(LocalDate dateCheckIn) {
+        this.dateCheckIn = dateCheckIn;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public Date getTimeStampCheckIn() {
+        return timeStampCheckIn;
+    }
+
+    public void setTimeStampCheckIn(Date timeStampCheckIn) {
+        this.timeStampCheckIn = timeStampCheckIn;
+    }
+
+    public Date getTimeStampCheckOut() {
+        return timeStampCheckOut;
+    }
+
+    public void setTimeStampCheckOut(Date timeStampCheckOut) {
+        this.timeStampCheckOut = timeStampCheckOut;
+    }
+
     @Override
     public String toString() {
-        return "{" +
-                " roomTransactionId='" + getRoomTransactionId() + "'" +
-                ", dateBooked='" + getDateBooked() + "'" +
-                ", dateCheckIn='" + getDateCheckIn() + "'" +
-                ", dateCheckOut='" + getDateCheckOut() + "'" +
-                ", paymentMethod='" + getPaymentMethod() + "'" +
-                ", orderList='" + getOrderList() + "'" +
-                ", totalPrice='" + getTotalPrice() + "'" +
-                "}";
+
+        return "Transaction ID: \t" + super.getTransactionId() +
+                "\n   Username: \t" + super.getUser().getUsername() +
+                "\n   Order List: \t" + orderList +
+                "\n   Lama Inap: \t" + duration +
+                "\n   Total Price: \t" + totalPrice +
+                "\n   Tanggal Booking : \t" + dateBooked +
+                "\n   Time CheckIn: \t" + timeStampCheckIn +
+                "\n   Time CheckOut: \t" + timeStampCheckOut + "\n";
     }
+
+    
 }

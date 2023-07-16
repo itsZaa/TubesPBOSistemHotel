@@ -2,6 +2,9 @@ package view;
 
 import com.toedter.calendar.JDateChooser;
 
+import controller.DatabaseController;
+import controller.RoomTransactionController;
+
 import model.GenderType;
 import model.Order;
 import model.RoomOrder;
@@ -10,39 +13,40 @@ import model.RoomType;
 import model.User;
 import model.UserType;
 
-import controller.DatabaseController;
+import observer.PaymentObserver;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-
+import javax.swing.UIManager;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RoomTransactionView {
-
+public class RoomTransactionView implements PaymentObserver {
+    private JFrame frame;
     private RoomTransaction transaction;
-    private ArrayList<RoomType> roomType;
+    private ArrayList<RoomType> roomTypes;
+    private boolean succeed;
 
     public RoomTransactionView(User user) {
-        this.transaction = new RoomTransaction(user);
-        this.roomType = new DatabaseController().getRoom();
-        initComponents();
+        initComponents(user);
     }
 
-    public void initComponents() {
-        JFrame frame = new GlobalView().frame();
+    private void initComponents(User user) {
+        frame = new GlobalView().frame();
 
-        JLabel title = new GlobalView().labelHeader("Room Booking Form");
+        transaction = new RoomTransaction(user);
+        roomTypes = new DatabaseController().getRoom();
+        JLabel title = new JLabel("Room Booking Form");
         frame.add(title);
 
         JLabel checkInLabel = new JLabel("Check-in Date:");
@@ -50,22 +54,30 @@ public class RoomTransactionView {
         checkInDateChooser.setCalendar(Calendar.getInstance());
         checkInLabel.setBounds(10, 55, 120, 25);
         checkInDateChooser.setBounds(140, 55, 200, 25);
+
+        Date today = Calendar.getInstance().getTime();
+        checkInDateChooser.setDate(today);
+        checkInDateChooser.setMinSelectableDate(today);
+        checkInDateChooser.getDateEditor().getUiComponent().setEnabled(false);
+        checkInDateChooser.getDateEditor().getUiComponent().setBackground(UIManager.getColor("TextField.background"));
+
         frame.add(checkInLabel);
         frame.add(checkInDateChooser);
 
         JLabel stayDurationLabel = new JLabel("Stay Duration:");
-        JTextField stayDurationField = new JTextField("0");
+        JTextField stayDurationField = new JTextField("1");
         stayDurationLabel.setBounds(10, 85, 120, 25);
         stayDurationField.setBounds(140, 85, 200, 25);
         frame.add(stayDurationLabel);
         frame.add(stayDurationField);
 
-        JLabel label = new GlobalView().labelBody("input your order :", 10, 145, 400, 25);
+        JLabel label = new JLabel("Input your order :");
+        label.setBounds(10, 145, 400, 25);
         frame.add(label);
 
         int x = 175;
         ArrayList<JTextField> roomFields = new ArrayList<>();
-        for (RoomType room : roomType) {
+        for (RoomType room : roomTypes) {
             JLabel roomLabel = new JLabel(room.getTypeName());
             JTextField roomField = new JTextField("0");
             roomLabel.setBounds(10, x, 120, 25);
@@ -81,7 +93,7 @@ public class RoomTransactionView {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Transaction cancelled");
+                new GlobalView().warning("Transaction cancelled");
                 frame.dispose();
             }
         });
@@ -92,29 +104,59 @@ public class RoomTransactionView {
         payButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                LocalDate checkInDate = checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                boolean available = true;
+                transaction.setTransactionId(new RoomTransactionController().generateTransactionID());
+                LocalDate checkInDate = checkInDateChooser.getDate().toInstant().atZone(ZoneId.systemDefault())
+                        .toLocalDate();
+                transaction.setDateCheckIn(checkInDate);
 
                 int stayDuration = Integer.parseInt(stayDurationField.getText());
+                transaction.setDuration(stayDuration);
                 ArrayList<Order> orderList = new ArrayList<>();
 
-                for (RoomType room : roomType) {
-                    //get quantity room
-                    int quantity = Integer.parseInt(roomFields.get(roomType.indexOf(room)).getText());
-                    RoomOrder roomOrder = new RoomOrder(quantity, room, stayDuration);
-                    orderList.add(roomOrder);
+                for (int i = 0; i < stayDuration && available; i++) {
+                    for (RoomType room : roomTypes) {
+                        int quantity = Integer.parseInt(roomFields.get(roomTypes.indexOf(room)).getText());
+                        if (quantity > 0) {
+                            available = new RoomTransactionController().checkAvailability(checkInDate, room, quantity);
+                            if (available) {
+                                RoomOrder roomOrder = new RoomOrder(quantity, room, checkInDate);
+                                orderList.add(roomOrder);
+                            } else {
+                                new GlobalView().error("Sorry, the room " + room.getTypeName()
+                                        + " is not available");
+                            }
+                        }
+                    }
+                    checkInDate = checkInDate.plusDays(1);
                 }
                 transaction.setOrderList(orderList);
-                new PaymentView(transaction.getOrderList());
 
-                //query here
+                if(transaction.getOrderList().isEmpty()){
+                    available = false;
+                    new GlobalView().warning("You need to add some Order Buddy :))");
+                }
 
-                frame.dispose();
+                if (available) {
+                    PaymentView paymentView = new PaymentView();
+                    paymentView.setPaymentObserver(RoomTransactionView.this);
+                    succeed = paymentView.payment(transaction);
+                }
+
+                if (succeed) {
+                    frame.dispose();
+                }
             }
         });
 
         frame.add(payButton);
 
         frame.setVisible(true);
+    }
+
+    @Override
+    public void onPaymentSuccess() {
+        frame.dispose();
     }
 
     public static void main(String[] args) {

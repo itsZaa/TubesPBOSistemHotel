@@ -3,7 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class FnBTransaction extends Transaction {
+public class FnBTransaction extends Transaction{
     private int roomNumber;
     private OrderStatus status;
     private PaymentMethod paymentMethod;
@@ -19,7 +19,6 @@ public class FnBTransaction extends Transaction {
         super(transactionId, user);
         this.roomNumber = roomNumber;
         this.status = status;
-        this.paymentMethod = paymentMethod;
         this.orderList = orderList;
         this.transactionDate = transactionDate;
         this.totalPrice = totalPrice;
@@ -49,6 +48,7 @@ public class FnBTransaction extends Transaction {
         this.paymentMethod = paymentMethod;
     }
 
+    @Override
     public ArrayList<Order> getOrderList() {
         return this.orderList;
     }
@@ -75,13 +75,14 @@ public class FnBTransaction extends Transaction {
 
     @Override
     public String toString() {
-        return "{" +
-                " roomNumber='" + getRoomNumber() + "'" +
-                ", status='" + getStatus() + "'" +
-                ", paymentMethod='" + getPaymentMethod() + "'" +
-                ", orderList='" + getOrderList() + "'" +
-                ", transactionDate='" + getTransactionDate() + "'" +
-                ", totalPrice='" + getTotalPrice() + "'" +
-                "}";
+
+        return "Transaction ID: \t" + super.getTransactionId() +
+                "\n   Username: \t" + super.getUser().getUsername() +
+                "\n   Room Number: \t" + roomNumber +
+                "\n   Status: \t\t" + status +
+                "\n   Total Price: \t" + totalPrice +
+                "\n   Payment Method: \t" + getPaymentMethod() +
+                "\n   Transaction Date: \t" + getTransactionDate() +
+                "\n   Order List: \t" + getOrderList() + "\n";
     }
 }

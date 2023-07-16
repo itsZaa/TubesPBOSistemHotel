@@ -1,14 +1,16 @@
 package model;
 
+import java.time.LocalDate;
+
 public class RoomOrder extends Order {
     private RoomType roomType;
     private String roomNumber;
-    private int duration;
+    private LocalDate date;
 
-    public RoomOrder(int quantity, RoomType roomType, int duration) {
-        super(quantity * duration, roomType.getPrice() * quantity * duration);
+    public RoomOrder(int quantity, RoomType roomType, LocalDate date) {
+        super(quantity, roomType.getPrice() * quantity) ;
         this.roomType = roomType;
-        this.duration = duration;
+        this.date = date;
     }
 
     
@@ -29,13 +31,13 @@ public class RoomOrder extends Order {
     }
 
 
-    public int getDuration() {
-        return duration;
+    public LocalDate getDate() {
+        return date;
     }
 
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
 }

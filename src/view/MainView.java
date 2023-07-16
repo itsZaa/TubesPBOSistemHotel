@@ -13,6 +13,9 @@ import javax.swing.JTextField;
 
 public class MainView {
     public static void main(String[] args) {
+        new MainView();
+    }
+    public MainView(){
         JFrame form = new GlobalView().frame();
         Font headerFont = new GlobalView().headerFont();
 
@@ -28,6 +31,5 @@ public class MainView {
 
         form.setVisible(true); // HARUS DI PALING BAWAH
     }
-
 
 }

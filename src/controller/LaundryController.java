@@ -1,20 +1,23 @@
 package controller;
 
-import model.Customer;
+//import model.Customer;
 import model.Laundry;
 import model.LaundryTransaction;
 import model.OrderStatus;
 import model.PaymentMethod;
 import model.User;
 import model.RoomTransaction;
-import model.Transaction;
+//import model.Transaction;
 import java.time.LocalDate;
+import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+//import java.time.temporal.ChronoUnit;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
-import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
+//import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 
 public class LaundryController {
     private DatabaseController databaseController;
@@ -38,12 +41,15 @@ public class LaundryController {
     public int getLamaInap() {
         int lamaInap = 0;
 
-        RoomTransaction transaction = findTransaction();
+        RoomTransaction selected = findTransaction();
+        LocalDate getDateCheckIn = selected.getDateCheckIn(); // Get the check-in date
+        int duration = selected.getDuration(); // Get the duration in days
+        LocalDate currentDate = LocalDate.now(); // Get the current date
 
-        LocalDate checkIn = transaction.getDateCheckIn();
-        LocalDate checkOut = transaction.getDateCheckOut();
+        long diffInDays = ChronoUnit.DAYS.between(getDateCheckIn, currentDate);
+        long durationInDays = diffInDays + duration;
 
-        lamaInap = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
+        lamaInap = (int) durationInDays;
 
         return lamaInap;
     }

@@ -36,7 +36,6 @@ import model.Transaction;
 public class LaundryMenuView {
     private LaundryController laundryController;
     private ArrayList<Laundry> menuList;
-    private ArrayList<Order> orderList;
     private User user;
 
     // butuh utk insert laundry_transaction db
@@ -46,12 +45,10 @@ public class LaundryMenuView {
 
     public LaundryMenuView(User user) {
         this.laundryController = new LaundryController(user);
-        menuList = new DatabaseController().getAllLaundry();
-        orderList = new ArrayList<>();
         this.user = user;
         this.laundry = new Laundry();
 
-        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 0))) {
+        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(18, 0))) {
             JFrame frame = new GlobalView().frame();
 
             JPanel panel = new JPanel();
@@ -83,11 +80,23 @@ public class LaundryMenuView {
                 panel.add(buttonStandard);
                 panel.add(buttonExpress);
 
-                if (buttonExpress.isSelected()) {
-                    this.laundry = this.laundryController.getLaundryType("Express");
-                } else {
-                    this.laundry = this.laundryController.getLaundryType("Standard");
-                }
+                buttonExpress.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (buttonExpress.isSelected()) {
+                            laundry = laundryController.getLaundryType("Express");
+                        }
+                    }
+                });
+                
+                buttonStandard.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (buttonStandard.isSelected()) {
+                            laundry = laundryController.getLaundryType("Standard");
+                        }
+                    }
+                });
             }
 
             // input berat pakaian
@@ -172,7 +181,7 @@ public class LaundryMenuView {
     public static void main(String[] args) {
         // dummy user
         // ceritanya suatu customer yg udh check in ingin pesan laundry.
-        User user = new DatabaseController().getUser("otong123");
+        User user = new DatabaseController().getUser("marcelandrean");
         new LaundryMenuView(user);
     }
 }
