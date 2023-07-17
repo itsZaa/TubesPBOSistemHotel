@@ -1,6 +1,5 @@
 package view;
 
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,30 +21,33 @@ import java.time.LocalTime;
 import controller.DatabaseController;
 import controller.FnBController;
 import model.FnBMenu;
+import model.FnBOrder;
+import model.FnBTransaction;
 import model.Order;
 import model.User;
 
 import java.util.ArrayList;
 
 public class FnBMenuView {
+    private User user;
+    private FnBTransaction transaction;
     private ArrayList<FnBMenu> menuList;
     private ArrayList<Order> orderList;
     private JTextField[] qtyFields;
-    private JFrame frame;
-    private User user;
 
     public FnBMenuView(User user) {
         this.user = user;
+        transaction = new FnBTransaction();
         menuList = new DatabaseController().getAllFnBMenu();
         orderList = new ArrayList<>();
         qtyFields = new JTextField[menuList.size()];
 
         if (LocalTime.now().isAfter(LocalTime.of(0, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 59))) {
-            frame = new JFrame();
+            JFrame frame = new JFrame();
             frame.setResizable(false);
+            frame.setSize(500, 500);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLocationRelativeTo(null);
-            frame.setSize(500, 500);
 
             JPanel titlePanel = new JPanel();
             titlePanel.setLayout(null);
@@ -67,9 +69,9 @@ public class FnBMenuView {
 
                 JTextField input = new JTextField("0");
 
-                nameLabel.setBounds(10, y, 120, 25);
-                priceLabel.setBounds(200, y, 120, 25);
-                input.setBounds(140, y, 50, 25);
+                nameLabel.setBounds(10, y, 220, 25);
+                priceLabel.setBounds(240, y, 100, 25);
+                input.setBounds(350, y, 50, 25);
 
                 menuPanel.add(nameLabel);
                 menuPanel.add(priceLabel);
@@ -114,10 +116,6 @@ public class FnBMenuView {
             buttonPanel.add(dropdown);
             dropdown.setEnabled(false);
 
-            // JTextField roomNumber = new JTextField("Input room number");
-            // roomNumber.setEnabled(false);
-            // buttonPanel.add(roomNumber);
-
             int roomNumber = 0; // default dine-in
 
             dineIn.addActionListener(new ActionListener() {
@@ -143,12 +141,13 @@ public class FnBMenuView {
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(null, "Transaction cancelled");
                     frame.dispose();
                 }
             });
             buttonPanel.add(cancelButton);
 
-            JButton orderButton = new JButton("Pay");
+            JButton orderButton = new JButton("Order");
             // orderButton.setBounds(400, 420, 70, 25);
             orderButton.addActionListener(new ActionListener() {
                 @Override
@@ -158,14 +157,15 @@ public class FnBMenuView {
                         int qty = Integer.parseInt(qtyFields[i].getText());
                         if (qty > 0) {
                             FnBMenu menu = menuList.get(i);
-                            Order order = new Order(qty, menu.getPrice());
+                            FnBOrder order = new FnBOrder(qty, menu);
                             orderList.add(order);
                         }
                     }
 
+                    transaction.setOrderList(orderList);
+                    new PaymentView(transaction.getOrderList());
 
-
-                    new FnBController(user).createFnBTransaction(roomNumber, paymentMethod, orderList);
+                    frame.dispose();
                 }
             });
             buttonPanel.add(orderButton);
@@ -187,7 +187,7 @@ public class FnBMenuView {
     }
 
     public static void main(String[] args) {
-        User user = new DatabaseController().getUser("otong123");
-        new FnBMenuView(user);
+        User userDummy = new DatabaseController().getUser("nico.js");
+        new FnBMenuView(userDummy);
     }
 }

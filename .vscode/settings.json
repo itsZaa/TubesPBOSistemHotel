@@ -2,6 +2,7 @@
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
         "libs/jcalendar-1.4.jar",
-        "libs/mysql-connector-java-8.0.20.jar"
+        "libs/mysql-connector-java-8.0.20.jar",
+        "libs/looks-1.2.2.jar"
     ]
 }

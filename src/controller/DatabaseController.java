@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import model.Order;
 import model.Customer;
 import model.FnBMenu;
+import model.FnBOrder;
 import model.FnBTransaction;
 import model.User;
 import model.OrderStatus;
@@ -275,6 +276,10 @@ public class DatabaseController {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
+                transaction.setRoomTransactionId(rs.getInt("room_transaction_id"));
+                transaction.setDateBooked(rs.getTimestamp("time_booked").toLocalDateTime().toLocalDate());
+                transaction.setDateCheckIn(rs.getTimestamp("time_check_in").toLocalDateTime().toLocalDate());
+                transaction.setDateCheckOut(rs.getTimestamp("time_check_out").toLocalDateTime().toLocalDate());
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
                 transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
@@ -616,6 +621,26 @@ public class DatabaseController {
             conn.disconnect(); // Close the database connection
         }
         return (paymentMethods);
+    }
+
+    // CREATE FNB ORDER
+    public boolean insertFnBOrder(FnBOrder order, FnBTransaction transaction) {
+        try {
+            conn.connect();
+            String query = "INSERT INTO fnb_order VALUES(?,?,?,?,?)";
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            stmt.setInt(1, 0);
+            stmt.setString(2, transaction.getTransactionId());
+            stmt.setString(3, order.getFood().getMenuName());
+            stmt.setInt(4, order.getQuantity());
+            stmt.setDouble(5, order.getOrderPrice());
+
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // CREATE FNB TRANSACTION
