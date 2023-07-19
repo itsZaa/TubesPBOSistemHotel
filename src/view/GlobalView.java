@@ -50,19 +50,19 @@ public class GlobalView {
         return label;
     }
 
-    public void notif (String text) {
-        JOptionPane.showMessageDialog(null, text, null, JOptionPane.INFORMATION_MESSAGE);
+    public void notif(String text) {
+        JOptionPane.showMessageDialog(null, text, "Aplikasi Sistem Hotel", JOptionPane.INFORMATION_MESSAGE);
     }
 
-    public void warning (String text) {
-        JOptionPane.showMessageDialog(null, text, null, JOptionPane.WARNING_MESSAGE);
+    public void warning(String text) {
+        JOptionPane.showMessageDialog(null, text, "Aplikasi Sistem Hotel", JOptionPane.WARNING_MESSAGE);
     }
 
-    public void error (String text) {
-        JOptionPane.showMessageDialog(null, text, null, JOptionPane.ERROR_MESSAGE);
+    public void error(String text) {
+        JOptionPane.showMessageDialog(null, text, "Aplikasi Sistem Hotel", JOptionPane.ERROR_MESSAGE);
     }
 
-    public boolean confirmation (String text) {
+    public boolean confirmation(String text) {
         int confirmation = JOptionPane.showConfirmDialog(null, text, "Confirmation", JOptionPane.YES_NO_OPTION);
         return confirmation == JOptionPane.YES_OPTION;
     }

@@ -1,9 +1,8 @@
 package view;
 
 import controller.DatabaseController;
-import controller.LaundryController;
 import controller.PaymentController;
-import model.LaundryTransaction;
+import model.FnBTransaction;
 import model.PaymentMethod;
 import model.RoomTransaction;
 import model.Transaction;
@@ -81,7 +80,7 @@ public class PaymentView {
         }
 
         JLabel totalTransaksiLabel = new JLabel(
-                "Total Transaction: Rp " + new PaymentController().countTotalTransaction (transaction.getOrderList()));
+                "Total Transaction: Rp " + new PaymentController().countTotalTransaction(transaction.getOrderList()));
 
         totalTransaksiLabel.setFont(new GlobalView().bodyFontBold());
         totalTransaksiLabel.setBounds(10, 420, 300, 25);
@@ -107,6 +106,8 @@ public class PaymentView {
                 if (proceed) {
                     if (transaction instanceof RoomTransaction) {
                         success = new PaymentController().insertRoomOrder(transaction, payment);
+                    } else if (transaction instanceof FnBTransaction) {
+                        success = new PaymentController().insertFnBOrder(transaction, payment);
                     }
                     if (paymentObserver != null) {
                         paymentObserver.onPaymentSuccess();
