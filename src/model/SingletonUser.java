@@ -1,12 +1,12 @@
 package model;
 import java.util.ArrayList;
-public class SingletonCustomer {
-    private static SingletonCustomer instance;
+public class SingletonUser {
+    private static SingletonUser instance;
     private ArrayList<Customer> listCustomer = new ArrayList<>();
     
-    public static SingletonCustomer getInstance() {
+    public static SingletonUser getInstance() {
         if (instance == null) {
-            instance = new SingletonCustomer();
+            instance = new SingletonUser();
         }
         return instance;
     }

@@ -1,7 +1,7 @@
 package controller;
 import controller.DatabaseHandler;
 import model.Customer;
-import model.SingletonCustomer;
+import model.SingletonUser;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
