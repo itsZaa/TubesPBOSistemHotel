@@ -276,10 +276,7 @@ public class DatabaseController {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                transaction.setRoomTransactionId(rs.getInt("room_transaction_id"));
-                transaction.setDateBooked(rs.getTimestamp("time_booked").toLocalDateTime().toLocalDate());
-                transaction.setDateCheckIn(rs.getTimestamp("time_check_in").toLocalDateTime().toLocalDate());
-                transaction.setDateCheckOut(rs.getTimestamp("time_check_out").toLocalDateTime().toLocalDate());
+                
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
                 transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
