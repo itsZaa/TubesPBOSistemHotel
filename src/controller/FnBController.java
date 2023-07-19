@@ -2,9 +2,7 @@ package controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -28,7 +26,7 @@ public class FnBController {
     }
 
     public String getFnBMenu() {
-        ArrayList<FnBMenu> menuList = new DatabaseController().getAllFnBMenu();
+        ArrayList<FnBMenu> menuList = dbController.getAllFnBMenu();
 
         StringBuilder sb = new StringBuilder();
         sb.append("Food & Beverages List :\n\n");

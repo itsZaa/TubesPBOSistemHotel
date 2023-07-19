@@ -273,7 +273,7 @@ public class DatabaseController {
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                
+
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
                 transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
@@ -676,6 +676,56 @@ public class DatabaseController {
             e.printStackTrace();
             conn.disconnect();
             return false;
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+    }
+
+    // GET UNPROCESSED LAUNDRY TRANSACTION
+    public ArrayList<FnBTransaction> getUnprocessedFnBTransactions() {
+        ArrayList<FnBTransaction> transactions = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM fnb_transaction WHERE status = 'waiting' ORDER BY transaction_date ASC";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                FnBTransaction transaction = new FnBTransaction();
+
+                transaction.setTransactionId(rs.getString("fnb_transaction_id"));
+                transaction.setUser(getUser(rs.getString("username")));
+                transaction.setRoomNumber(rs.getInt("room_number"));
+
+                String status = rs.getString("status");
+                transaction.setStatus(OrderStatus.valueOf(status.toUpperCase()));
+
+                transaction.setPaymentMethod(getPaymentMethod(rs.getString("payment_method")));
+                transaction.setTransactionDate(rs.getTimestamp("transaction_date").toLocalDateTime().toLocalDate());
+                transaction.setTotalPrice(rs.getDouble("total_price"));
+
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+        return (transactions);
+    }
+
+    // UPDATE FNB TRANSACTION
+    public boolean updateFnBTransaction(FnBTransaction transaction) {
+        try {
+            conn.connect();
+            String query = "UPDATE fnb_transaction SET status='" + OrderStatus.DELIVERED
+                    + "' WHERE fnb_transaction_id = '" + transaction.getTransactionId() + "';";
+
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return (true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return (false);
         } finally {
             conn.disconnect(); // Close the database connection
         }
