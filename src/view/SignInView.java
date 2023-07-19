@@ -99,7 +99,7 @@ public class SignInView {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 frame.dispose();
-                new ChooseMenu();
+                new WelcomeScreen();
             } 
         });
 
