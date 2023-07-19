@@ -156,11 +156,13 @@ public class FnBMenuView implements PaymentObserver {
             orderButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    double totalPrice = 0;
                     for (int i = 0; i < menuList.size(); i++) {
                         int qty = Integer.parseInt(qtyFields[i].getText());
                         if (qty > 0) {
                             FnBMenu menu = menuList.get(i);
                             FnBOrder order = new FnBOrder(qty, menu);
+                            totalPrice += menu.getPrice() * qty;
                             orderList.add(order);
                         }
                     }
@@ -170,34 +172,24 @@ public class FnBMenuView implements PaymentObserver {
                         roomNumber = Integer.parseInt(roomDeliveryField.getText());
                     }
 
-                    FnBTransaction t = new FnBTransaction(
-                            null,
-                            null,
-                            1,
-                            null,
-                            null,
-                            null,
-                            null,
-                            1);
-
                     transaction.setTransactionId(new FnBController().generateTransactionId());
 
                     // TODO
-                    // Dummy
-                    User user = new User("Username1", "fullName", "123", GenderType.MALE, "085xxxxxx", "email@gmail.com", UserType.CUSTOMER);
+                    User user = new User("Username1", "fullName", "123", GenderType.MALE, "085xxxxxx",
+                            "email@gmail.com", UserType.CUSTOMER);
                     transaction.setUser(user);
 
-                    // Databse
                     // transaction.setUser(SingletonProfile.getInstance().getUser());
                     transaction.setRoomNumber(roomNumber);
                     transaction.setStatus(OrderStatus.WAITING);
                     transaction.setOrderList(orderList);
+                    transaction.setTotalPrice(totalPrice);
 
                     PaymentView paymentView = new PaymentView();
                     paymentView.setPaymentObserver(FnBMenuView.this);
 
                     boolean succeed = paymentView.payment(transaction);
-                    if (succeed){
+                    if (succeed) {
                         System.out.println("Success");
                     } else {
                         orderList = new ArrayList<>();
@@ -214,7 +206,7 @@ public class FnBMenuView implements PaymentObserver {
     }
 
     @Override
-    public void onPaymentSuccess(){
+    public void onPaymentSuccess() {
         frame.dispose();
     }
 

@@ -81,8 +81,7 @@ public class FnBTransaction extends Transaction{
                 "\n   Room Number: \t" + roomNumber +
                 "\n   Status: \t\t" + status +
                 "\n   Total Price: \t" + totalPrice +
-                "\n   Payment Method: \t" + getPaymentMethod() +
-                "\n   Transaction Date: \t" + getTransactionDate() +
-                "\n   Order List: \t" + getOrderList() + "\n";
+                "\n   Payment Method: \t" + getPaymentMethod().getName() +
+                "\n   Transaction Date: \t" + getTransactionDate() + "\n";
     }
 }
