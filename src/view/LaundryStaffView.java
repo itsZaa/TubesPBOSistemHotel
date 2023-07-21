@@ -2,26 +2,20 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-import controller.DatabaseController;
 import controller.LaundryStaffController;
-import model.User;
 import model.LaundryTransaction;
-import model.SingletonProfile;
 
 public class LaundryStaffView {
-    private User user;
     private Queue<LaundryTransaction> queueLaundryTransaction;
     private JPanel textAreaPanel;
 
     public LaundryStaffView() {
-        this.user = SingletonProfile.getInstance().getUser();
         this.queueLaundryTransaction = new LinkedList<>(new LaundryStaffController().getUnprocessedLaundryTransaction());
 
         JFrame frame = new GlobalView().frame();
@@ -60,22 +54,35 @@ public class LaundryStaffView {
         panel.add(scrollPane, BorderLayout.CENTER); // Add the scroll pane to the center region of the panel
 
         JPanel footerPanel = new JPanel();
+        JButton logOutButton = new JButton("Log out");
+        footerPanel.add(logOutButton);
+
         JButton processButton = new JButton("Process");
         footerPanel.add(processButton);
 
-         // Add ActionListener to the processButton
-         processButton.addActionListener(new ActionListener() {
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new WelcomeScreen();
+            }
+        });
+
+        // Add ActionListener to the processButton
+        processButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!queueLaundryTransaction.isEmpty()) {
                     LaundryTransaction firstTransaction = queueLaundryTransaction.poll();
-                    
+
                     boolean berhasil = new LaundryStaffController().updateLaundryTransaction(firstTransaction);
 
-                    if(berhasil){
-                        JOptionPane.showMessageDialog(null, "Pesanan " + firstTransaction.getTransactionId() + " berhasil diproses");
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Pesanan " + firstTransaction.getTransactionId() + " gagal diproses");
+                    if (berhasil) {
+                        JOptionPane.showMessageDialog(null,
+                                "Pesanan " + firstTransaction.getTransactionId() + " berhasil diproses");
+                    } else {
+                        JOptionPane.showMessageDialog(null,
+                                "Pesanan " + firstTransaction.getTransactionId() + " gagal diproses");
                     }
 
                     // Remove the processed transaction from the queue
@@ -89,7 +96,6 @@ public class LaundryStaffView {
                 }
             }
         });
-
 
         frame.setContentPane(panel);
         frame.add(footerPanel, BorderLayout.PAGE_END);
@@ -130,8 +136,7 @@ public class LaundryStaffView {
         textAreaPanel.repaint();
     }
 
-    // public static void main(String[] args) {
-    //     User user = new DatabaseController().getUser("staff_laundry");
-    //     new LaundryStaffView(user);
-    // }
+    public static void main(String[] args) {
+        new LaundryStaffView();
+    }
 }

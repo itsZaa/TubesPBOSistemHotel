@@ -18,14 +18,13 @@ public class RoomTransaction extends Transaction {
 
     public RoomTransaction() {
     }
-  
+
     public RoomTransaction(User user) {
-        super("",user);
+        super("", user);
     }
 
-    
-
-    public RoomTransaction(LocalDate dateCheckIn, int duration, TransactionStatus status, ArrayList<Order> orderList, Date dateBooked, Date timeStampCheckIn, Date timeStampCheckOut, double totalPrice) {
+    public RoomTransaction(LocalDate dateCheckIn, int duration, TransactionStatus status, ArrayList<Order> orderList,
+            Date dateBooked, Date timeStampCheckIn, Date timeStampCheckOut, double totalPrice) {
         this.dateCheckIn = dateCheckIn;
         this.duration = duration;
         this.status = status;
@@ -105,6 +104,14 @@ public class RoomTransaction extends Transaction {
         this.timeStampCheckOut = timeStampCheckOut;
     }
 
+    public TransactionStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TransactionStatus status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
 
@@ -117,6 +124,4 @@ public class RoomTransaction extends Transaction {
                 "\n   Time CheckIn: \t" + timeStampCheckIn +
                 "\n   Time CheckOut: \t" + timeStampCheckOut + "\n";
     }
-
-    
 }

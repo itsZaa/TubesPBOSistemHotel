@@ -182,9 +182,6 @@ public class FnBMenuView implements PaymentObserver {
                     boolean succeed = paymentView.payment(transaction);
                     if (succeed) {
                         new GlobalView().notif("Payment success.");
-                    } else {
-                        orderList = new ArrayList<>();
-                        new GlobalView().error("Payment failed.");
                     }
 
                     frame.dispose();

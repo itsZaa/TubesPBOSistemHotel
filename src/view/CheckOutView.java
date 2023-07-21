@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,16 +14,15 @@ import javax.swing.SwingUtilities;
 import controller.DatabaseController;
 import controller.ReceptionistController;
 import model.RoomTransaction;
-import model.Staff;
-import model.Transaction;
 
 public class CheckOutView {
     private JFrame frame;
-    public CheckOutView () {
+
+    public CheckOutView() {
         initComponent();
     }
 
-    private void initComponent(){
+    private void initComponent() {
         frame = new GlobalView().frame();
         JLabel title = new GlobalView().labelHeader("Check-Out");
         frame.add(title);
@@ -43,8 +41,8 @@ public class CheckOutView {
             public void actionPerformed(ActionEvent e) {
                 String ID = fieldID.getText();
                 LocalDate date = new ReceptionistController().adjustDate();
-                RoomTransaction ts = new DatabaseController().getRoomTransaction(ID, date); 
-                if(ts == null){
+                RoomTransaction ts = new DatabaseController().getRoomTransaction(ID, date);
+                if (ts == null) {
                     new GlobalView().error("Transaction Not Found");
                 } else {
                     ArrayList<Integer> room = new ReceptionistController().getNewRoom(ts);
