@@ -15,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -24,7 +23,6 @@ import javax.swing.JTextField;
 import controller.UpdateStaffController;
 import model.GenderType;
 import model.Staff;
-import model.StaffType;
 import model.UserType;
 
 public class FormAddUpdateStaff {
@@ -161,7 +159,7 @@ public class FormAddUpdateStaff {
         String[] staffTypeOptions = { "RECEPTIONIST", "STAFF_FNB", "STAFF_LAUNDRY" };
         staffTypeComboBox = new JComboBox<>(staffTypeOptions);
 
-        String defaultStaffType = (staff.getStaffType() != null) ? staff.getStaffType().name() : "";
+        String defaultStaffType = (staff.getType() != null) ? staff.getType().name() : "";
         staffTypeComboBox.setSelectedItem(defaultStaffType);
 
         formPanel.add(staffTypeComboBox, gbc);
@@ -196,31 +194,17 @@ public class FormAddUpdateStaff {
             addButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Staff s = createStaff();
+                    if (validateForm()) {
+                        Staff s = createStaff();
 
-                    if (validation(s)) {
                         boolean isInserted = new UpdateStaffController().insertNewStaff(s);
                         if (isInserted) {
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    "Insert staff success.",
-                                    "Aplikasi Sistem Hotel",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            new GlobalView().notif("Insert staff success.");
                             new UpdateStaffView();
                             frame.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    "Insert staff failed.",
-                                    "Aplikasi Sistem Hotel",
-                                    JOptionPane.ERROR_MESSAGE);
+                            new GlobalView().error("Insert staff failed.");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(
-                                null,
-                                "Please complete all fields.",
-                                "Aplikasi Sistem Hotel",
-                                JOptionPane.WARNING_MESSAGE);
                     }
                 }
             });
@@ -231,32 +215,19 @@ public class FormAddUpdateStaff {
             updateButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    Staff s = createStaff();
+                    if (validateForm()) {
+                        Staff s = createStaff();
 
-                    boolean isUpdated = new UpdateStaffController().updateStaff(s, oldUsername);
-                    if (validation(s)) {
+                        boolean isUpdated = new UpdateStaffController().updateStaff(s, oldUsername);
+
                         if (isUpdated) {
-                            JOptionPane.showMessageDialog(
-                                    null,
-                                    "Update staff success.",
-                                    "Aplikasi Sistem Hotel",
-                                    JOptionPane.INFORMATION_MESSAGE);
+                            new GlobalView().notif("Update staff success.");
                             new UpdateStaffView();
                             frame.dispose();
                         } else {
-                            JOptionPane.showMessageDialog(null,
-                                    "Update staff failed.",
-                                    "Aplikasi Sistem Hotel",
-                                    JOptionPane.ERROR_MESSAGE);
+                            new GlobalView().error("Update staff failed.");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(
-                                null,
-                                "Please complete all fields.",
-                                "Aplikasi Sistem Hotel",
-                                JOptionPane.WARNING_MESSAGE);
                     }
-
                 }
             });
         }
@@ -267,33 +238,88 @@ public class FormAddUpdateStaff {
         frame.setVisible(true);
     }
 
-    private Staff createStaff() {
-        String genderCommand = genderGroup.getSelection() != null ? genderGroup.getSelection().getActionCommand() : null;
+    private boolean validateForm() {
+        // Check each required field one by one
+        if (usernameField.getText().trim().isEmpty()) {
+            new GlobalView().warning("Username is required!");
+            usernameField.requestFocusInWindow();
+            return false;
+        }
 
-        Staff s = new Staff(0,
+        if (fullNameField.getText().trim().isEmpty()) {
+            new GlobalView().warning("Full Name is required!");
+            fullNameField.requestFocusInWindow();
+            return false;
+        }
+
+        if (emailField.getText().trim().isEmpty()) {
+            new GlobalView().warning("Email is required!");
+            emailField.requestFocusInWindow();
+            return false;
+        }
+
+        if (passwordField.getText().isEmpty()) {
+            new GlobalView().warning("Password is required!");
+            passwordField.requestFocusInWindow();
+            return false;
+        }
+
+        if (addressField.getText().trim().isEmpty()) {
+            new GlobalView().warning("Address is required!");
+            addressField.requestFocusInWindow();
+            return false;
+        }
+
+        if (phoneNumberField.getText().trim().isEmpty()) {
+            new GlobalView().warning("Phone Number is required!");
+            phoneNumberField.requestFocusInWindow();
+            return false;
+        }
+
+        if (nikField.getText().trim().isEmpty()) {
+            new GlobalView().warning("NIK is required!");
+            nikField.requestFocusInWindow();
+            return false;
+        }
+
+        if (salaryField.getText().trim().isEmpty()) {
+            new GlobalView().warning("Salary is required!");
+            salaryField.requestFocusInWindow();
+            return false;
+        }
+
+        if (genderGroup.getSelection() == null) {
+            new GlobalView().warning("Gender is required!");
+            return false;
+        }
+
+        if (staffTypeComboBox.getSelectedIndex() == -1) {
+            new GlobalView().warning("Staff Type is required!");
+            staffTypeComboBox.requestFocusInWindow();
+            return false;
+        }
+
+        return true;
+    }
+
+    private Staff createStaff() {
+        String genderCommand = genderGroup.getSelection() != null ? genderGroup.getSelection().getActionCommand()
+                : null;
+
+        Staff s = new Staff(
+                0,
                 nikField.getText(),
                 Double.parseDouble(salaryField.getText()),
-                StaffType.valueOf((String) staffTypeComboBox.getSelectedItem()),
                 usernameField.getText(),
                 fullNameField.getText(),
                 passwordField.getText(),
+                addressField.getText(),
                 genderCommand != null ? GenderType.valueOf(genderCommand) : null,
                 phoneNumberField.getText(),
                 emailField.getText(),
-                UserType.STAFF);
+                UserType.valueOf((String) staffTypeComboBox.getSelectedItem()));
 
         return s;
-    }
-
-    private boolean validation(Staff staff) {
-        if (staff.getUsername().isEmpty() || staff.getFullname().isEmpty() ||
-                staff.getEmail().isEmpty() || staff.getPassword().isEmpty() ||
-                staff.getAddress().isEmpty() || staff.getPhoneNumber().isEmpty() ||
-                staff.getNIK().isEmpty() || staff.getSalary() <= 0 ||
-                staff.getStaffType() == null) {
-            return false;
-        }
-        return true;
     }
 
     private void createLabel(String text, int y) {

@@ -7,8 +7,6 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
-import model.Order;
-import model.Customer;
 import model.FnBMenu;
 import model.FnBOrder;
 import model.FnBTransaction;
@@ -27,8 +25,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
-
-import javax.swing.JOptionPane;
 
 //class ini digunakan untuk nampung fungsi berisi query-query ke DB
 public class DatabaseController {
@@ -69,7 +65,35 @@ public class DatabaseController {
         return (users);
     }
 
-    // SELECT WHERE
+    // SELECT USER BY USERNAME ONLY
+    public User getUser(String username) {
+        User user = null;
+        try {
+            conn.connect();
+            String query = "SELECT * FROM users WHERE username='" + username + "'";
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                user = new User();
+                user.setUsername(rs.getString("username"));
+                user.setFullname(rs.getString("full_name"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setAddress(rs.getString("address"));
+                user.setGender(GenderType.valueOf(rs.getString("gender").toUpperCase()));
+                user.setPhoneNumber(rs.getString("phone_number"));
+                user.setEmail(rs.getString("email"));
+                user.setType(UserType.valueOf(rs.getString("type").toUpperCase()));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect(); // Close the database connection
+        }
+        return (user);
+    }
+
+     // SELECT USER WHEN LOGIN
     public User getUser(String username, String password) {
         User user = null;
         password = Hasher.password(password);
@@ -164,7 +188,12 @@ public class DatabaseController {
         ArrayList<FnBMenu> menuList = new ArrayList<>();
         try {
             conn.connect();
-            String query = "SELECT * FROM fnb_menu ORDER BY CASE WHEN menu_type = 'makanan' THEN 1 WHEN menu_type = 'minuman' THEN 2 ELSE 3 END";
+            String query = "SELECT * FROM fnb_menu ORDER BY CASE "
+                    + "WHEN menu_type = 'Appetizer' THEN 1 "
+                    + "WHEN menu_type = 'Main Course' THEN 2 "
+                    + "WHEN menu_type = 'Side Dish' THEN 3 "
+                    + "WHEN menu_type = 'Dssert' THEN 4 "
+                    + "ELSE 5 END";
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
@@ -301,29 +330,12 @@ public class DatabaseController {
             conn.disconnect();
         }
     }
-    
-    
 
-    
     public boolean updateCheckIn(String id) {
         try {
             conn.connect();
-            String query = "UPDATE users SET status='" + BookingStatus.CHECK_IN + "' WHERE room_transaction_id='" + id + "'";
-            Statement stmt = conn.con.createStatement();
-            stmt.executeUpdate(query);
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            conn.disconnect();
-        }
-    }
-    
-    public boolean updateCheckOut(String id) {
-        try {
-            conn.connect();
-            String query = "UPDATE users SET status='" + BookingStatus.CHECK_OUT + "' WHERE room_transaction_id='" + id + "'";
+            String query = "UPDATE users SET status='" + BookingStatus.CHECK_IN + "' WHERE room_transaction_id='" + id
+                    + "'";
             Statement stmt = conn.con.createStatement();
             stmt.executeUpdate(query);
             return true;
@@ -335,6 +347,21 @@ public class DatabaseController {
         }
     }
 
+    public boolean updateCheckOut(String id) {
+        try {
+            conn.connect();
+            String query = "UPDATE users SET status='" + BookingStatus.CHECK_OUT + "' WHERE room_transaction_id='" + id
+                    + "'";
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect();
+        }
+    }
 
     public RoomTransaction getRoomTransaction(String transactionId, LocalDate date) {
         RoomTransaction transaction = null;
@@ -647,11 +674,11 @@ public class DatabaseController {
             conn.connect();
             String query = "SELECT * FROM laundry_transaction WHERE status = 'waiting' ORDER BY estimation_done";
             Statement stmt = conn.con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(query);    
             while (rs.next()) {
                 LaundryTransaction transaction = new LaundryTransaction();
                 transaction.setTransactionId(rs.getString("laundry_transaction_id"));
-                transaction.setUser(getUser(rs.getString("username"), rs.getString("password")));
+                transaction.setUser(getUser(rs.getString("username")));
                 transaction.setRoomNumber(rs.getInt("room_number"));
 
                 String status = rs.getString("status");
@@ -809,7 +836,7 @@ public class DatabaseController {
         }
     }
 
-    // GET UNPROCESSED LAUNDRY TRANSACTION
+    // GET UNPROCESSED FNB TRANSACTION
     public ArrayList<FnBTransaction> getUnprocessedFnBTransactions() {
         ArrayList<FnBTransaction> transactions = new ArrayList<>();
         try {
@@ -819,9 +846,8 @@ public class DatabaseController {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 FnBTransaction transaction = new FnBTransaction();
-
                 transaction.setTransactionId(rs.getString("fnb_transaction_id"));
-                transaction.setUser(getUser(rs.getString("username"), rs.getString("password")));
+                transaction.setUser(getUser(rs.getString("username")));
                 transaction.setRoomNumber(rs.getInt("room_number"));
 
                 String status = rs.getString("status");

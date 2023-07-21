@@ -16,29 +16,30 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import controller.UpdateStaffController;
-import model.Staff;
+import controller.UpdateFnBController;
+import model.FnBMenu;
 
-public class UpdateStaffView {
+public class UpdateFnBView {
     private JFrame frame;
     private JPanel mainPanel;
     private JPanel buttonPanel;
-    private ArrayList<Staff> staffs;
+    private ArrayList<FnBMenu> fnbMenus;
 
-    public UpdateStaffView() {
-        staffs = new UpdateStaffController().getAllStaffs();
+    public UpdateFnBView() {
+        fnbMenus = new UpdateFnBController().getAllFnBMenus();
         initComponent();
     }
 
-    private void initComponent() {
+    public void initComponent() {
         frame = new JFrame("Aplikasi Sistem Hotel");
-        frame.setSize(450, 400);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 400);
+        frame.setLocationRelativeTo(null);
         frame.setResizable(false);
         frame.setLayout(new BorderLayout(10, 10));
 
         // Title
-        JLabel title = new GlobalView().labelHeader("List Staff");
+        JLabel title = new GlobalView().labelHeader("List FnB Menu:");
         frame.add(title, BorderLayout.NORTH);
 
         mainPanel = new JPanel();
@@ -50,19 +51,19 @@ public class UpdateStaffView {
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         int y = 0;
-        for (Staff staff : staffs) {
+        for (FnBMenu menu : fnbMenus) {
             gbc.gridy = y;
             gbc.gridx = 0;
-            JLabel username = new JLabel((y + 1) + ") " + staff.getUsername());
-            mainPanel.add(username, gbc);
+            JLabel menuName = new JLabel((y + 1) + ") " + menu.getMenuName());
+            mainPanel.add(menuName, gbc);
 
             gbc.gridx = 1;
-            JLabel email = new JLabel(staff.getEmail());
-            mainPanel.add(email, gbc);
+            JLabel menuType = new JLabel(menu.getMenuType());
+            mainPanel.add(menuType, gbc);
 
             gbc.gridx = 2;
-            JLabel type = new JLabel(staff.getType().name());
-            mainPanel.add(type, gbc);
+            JLabel menuPrice = new JLabel(Double.toString(menu.getPrice()));
+            mainPanel.add(menuPrice, gbc);
 
             y++;
         }
@@ -75,11 +76,11 @@ public class UpdateStaffView {
         buttonPanel.setLayout(new GridBagLayout());
 
         gbc.gridy = 0;
-        gbc.gridx = 2;
-        JLabel inputLabel = new JLabel("Input username:");
+        gbc.gridx = 1;
+        JLabel inputLabel = new JLabel("Input Menu Name:");
         buttonPanel.add(inputLabel, gbc);
 
-        gbc.gridx = 3;
+        gbc.gridx = 2;
         JTextField inputField = new JTextField(10);
         buttonPanel.add(inputField, gbc);
 
@@ -96,10 +97,6 @@ public class UpdateStaffView {
         JButton deleteButton = new JButton("Delete");
         buttonPanel.add(deleteButton, gbc);
 
-        gbc.gridx = 3;
-        JButton updateButton = new JButton("Update");
-        buttonPanel.add(updateButton, gbc);
-
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         backButton.addActionListener(new ActionListener() {
@@ -113,34 +110,21 @@ public class UpdateStaffView {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormAddUpdateStaff(null);
+                new FormAddFnBMenu();
                 frame.dispose();
-            }
-        });
-
-        updateButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Staff s = new UpdateStaffController().getStaffByUsername(inputField.getText());
-                if (s == null) {
-                    new GlobalView().error("Staff not found.");
-                } else {
-                    new FormAddUpdateStaff(inputField.getText());
-                    frame.dispose();
-                }
             }
         });
 
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean isDeleted = new UpdateStaffController().deleteStaff(inputField.getText());
+                boolean isDeleted = new UpdateFnBController().deleteFnBMenu(inputField.getText());
                 if (isDeleted) {
-                    new GlobalView().notif("Staff with username \"" + inputField.getText() + "\" successfully deleted.");
+                    new GlobalView().notif("FnB menu successfully deleted.");
                     new ManagerView();
                     frame.dispose();
                 } else {
-                    new GlobalView().error("Staff with username \"" + inputField.getText() + "\" not found.");
+                    new GlobalView().error("FnB menu not found.");
                 }
             }
         });
@@ -150,6 +134,6 @@ public class UpdateStaffView {
     }
 
     public static void main(String[] args) {
-        new UpdateStaffView();
+        new UpdateFnBView();
     }
 }
