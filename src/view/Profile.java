@@ -2,8 +2,7 @@ package view;
 
 import controller.LogOutController;
 import controller.ProfileController;
-import model.Customer;
-import model.User;
+import model.*;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -19,6 +18,7 @@ import javax.swing.JTextField;
 public class Profile {
 
     public Profile() {
+        User user = new User();
         ProfileController controller = new ProfileController();
         JFrame frame = new JFrame("Profile");
         frame.setSize(600, 700);
@@ -38,34 +38,22 @@ public class Profile {
 
         //textfield nama
         JTextField tfNama = new JTextField();
-        tfNama.setText(User.getUsername());
+        tfNama.setText(user.getUsername());
         tfNama.setEditable(false);
         tfNama.setBounds(240, 105, 240, 30);
         tfNama.setFont(font1);
 
         //label username
-        JLabel userNameLabel = new JLabel("Username");
+        JLabel userNameLabel = new JLabel("Full_Name");
         userNameLabel.setBounds(100, 140, 90, 40);
         userNameLabel.setFont(font1);
 
         //textfield username
         JTextField tfUserName = new JTextField();
-        tfUserName.setText(customer.getUsername());
+        tfUserName.setText(user.getFullname());
         tfUserName.setEditable(false);
         tfUserName.setBounds(240, 145, 240, 30);
         tfUserName.setFont(font1);
-
-        //label password
-        JLabel passLabel = new JLabel("Password");
-        passLabel.setBounds(100, 180, 90, 40);
-        passLabel.setFont(font1);
-
-        //password
-        JPasswordField pass = new JPasswordField();
-        pass.setText(customer.getPassword());
-        pass.setEditable(false);
-        pass.setBounds(240, 185, 240, 30);
-        pass.setFont(font1);
 
         //label telepon
         JLabel teleponLabel = new JLabel("Telepon");
@@ -86,70 +74,10 @@ public class Profile {
 
         //textfield alamat
         JTextField alamat = new JTextField();
-        alamat.setText(customer.getAlamat().get(index).getAlamatLengkap());
+        alamat.setText(user.getAlamat().get(index).getAlamatLengkap());
         alamat.setEditable(false);
         alamat.setBounds(240, 265, 240, 30);
         alamat.setFont(font1);
-
-        //label kelurahan
-        JLabel kelurahanLabel = new JLabel("Kelurahan");
-        kelurahanLabel.setBounds(100, 300, 90, 40);
-        kelurahanLabel.setFont(font1);
-
-        //textfield kelurahan
-        JTextField tfKelurahan = new JTextField();
-        tfKelurahan.setText(customer.getAlamat().get(index).getKelurahan());
-        tfKelurahan.setEditable(false);
-        tfKelurahan.setBounds(240, 305, 240, 30);
-        tfKelurahan.setFont(font1);
-
-        //label kecamatan
-        JLabel kecamatanLabel = new JLabel("Kecamatan");
-        kecamatanLabel.setBounds(100, 340, 90, 40);
-        kecamatanLabel.setFont(font1);
-
-        //textfield kecamatan
-        JTextField tfKecamatan = new JTextField();
-        tfKecamatan.setText(customer.getAlamat().get(index).getKecamatan());
-        tfKecamatan.setEditable(false);
-        tfKecamatan.setBounds(240, 345, 240, 30);
-        tfKecamatan.setFont(font1);
-
-        //label kota
-        JLabel kotaLabel = new JLabel("Kota");
-        kotaLabel.setBounds(100, 380, 90, 40);
-        kotaLabel.setFont(font1);
-
-        //textfield kota
-        JTextField tfKota = new JTextField();
-        tfKota.setText(customer.getAlamat().get(index).getKota());
-        tfKota.setEditable(false);
-        tfKota.setBounds(240, 385, 240, 30);
-        tfKota.setFont(font1);
-
-        //label provinsi
-        JLabel provinsiLabel = new JLabel("Provinsi");
-        provinsiLabel.setBounds(100, 420, 90, 40);
-        provinsiLabel.setFont(font1);
-
-        //textfield provinsi
-        JTextField tfProvinsi = new JTextField();
-        tfProvinsi.setText(customer.getAlamat().get(index).getProvinsi());
-        tfProvinsi.setEditable(false);
-        tfProvinsi.setBounds(240, 425, 240, 30);
-        tfProvinsi.setFont(font1);
-
-        //label kodePos
-        JLabel kodePosLabel = new JLabel("Kode Pos");
-        kodePosLabel.setBounds(100, 460, 90, 40);
-        kodePosLabel.setFont(font1);
-
-        //textfield kodePos
-        JTextField tfKodePos = new JTextField();
-        tfKodePos.setText(customer.getAlamat().get(index).getKodePos());
-        tfKodePos.setEditable(false);
-        tfKodePos.setBounds(240, 465, 240, 30);
-        tfKodePos.setFont(font1);
 
         //button edit
         JButton submit = new JButton("Edit");

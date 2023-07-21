@@ -57,7 +57,7 @@ public class SignInView {
         submit.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent ae) {
-                String result = controller.SignInController(tfUserName.getText(),pass.getText());
+                String result = controller.signInController(tfUserName.getText(), pass.getText());
                 if(result.equals("customer")){
                     frame.dispose();
                     JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Customer");
