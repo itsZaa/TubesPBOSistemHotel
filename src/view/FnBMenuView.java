@@ -1,12 +1,10 @@
 package view;
 
-import javax.swing.BoxLayout;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -14,180 +12,205 @@ import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalTime;
 
 import controller.DatabaseController;
 import controller.FnBController;
 import model.FnBMenu;
+import model.FnBOrder;
+import model.FnBTransaction;
+import model.GenderType;
 import model.Order;
+import model.OrderStatus;
+import model.SingletonProfile;
 import model.User;
+import model.UserType;
+import observer.PaymentObserver;
 
 import java.util.ArrayList;
 
-public class FnBMenuView {
-    private ArrayList<FnBMenu> menuList;
-    private ArrayList<Order> orderList;
-    private JTextField[] qtyFields;
+public class FnBMenuView implements PaymentObserver {
     private JFrame frame;
-    private User user;
+    private JPanel formPanel;
+    private JPanel buttonPanel;
+    private FnBTransaction transaction;
+    private ArrayList<FnBMenu> menuList;
+    private JTextField[] qtyFields;
+    private ArrayList<Order> orderList;
 
-    public FnBMenuView(User user) {
-        this.user = user;
-        menuList = new DatabaseController().getAllFnBMenu();
-        orderList = new ArrayList<>();
-        qtyFields = new JTextField[menuList.size()];
+    public FnBMenuView() {
+        this.transaction = new FnBTransaction();
+        this.menuList = new DatabaseController().getAllFnBMenu();
+        this.qtyFields = new JTextField[menuList.size()];
+        this.orderList = new ArrayList<>();
+        initComponent();
+    }
 
+    public void initComponent() {
+        // JAM OPERASIONAL 06:00 - 21:00
         if (LocalTime.now().isAfter(LocalTime.of(0, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 59))) {
-            frame = new JFrame();
+            frame = new JFrame("Aplikasi Sistem Hotel");
+            frame.setSize(400, 400);
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setLocationRelativeTo(null);
-            frame.setSize(500, 500);
-
-            JPanel titlePanel = new JPanel();
-            titlePanel.setLayout(null);
-            titlePanel.setPreferredSize(new Dimension(frame.getWidth(), 50));
+            frame.setLayout(new BorderLayout(10, 10));
 
             JLabel title = new GlobalView().labelHeader("Food & Beverages");
-            titlePanel.add(title);
+            title.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+            frame.add(title, BorderLayout.NORTH);
 
-            JPanel menuPanel = new JPanel();
-            menuPanel.setLayout(null);
+            formPanel = new JPanel();
+            formPanel.setLayout(new GridBagLayout());
 
-            int y = 10;
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.insets = new Insets(5, 10, 5, 10);
+            gbc.anchor = GridBagConstraints.WEST;
+
             int c = 0;
             for (FnBMenu menu : menuList) {
-                JLabel nameLabel = new JLabel((c + 1) + ". " + menu.getMenuName());
+                gbc.gridy = c;
+                gbc.gridx = 0;
+                gbc.weightx = 1;
+                JLabel menuLabel = new JLabel((c + 1) + ") " + menu.getMenuName());
+                formPanel.add(menuLabel, gbc);
 
-                String price = String.format("%.0f", menu.getPrice());
-                JLabel priceLabel = new JLabel("Rp." + price);
+                gbc.gridx = 1;
+                gbc.weightx = 0;
+                String formattedPrice = "Rp" + String.format("%,.0f", menu.getPrice()).replace(",", ".");
+                JLabel priceLabel = new JLabel(formattedPrice);
+                formPanel.add(priceLabel, gbc);
 
-                JTextField input = new JTextField("0");
+                gbc.gridx = 2;
+                qtyFields[c] = new JTextField("0");
+                qtyFields[c].setPreferredSize(new Dimension(50, qtyFields[c].getPreferredSize().height));
+                formPanel.add(qtyFields[c], gbc);
 
-                nameLabel.setBounds(10, y, 120, 25);
-                priceLabel.setBounds(200, y, 120, 25);
-                input.setBounds(140, y, 50, 25);
-
-                menuPanel.add(nameLabel);
-                menuPanel.add(priceLabel);
-                menuPanel.add(input);
-
-                qtyFields[c] = input;
-                y += 30;
                 c++;
             }
 
-            // Adjust the menuPanel size to accommodate all the components
-            Dimension panelSize = new Dimension(300, y);
-            menuPanel.setPreferredSize(panelSize);
-            menuPanel.setMinimumSize(panelSize);
-
-            JScrollPane scrollPane = new JScrollPane(menuPanel);
-            scrollPane.setPreferredSize(new Dimension(200, 100));
+            JScrollPane scrollPane = new JScrollPane(formPanel);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
             frame.add(scrollPane);
 
-            JPanel buttonPanel = new JPanel();
-            buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 10));
+            buttonPanel = new JPanel();
+            buttonPanel.setLayout(new GridBagLayout());
+            buttonPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-            ButtonGroup buttonGroup = new ButtonGroup();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.anchor = GridBagConstraints.EAST;
+            JRadioButton dineInButton = new JRadioButton("Dine-in");
+            buttonPanel.add(dineInButton, gbc);
 
-            JRadioButton dineIn = new JRadioButton("Dine-in");
-            dineIn.setSelected(true); // default
-            buttonGroup.add(dineIn);
-            buttonPanel.add(dineIn);
+            gbc.gridx = 1;
+            JRadioButton roomDeliveryButton = new JRadioButton("Room delivery");
+            buttonPanel.add(roomDeliveryButton, gbc);
 
-            JRadioButton roomDelivery = new JRadioButton("Room delivery");
-            buttonGroup.add(roomDelivery);
-            buttonPanel.add(roomDelivery);
+            ButtonGroup orderTypeGroup = new ButtonGroup();
+            orderTypeGroup.add(dineInButton);
+            orderTypeGroup.add(roomDeliveryButton);
 
-            ArrayList<Integer> optionList = new FnBController(user).getUserRooms();
-            String[] options = new String[optionList.size()];
+            gbc.gridx = 2;
+            JTextField roomDeliveryField = new JTextField();
+            roomDeliveryField.setPreferredSize(new Dimension(50, roomDeliveryField.getPreferredSize().height));
+            roomDeliveryField.setEnabled(false);
+            buttonPanel.add(roomDeliveryField, gbc);
 
-            for (int i = 0; i < optionList.size(); i++) {
-                options[i] = String.valueOf(optionList.get(i));
-            }
-
-            JComboBox<String> dropdown = new JComboBox<>(options);
-            buttonPanel.add(dropdown);
-            dropdown.setEnabled(false);
-
-            // JTextField roomNumber = new JTextField("Input room number");
-            // roomNumber.setEnabled(false);
-            // buttonPanel.add(roomNumber);
-
-            int roomNumber = 0; // default dine-in
-
-            dineIn.addActionListener(new ActionListener() {
+            roomDeliveryButton.addItemListener(new ItemListener() {
                 @Override
-                public void actionPerformed(ActionEvent e) {
-                    dropdown.setEnabled(!dineIn.isSelected());
+                public void itemStateChanged(ItemEvent e) {
+                    if (e.getStateChange() == ItemEvent.SELECTED) {
+                        roomDeliveryField.setEnabled(true);
+                    } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+                        roomDeliveryField.setEnabled(false);
+                    }
                 }
             });
 
-            roomDelivery.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    dropdown.setEnabled(roomDelivery.isSelected());
-                }
-            });
-
-            if (new FnBController(user).isUserCheckIn() == false) {
-                roomDelivery.setEnabled(false);
-            }
-
+            gbc.gridx = 1;
+            gbc.gridy = 1;
             JButton cancelButton = new JButton("Cancel");
-            // cancelButton.setBounds(300, 420, 90, 25);
+            buttonPanel.add(cancelButton, gbc);
+
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    frame.dispose();
+                    new GlobalView().notif("Order cancelled.");
+
+                    // back to customer menu
                 }
             });
-            buttonPanel.add(cancelButton);
 
-            JButton orderButton = new JButton("Pay");
-            // orderButton.setBounds(400, 420, 70, 25);
+            gbc.gridx = 2;
+            JButton orderButton = new JButton("Order");
+            buttonPanel.add(orderButton, gbc);
+
             orderButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // Create orders based on the quantity fields
+                    double totalPrice = 0;
                     for (int i = 0; i < menuList.size(); i++) {
                         int qty = Integer.parseInt(qtyFields[i].getText());
                         if (qty > 0) {
                             FnBMenu menu = menuList.get(i);
-                            Order order = new Order(qty, menu.getPrice());
+                            FnBOrder order = new FnBOrder(qty, menu);
+                            totalPrice += menu.getPrice() * qty;
                             orderList.add(order);
                         }
                     }
 
+                    int roomNumber = 0; // default
+                    if (roomDeliveryButton.isSelected()) {
+                        roomNumber = Integer.parseInt(roomDeliveryField.getText());
+                    }
 
+                    transaction.setTransactionId(new FnBController().generateTransactionId());
 
-                    new FnBController(user).createFnBTransaction(roomNumber, paymentMethod, orderList);
+                    // TODO
+                    User user = new User("Username1", "fullName", "123", GenderType.MALE, "085xxxxxx",
+                            "email@gmail.com", UserType.CUSTOMER);
+                    transaction.setUser(user);
+
+                    // transaction.setUser(SingletonProfile.getInstance().getUser());
+                    transaction.setRoomNumber(roomNumber);
+                    transaction.setStatus(OrderStatus.WAITING);
+                    transaction.setOrderList(orderList);
+                    transaction.setTotalPrice(totalPrice);
+
+                    PaymentView paymentView = new PaymentView();
+                    paymentView.setPaymentObserver(FnBMenuView.this);
+
+                    boolean succeed = paymentView.payment(transaction);
+                    if (succeed) {
+                        System.out.println("Success");
+                    } else {
+                        orderList = new ArrayList<>();
+                    }
+
+                    // back to customer menu
                 }
             });
-            buttonPanel.add(orderButton);
-
-            JPanel contentPane = new JPanel(new BorderLayout());
-            contentPane.add(titlePanel, BorderLayout.NORTH);
-            contentPane.add(scrollPane, BorderLayout.CENTER);
-            contentPane.add(buttonPanel, BorderLayout.SOUTH);
-
-            frame.setContentPane(contentPane);
+            frame.add(buttonPanel, BorderLayout.SOUTH);
             frame.setVisible(true);
         } else {
-            JOptionPane.showMessageDialog(
-                    null,
-                    "Layanan FnB sudah tutup. \nJam Buka: 06.00 - 21.00",
-                    "Aplikasi Sistem Hotel",
-                    JOptionPane.INFORMATION_MESSAGE);
+            new GlobalView().notif("Layanan FnB sudah tutup. \nJam Operasional: 06.00 - 21.00");
         }
     }
 
+    @Override
+    public void onPaymentSuccess() {
+        frame.dispose();
+    }
+
     public static void main(String[] args) {
-        User user = new DatabaseController().getUser("otong123");
-        new FnBMenuView(user);
+        new FnBMenuView();
     }
 }

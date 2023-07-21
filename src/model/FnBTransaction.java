@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class FnBTransaction extends Transaction{
     private int roomNumber;
     private OrderStatus status;
+    private PaymentMethod paymentMethod;
     private ArrayList<Order> orderList;
     private LocalDate transactionDate;
     private double totalPrice;
@@ -37,6 +38,14 @@ public class FnBTransaction extends Transaction{
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return this.paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethod paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     @Override
@@ -72,8 +81,7 @@ public class FnBTransaction extends Transaction{
                 "\n   Room Number: \t" + roomNumber +
                 "\n   Status: \t\t" + status +
                 "\n   Total Price: \t" + totalPrice +
-                "\n   Payment Method: \t" + getPaymentMethod() +
-                "\n   Transaction Date: \t" + getTransactionDate() +
-                "\n   Order List: \t" + getOrderList() + "\n";
+                "\n   Payment Method: \t" + getPaymentMethod().getName() +
+                "\n   Transaction Date: \t" + getTransactionDate() + "\n";
     }
 }

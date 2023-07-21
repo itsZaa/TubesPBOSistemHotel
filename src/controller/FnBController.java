@@ -1,9 +1,8 @@
 package controller;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -14,19 +13,20 @@ import model.Order;
 import model.OrderStatus;
 import model.PaymentMethod;
 import model.RoomTransaction;
+import model.SingletonProfile;
 import model.User;
 
 public class FnBController {
     private DatabaseController dbController;
     private User user;
 
-    public FnBController(User user) {
+    public FnBController() {
         dbController = new DatabaseController();
-        this.user = user;
+        user = SingletonProfile.getInstance().getUser();
     }
 
     public String getFnBMenu() {
-        ArrayList<FnBMenu> menuList = new DatabaseController().getAllFnBMenu();
+        ArrayList<FnBMenu> menuList = dbController.getAllFnBMenu();
 
         StringBuilder sb = new StringBuilder();
         sb.append("Food & Beverages List :\n\n");
@@ -63,22 +63,20 @@ public class FnBController {
         return totalPrice;
     }
 
-    public void createFnBTransaction(int roomNumber, PaymentMethod paymentMethod, ArrayList<Order> orderList) {
-        ArrayList<FnBOrder> fnbOrders = castingOrder(orderList);
+    public String generateTransactionId() {
+        LocalDateTime now = LocalDateTime.now();
 
-        String id = "FNB_";
-
-        LocalDate currentTime = LocalDate.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("ddMMyyyyHHmmss");
-        String formattedDate = currentTime.format(dateFormatter);
-        
-        id += formattedDate + "_";
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("ddMMyyHHmmss"));
 
         Random random = new Random();
-        int randomInt = random.nextInt(100000);
-        String randomString = String.format("%05d", randomInt);
+        int randomNumber = random.nextInt((int) Math.pow(10, 5));
 
-        id += randomString;
+        return "FNB_" + formattedDateTime + "_" + String.format("%0" + 5 + "d", randomNumber);
+    }
+
+    public void createFnBTransaction(int roomNumber, PaymentMethod paymentMethod, ArrayList<Order> orderList) {
+        ArrayList<FnBOrder> fnbOrders = castingOrder(orderList);
+        String id = generateTransactionId();
 
         FnBTransaction transaction = new FnBTransaction(
                 id,
@@ -86,7 +84,7 @@ public class FnBController {
                 roomNumber,
                 OrderStatus.WAITING,
                 paymentMethod,
-                fnbOrders,
+                orderList,
                 LocalDate.now(),
                 countTotalPrice(fnbOrders));
 
@@ -99,17 +97,17 @@ public class FnBController {
         return selected;
     }
 
-    public boolean isUserCheckIn(){
+    public boolean isUserCheckIn() {
         RoomTransaction transaction = findTransaction();
 
-        if (transaction.getDateCheckIn() != null){
+        if (transaction.getDateCheckIn() != null) {
             return true;
         }
 
         return false;
     }
 
-    public ArrayList<Integer> getUserRooms(){
+    public ArrayList<Integer> getUserRooms() {
         ArrayList<Integer> roomList = dbController.getRoomNumberOrdered(user.getUsername());
 
         return roomList;

@@ -12,13 +12,13 @@ import java.awt.event.ActionListener;
 import java.awt.Cursor;
 import java.awt.Font;
 
-public class ChooseMenu {
+public class WelcomeScreen {
 public static void main(String[] args) {
-    new ChooseMenu();
+    new WelcomeScreen();
 }
 JFrame frame = new JFrame("Sistem Hotel Harapan Bangsa");
 
-public ChooseMenu(){
+public WelcomeScreen(){
     frame.setSize(600, 380);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
