@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import model.GenderType;
 import model.Staff;
-import model.StaffType;
 import model.User;
 import model.UserType;
 
@@ -33,10 +32,7 @@ public class UpdateStaffController {
                 staff.setUsername(rs.getString("username"));
                 staff.setNIK(rs.getString("NIK"));
                 staff.setSalary(rs.getDouble("salary"));
-                staff.setAddress(rs.getString("address"));
-
-                String type = rs.getString("type");
-                staff.setStaffType(StaffType.valueOf(type.toUpperCase()));
+                staff.setType(UserType.valueOf(rs.getString("type").toUpperCase()));
 
                 staffs.add(staff);
             }
@@ -62,17 +58,15 @@ public class UpdateStaffController {
                 staff.setUsername(rs.getString("username"));
                 staff.setNIK(rs.getString("NIK"));
                 staff.setSalary(rs.getDouble("salary"));
-                staff.setAddress(rs.getString("address"));
-
-                String type = rs.getString("type");
-                staff.setStaffType(StaffType.valueOf(type.toUpperCase()));
+                staff.setType(UserType.valueOf(rs.getString("type").toUpperCase()));
 
                 User user = getUserStaff(username);
                 staff.setFullname(user.getFullname());
-                staff.setPassword(user.getPassword());
-                staff.setGender(user.getGender());
                 staff.setEmail(user.getEmail());
-                staff.setType(UserType.STAFF);
+                staff.setPassword(user.getPassword());
+                staff.setAddress(user.getAddress());
+                staff.setGender(user.getGender());
+                staff.setPhoneNumber(user.getPhoneNumber());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -86,7 +80,7 @@ public class UpdateStaffController {
     public boolean insertNewStaff(Staff staff) {
         try {
             conn.connect();
-            
+
             boolean isUserInserted = new DatabaseController().insertNewUser((User) staff);
             if (isUserInserted) {
                 String query = "INSERT INTO staff VALUES(?,?,?,?,?)";
@@ -95,7 +89,7 @@ public class UpdateStaffController {
                 stmt.setString(2, staff.getUsername());
                 stmt.setString(3, staff.getNIK());
                 stmt.setDouble(4, staff.getSalary());
-                stmt.setString(5, staff.getStaffType().name());
+                stmt.setString(5, staff.getType().name());
 
                 stmt.executeUpdate();
                 return true;
@@ -148,7 +142,7 @@ public class UpdateStaffController {
 
             query = "UPDATE staff SET NIK='" + staff.getNIK() + "', "
                     + "salary='" + staff.getSalary() + "', "
-                    + "type='" + staff.getStaffType().name() + "' "
+                    + "type='" + staff.getType().name() + "' "
                     + "WHERE username='" + oldUsername + "'";
             stmt = conn.con.createStatement();
             stmt.executeUpdate(query);
