@@ -65,7 +65,7 @@ public class MainMenuCustomer {
         pesanKamar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                frame.dispose();
+                //frame.dispose();
                 new RoomTransactionView();
             }
         });

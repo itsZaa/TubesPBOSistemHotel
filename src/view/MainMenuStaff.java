@@ -41,9 +41,12 @@ public class MainMenuStaff {
         JButton button1 = null;
         JButton button2 = null;
         JButton button3 = null;
+
         if(user.getType() == UserType.RECEPTIONIST){
+
                     frame.dispose();
                     new ReceptionistView();
+
         }else if(user.getType() == UserType.STAFF_FNB){
             button1 = new JButton("Proses Pesanan F&B");
             button1.addActionListener(new ActionListener() {
