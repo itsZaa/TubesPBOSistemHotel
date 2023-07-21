@@ -70,28 +70,25 @@ public class DatabaseController {
     }
 
     // SELECT WHERE
-    public User getUser(String username) {
-        User user = new User();
+    public User getUser(String username, String password) {
+        User user = null;
+        password = Hasher.password(password);
         try {
             conn.connect();
-            String query = "SELECT * FROM users WHERE username='" + username + "'";
+            String query = "SELECT * FROM users WHERE username='" + username + "' AND password='" + password + "'";
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
+                user = new User();
                 user.setUsername(rs.getString("username"));
                 user.setFullname(rs.getString("full_name"));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setAddress(rs.getString("address"));
-
-                String gender = rs.getString("gender");
-
-                user.setGender(GenderType.valueOf(gender.toUpperCase()));
+                user.setGender(GenderType.valueOf(rs.getString("gender").toUpperCase()));
                 user.setPhoneNumber(rs.getString("phone_number"));
                 user.setEmail(rs.getString("email"));
-
-                String type = rs.getString("type");
-                user.setType(UserType.valueOf(type.toUpperCase()));
+                user.setType(UserType.valueOf(rs.getString("type").toUpperCase()));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -130,12 +127,9 @@ public class DatabaseController {
     public boolean updateUser(User user, String oldUsername) {
         try {
             conn.connect();
-            String query = "UPDATE users SET Username='" + user.getUsername() + "', "
+            String query = "UPDATE users SET Username='" + oldUsername + "', "
                     + "full_name='" + user.getFullname() + "', "
-                    + "Email='" + user.getEmail() + "', "
-                    + "Password='" + user.getPassword() + "', "
                     + "Address='" + user.getAddress() + "', "
-                    + "phone_number='" + user.getPhoneNumber() + "', "
                     + "Type='" + user.getType().name() + "' "
                     + "WHERE Username='" + oldUsername + "'";
             Statement stmt = conn.con.createStatement();
@@ -200,7 +194,7 @@ public class DatabaseController {
             while (rs.next()) {
                 FnBTransaction transaction = new FnBTransaction();
 
-                transaction.setUser(getUser(user.getUsername()));
+                transaction.setUser(getUser(user.getUsername(), user.getPassword()));
                 transaction.setTransactionId(rs.getString("fnb_transaction_id"));
                 transaction.setUser(user);
                 transaction.setRoomNumber(rs.getInt("room_number"));
@@ -439,7 +433,7 @@ public class DatabaseController {
             while (rs.next()) {
                 RoomTransaction transaction = new RoomTransaction();
 
-                transaction.setUser(getUser(user.getUsername()));
+                transaction.setUser(getUser(user.getUsername(), user.getPassword()));
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
                 transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
@@ -657,7 +651,7 @@ public class DatabaseController {
             while (rs.next()) {
                 LaundryTransaction transaction = new LaundryTransaction();
                 transaction.setTransactionId(rs.getString("laundry_transaction_id"));
-                transaction.setUser(getUser(rs.getString("username")));
+                transaction.setUser(getUser(rs.getString("username"), rs.getString("password")));
                 transaction.setRoomNumber(rs.getInt("room_number"));
 
                 String status = rs.getString("status");
@@ -696,7 +690,7 @@ public class DatabaseController {
             while (rs.next()) {
                 LaundryTransaction transaction = new LaundryTransaction();
                 transaction.setTransactionId(rs.getString("laundry_transaction_id"));
-                transaction.setUser(getUser(rs.getString("username")));
+                transaction.setUser(getUser(rs.getString("username"), rs.getString("password")));
                 transaction.setRoomNumber(rs.getInt("room_number"));
 
                 String status = rs.getString("status");
@@ -827,7 +821,7 @@ public class DatabaseController {
                 FnBTransaction transaction = new FnBTransaction();
 
                 transaction.setTransactionId(rs.getString("fnb_transaction_id"));
-                transaction.setUser(getUser(rs.getString("username")));
+                transaction.setUser(getUser(rs.getString("username"), rs.getString("password")));
                 transaction.setRoomNumber(rs.getInt("room_number"));
 
                 String status = rs.getString("status");

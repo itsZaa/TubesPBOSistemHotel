@@ -1,5 +1,5 @@
 package model;
 
 public enum UserType {
-    CUSTOMER, STAFF;
+    CUSTOMER, RECEPTIONIST, STAFF_FNB, STAFF_LAUNDRY, MANAGER;
 }

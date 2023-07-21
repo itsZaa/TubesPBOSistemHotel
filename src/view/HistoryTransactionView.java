@@ -1,12 +1,10 @@
 package view;
 
-import model.LaundryTransaction;
+import model.SingletonProfile;
 import model.User;
 import model.Transaction;
 
 import controller.HistoryTransactionController;
-import controller.LaundryStaffController;
-import controller.DatabaseController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,8 +12,10 @@ import java.awt.*;
 public class HistoryTransactionView {
     private HistoryTransactionController controller;
     private JPanel textAreaPanel;
+    private User user;
 
-    public HistoryTransactionView(User user) {
+    public HistoryTransactionView() {
+        this.user = SingletonProfile.getInstance().getUser();
         this.controller = new HistoryTransactionController(user);
 
         JFrame frame = new GlobalView().frame();
@@ -78,6 +78,6 @@ public class HistoryTransactionView {
     }
 
     public static void main(String[] args) {
-        new HistoryTransactionView(new DatabaseController().getUser("nico.js"));
+        new HistoryTransactionView();
     }
 }

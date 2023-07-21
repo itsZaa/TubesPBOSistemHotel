@@ -13,14 +13,15 @@ import controller.DatabaseController;
 import controller.LaundryStaffController;
 import model.User;
 import model.LaundryTransaction;
+import model.SingletonProfile;
 
 public class LaundryStaffView {
     private User user;
     private Queue<LaundryTransaction> queueLaundryTransaction;
     private JPanel textAreaPanel;
 
-    public LaundryStaffView(User user) {
-        this.user = user;
+    public LaundryStaffView() {
+        this.user = SingletonProfile.getInstance().getUser();
         this.queueLaundryTransaction = new LinkedList<>(new LaundryStaffController().getUnprocessedLaundryTransaction());
 
         JFrame frame = new GlobalView().frame();
@@ -129,8 +130,8 @@ public class LaundryStaffView {
         textAreaPanel.repaint();
     }
 
-    public static void main(String[] args) {
-        User user = new DatabaseController().getUser("staff_laundry");
-        new LaundryStaffView(user);
-    }
+    // public static void main(String[] args) {
+    //     User user = new DatabaseController().getUser("staff_laundry");
+    //     new LaundryStaffView(user);
+    // }
 }

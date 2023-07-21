@@ -11,14 +11,21 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
+
 import controller.DatabaseController;
 import controller.ReceptionistController;
 import model.RoomTransaction;
+import model.Staff;
+import model.SingletonProfile;
+
 
 public class ReceptionistView {
     private JFrame frame;
+    private Staff staff;
 
+  
     public ReceptionistView() {
+        this.staff = (Staff) SingletonProfile.getInstance().getUser();
         initComponent();
     }
 
@@ -69,17 +76,6 @@ public class ReceptionistView {
         frame.add(refreshDay);
 
         frame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        // Run the GUI on the Event Dispatch Thread (EDT)
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // Create and show the ReceptionistView
-                new ReceptionistView();
-            }
-        });
     }
 
 }

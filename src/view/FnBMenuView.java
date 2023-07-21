@@ -26,12 +26,9 @@ import controller.FnBController;
 import model.FnBMenu;
 import model.FnBOrder;
 import model.FnBTransaction;
-import model.GenderType;
 import model.Order;
 import model.OrderStatus;
 import model.SingletonProfile;
-import model.User;
-import model.UserType;
 import observer.PaymentObserver;
 
 import java.util.ArrayList;
@@ -144,8 +141,8 @@ public class FnBMenuView implements PaymentObserver {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     new GlobalView().notif("Order cancelled.");
-
-                    // back to customer menu
+                    frame.dispose();
+                    new MainMenuCustomer();
                 }
             });
 
@@ -173,12 +170,7 @@ public class FnBMenuView implements PaymentObserver {
                     }
 
                     transaction.setTransactionId(new FnBController().generateTransactionId());
-
-                    // TODO
-                    User user = new User("Username1", "fullName", "123", GenderType.MALE, "085xxxxxx", "email@gmail.com", UserType.CUSTOMER);
-                    transaction.setUser(user);
-
-                    // transaction.setUser(SingletonProfile.getInstance().getUser());
+                    transaction.setUser(SingletonProfile.getInstance().getUser());
                     transaction.setRoomNumber(roomNumber);
                     transaction.setStatus(OrderStatus.WAITING);
                     transaction.setOrderList(orderList);
@@ -189,12 +181,13 @@ public class FnBMenuView implements PaymentObserver {
 
                     boolean succeed = paymentView.payment(transaction);
                     if (succeed) {
-                        System.out.println("Success");
+                        new GlobalView().notif("Payment success.");
                     } else {
                         orderList = new ArrayList<>();
+                        new GlobalView().error("Payment failed.");
                     }
 
-                    // back to customer menu
+                    frame.dispose();
                 }
             });
             frame.add(buttonPanel, BorderLayout.SOUTH);

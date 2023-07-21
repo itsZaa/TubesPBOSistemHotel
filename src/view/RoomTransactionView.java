@@ -5,14 +5,12 @@ import com.toedter.calendar.JDateChooser;
 import controller.DatabaseController;
 import controller.RoomTransactionController;
 
-import model.GenderType;
 import model.Order;
 import model.RoomOrder;
 import model.RoomTransaction;
 import model.RoomType;
 import model.SingletonProfile;
 import model.User;
-import model.UserType;
 
 import observer.PaymentObserver;
 
@@ -34,16 +32,17 @@ import java.awt.event.ActionListener;
 
 public class RoomTransactionView implements PaymentObserver {
     private JFrame frame;
+    private User user;
     private RoomTransaction transaction;
     private ArrayList<RoomType> roomTypes;
     private boolean succeed;
 
     public RoomTransactionView() {
+        user = SingletonProfile.getInstance().getUser();
         initComponents();
     }
 
     private void initComponents() {
-        User user = (SingletonProfile.getInstance().getUser());
         frame = new GlobalView().frame();
 
         transaction = new RoomTransaction(user);

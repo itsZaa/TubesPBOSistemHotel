@@ -1,8 +1,8 @@
 package view;
 
-import model.SingletonUser;
-import model.Staff;
-import model.StaffType;
+import model.SingletonProfile;
+import model.User;
+import model.UserType;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,12 +13,14 @@ import javax.swing.JButton;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class MainMenuStaff {
-    private Staff staff;
+    private User user;
 
-    public MainMenuStaff(Staff staff){
-        this.staff = staff;
+    public MainMenuStaff(){
+        this.user = SingletonProfile.getInstance().getUser();
 
         JFrame frame = new GlobalView().frame();
         frame.setLayout(new BorderLayout());
@@ -26,7 +28,6 @@ public class MainMenuStaff {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new GridLayout(3, 1));
         contentPanel.setBorder(new EmptyBorder(20, 20, 20, 20)); // Set padding here
-
 
         JPanel headerPanel = new JPanel();
         headerPanel.setSize(500, 80);
@@ -40,21 +41,31 @@ public class MainMenuStaff {
         JButton button1 = null;
         JButton button2 = null;
         JButton button3 = null;
-
-        if(staff.getStaffType() == StaffType.RECEPTIONIST){
-            button1 = new JButton("Proses Check-In");
-            button2 = new JButton("Proses Check-Out");
-        }else if(staff.getStaffType() == StaffType.STAFF_FNB){
+        if(user.getType() == UserType.RECEPTIONIST){
+                    frame.dispose();
+                    new ReceptionistView();
+        }else if(user.getType() == UserType.STAFF_FNB){
             button1 = new JButton("Proses Pesanan F&B");
-        }else if(staff.getStaffType() == StaffType.STAFF_LAUNDRY){
+            button1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    frame.dispose();
+                    new FnBStaffView();
+                }
+            });
+        }else if(user.getType() == UserType.STAFF_LAUNDRY){
             button1 = new JButton("Proses Pesanan Laundry");
-        }else if(staff.getStaffType() == StaffType.MANAGER){
-            button1 = new JButton("Lihat Semua Pendapatan & Transaksi");
-            button2 = new JButton("Update Fitur");
-            button3 = new JButton("Update Staff");
+            button1.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    frame.dispose();
+                    new LaundryStaffView();
+                }
+            });
+        }else if(user.getType() == UserType.MANAGER){
+            frame.dispose();
+            new ManagerView();
         }
-
-    
 
         if(button1 != null){
             button1.setFocusable(false);
@@ -77,9 +88,9 @@ public class MainMenuStaff {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        Staff dummy = new Staff(123, "123", 100000, StaffType.STAFF_LAUNDRY, null, null, null, null, null, null, null);
+    // public static void main(String[] args) {
+    //     //User dummy = new User(123, "123", 100000, StaffType.STAFF_LAUNDRY, null, null, null, null, null, null, null);
 
-        new MainMenuStaff(dummy);
-    }
+    //     new MainMenuStaff();
+    // }
 }
