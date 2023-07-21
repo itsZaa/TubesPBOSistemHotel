@@ -61,23 +61,23 @@ public class SignInView {
                 if(result.equals("customer")){
                     frame.dispose();
                     JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Customer");
-                    new MainView(); // GANTI JDI TUJUAN CUSTOMER!
+                    new MainMenuCustomer(); // GANTI JDI TUJUAN CUSTOMER!
                 }else if(result.equals("receptionist")){
                     frame.dispose();
                     JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Receptionist");
-                    new MainView(); //Menu receptionist
+                    new MainMenuCustomer(); //Menu receptionist
                 }else if(result.equals("manager")){
                     frame.dispose();
                     JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Manager");
-                    new MainView();//Menu manager
+                    new MainMenuCustomer();//Menu manager
                 }else if(result.equals("staff_fnb")){
                     frame.dispose();
                     JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Staff FNB");
-                    new MainView(); //menu staff_fnb
+                    new MainMenuCustomer(); //menu staff_fnb
                 }else if(result.equals("staff_laundry")){
                     frame.dispose();
                     JOptionPane.showMessageDialog(null,"Login Berhasil Sebagai Staff Laundry");
-                    new MainView();//menu staff laundry
+                    new MainMenuCustomer();//menu staff laundry
                 }else if(result.equals("Password Salah!")){
                     JOptionPane.showMessageDialog(null,result);
                     pass.setText("");

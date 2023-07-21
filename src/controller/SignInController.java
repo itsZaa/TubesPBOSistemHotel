@@ -76,7 +76,6 @@ public class SignInController {
                 return "User tidak ditemukan!";
             }
         } catch (SQLException e) {
-            System.out.println("eror catching");
             e.printStackTrace();
             return "Error";
         }
