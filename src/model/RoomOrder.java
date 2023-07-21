@@ -7,8 +7,12 @@ public class RoomOrder extends Order {
     private String roomNumber;
     private LocalDate date;
 
+    public RoomOrder(){
+        
+    }
+
     public RoomOrder(int quantity, RoomType roomType, LocalDate date) {
-        super(quantity, roomType.getPrice() * quantity) ;
+        super(quantity, roomType.getPrice() * quantity);
         this.roomType = roomType;
         this.date = date;
     }

@@ -13,6 +13,7 @@ import model.FnBMenu;
 import model.FnBOrder;
 import model.FnBTransaction;
 import model.User;
+import model.BookingStatus;
 import model.OrderStatus;
 import model.GenderType;
 import model.RoomType;
@@ -292,6 +293,139 @@ public class DatabaseController {
             conn.disconnect();
         }
         return (transaction);
+    }
+
+    public void resetDay() {
+        try {
+            conn.connect();
+            String query = "UPDATE room SET occupied_length = CASE WHEN occupied_length > 1 THEN occupied_length - 1 ELSE 0 END";
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+    }
+    
+    
+
+    
+    public boolean updateCheckIn(String id) {
+        try {
+            conn.connect();
+            String query = "UPDATE users SET status='" + BookingStatus.CHECK_IN + "' WHERE room_transaction_id='" + id + "'";
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect();
+        }
+    }
+    
+    public boolean updateCheckOut(String id) {
+        try {
+            conn.connect();
+            String query = "UPDATE users SET status='" + BookingStatus.CHECK_OUT + "' WHERE room_transaction_id='" + id + "'";
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            conn.disconnect();
+        }
+    }
+
+
+    public RoomTransaction getRoomTransaction(String transactionId, LocalDate date) {
+        RoomTransaction transaction = null;
+        try {
+            conn.connect();
+            String query = "SELECT * FROM room_transaction WHERE room_transaction_id = '" + transactionId
+                    + "' AND date_check_in = '" + date + "'";
+
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                transaction = new RoomTransaction();
+                transaction.setTransactionId(rs.getString("room_transaction_id"));
+                transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
+                transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
+                transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+                transaction.setDateCheckIn(rs.getDate("date_check_in").toLocalDate());
+                transaction.setDuration(rs.getInt("stay_duration"));
+
+                String paymentMethodName = rs.getString("payment_method").toUpperCase();
+                PaymentMethod paymentMethod = getPaymentMethod(paymentMethodName);
+
+                transaction.setPaymentMethod(paymentMethod);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+        return transaction;
+    }
+
+    public ArrayList<RoomOrder> getRoomOrder(String transactionId) {
+        ArrayList<RoomOrder> orders = new ArrayList<>();
+        try {
+            conn.connect();
+            String query = "SELECT * FROM room_order WHERE room_transaction_id = '" + transactionId + "'";
+
+            Statement stmt = conn.con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                RoomOrder order = new RoomOrder();
+                order.setRoomType(new RoomType(rs.getString("room_type")));
+                order.setQuantity(rs.getInt("quantity"));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
+        return orders;
+    }
+
+    public int searchRoom(RoomType type) {
+        int room = 0;
+        try {
+            conn.connect();
+            String query = "SELECT * FROM room WHERE room_type = '" + type.getTypeName() + "' AND occupied_length = '"
+                    + 0 + "'";
+
+            PreparedStatement stmt = conn.con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                room = rs.getInt("room_number");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        conn.disconnect();
+        return room;
+    }
+
+    public void updateRoom(int roomNumber, int duration) {
+        try {
+            conn.connect();
+            String query = "UPDATE room SET occupied_length='" + duration
+                    + "' WHERE room_number='" + roomNumber + "'";
+            Statement stmt = conn.con.createStatement();
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            conn.disconnect();
+        }
     }
 
     // get room transaction list

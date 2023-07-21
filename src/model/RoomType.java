@@ -9,6 +9,10 @@ public class RoomType {
     public RoomType() {
     }
 
+    public RoomType (String typeName){
+        this.typeName = typeName;
+    }
+
     public RoomType(int roomTypeId, String typeName, double price, int room) {
         this.roomTypeId = roomTypeId;
         this.typeName = typeName;

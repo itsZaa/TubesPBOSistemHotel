@@ -10,6 +10,7 @@ import model.Order;
 import model.RoomOrder;
 import model.RoomTransaction;
 import model.RoomType;
+import model.SingletonProfile;
 import model.User;
 import model.UserType;
 
@@ -37,11 +38,12 @@ public class RoomTransactionView implements PaymentObserver {
     private ArrayList<RoomType> roomTypes;
     private boolean succeed;
 
-    public RoomTransactionView(User user) {
-        initComponents(user);
+    public RoomTransactionView() {
+        initComponents();
     }
 
-    private void initComponents(User user) {
+    private void initComponents() {
+        User user = (SingletonProfile.getInstance().getUser());
         frame = new GlobalView().frame();
 
         transaction = new RoomTransaction(user);
@@ -157,12 +159,5 @@ public class RoomTransactionView implements PaymentObserver {
     @Override
     public void onPaymentSuccess() {
         frame.dispose();
-    }
-
-    public static void main(String[] args) {
-        User user = new User("Username1", "fullName", "123", GenderType.MALE, "085xxxxxx", "email@gmail.com",
-                UserType.CUSTOMER);
-
-        new RoomTransactionView(user);
     }
 }

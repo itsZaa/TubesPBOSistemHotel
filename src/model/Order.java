@@ -4,6 +4,10 @@ public class Order {
     private int quantity;
     private double orderPrice;
 
+    public Order(){
+        
+    }
+
     public Order(int quantity, double orderPrice) {
         this.quantity = quantity;
         this.orderPrice = orderPrice;

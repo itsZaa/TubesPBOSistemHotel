@@ -175,8 +175,7 @@ public class FnBMenuView implements PaymentObserver {
                     transaction.setTransactionId(new FnBController().generateTransactionId());
 
                     // TODO
-                    User user = new User("Username1", "fullName", "123", GenderType.MALE, "085xxxxxx",
-                            "email@gmail.com", UserType.CUSTOMER);
+                    User user = new User("Username1", "fullName", "123", GenderType.MALE, "085xxxxxx", "email@gmail.com", UserType.CUSTOMER);
                     transaction.setUser(user);
 
                     // transaction.setUser(SingletonProfile.getInstance().getUser());

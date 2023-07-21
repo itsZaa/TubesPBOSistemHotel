@@ -1,22 +1,24 @@
 package view;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
-import model.Staff;
-import model.StaffType;
+import controller.DatabaseController;
+import controller.ReceptionistController;
+import model.RoomTransaction;
 
 public class ReceptionistView {
     private JFrame frame;
 
-    public ReceptionistView(Staff staff) {
+    public ReceptionistView() {
         initComponent();
     }
 
@@ -35,29 +37,49 @@ public class ReceptionistView {
 
         JButton checkInButton = new JButton("Check-In");
         checkInButton.setBounds(50, 350, 150, 50);
-        checkInButton.addActionListener(e -> navigateToCheckInView());
+        checkInButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CheckInView();
+                frame.dispose();
+            }
+        });
         frame.add(checkInButton);
 
         JButton checkOutButton = new JButton("Check-Out");
         checkOutButton.setBounds(300, 350, 150, 50);
-        checkOutButton.addActionListener(e -> navigateToCheckOutView());
+        checkOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CheckOutView();
+                frame.dispose();
+            }
+        });
         frame.add(checkOutButton);
+
+        JButton refreshDay = new JButton("reset day");
+        refreshDay.setBounds(175, 420, 150, 50);
+        refreshDay.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new DatabaseController().resetDay();
+                frame.dispose();
+            }
+        });
+        frame.add(refreshDay);
 
         frame.setVisible(true);
     }
 
-    private void navigateToCheckInView() {
-        // CheckInView checkInView = new CheckInView();
-        // checkInView.show();
-    }
-
-    private void navigateToCheckOutView() {
-        // CheckOutView checkOutView = new CheckOutView();
-        // checkOutView.show();
-    }
-
     public static void main(String[] args) {
-        Staff staff = new Staff(1, "1122323345", 0, StaffType.RECEPTIONIST);
-        new ReceptionistView(staff);
+        // Run the GUI on the Event Dispatch Thread (EDT)
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                // Create and show the ReceptionistView
+                new ReceptionistView();
+            }
+        });
     }
+
 }
