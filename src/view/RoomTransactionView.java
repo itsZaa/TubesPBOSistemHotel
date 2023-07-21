@@ -159,8 +159,4 @@ public class RoomTransactionView implements PaymentObserver {
     public void onPaymentSuccess() {
         frame.dispose();
     }
-
-    public static void main(String[] args) {
-        new RoomTransactionView();
-    }
 }
