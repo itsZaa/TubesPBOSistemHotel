@@ -6,7 +6,7 @@ public abstract class Transaction {
     private String transactionId;
     private User user;
     private PaymentMethod paymentMethod;
-    private ArrayList <Order> order;
+    private ArrayList<Order> order;
 
     public Transaction() {
     }

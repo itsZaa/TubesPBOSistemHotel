@@ -46,7 +46,7 @@ public class RoomTransactionView implements PaymentObserver {
 
         transaction = new RoomTransaction(user);
         roomTypes = new DatabaseController().getRoom();
-        JLabel title = new JLabel("Room Booking Form");
+        JLabel title = new GlobalView().labelHeader("Room Booking Form");
         frame.add(title);
 
         JLabel checkInLabel = new JLabel("Check-in Date:");
