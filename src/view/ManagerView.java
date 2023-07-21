@@ -33,7 +33,7 @@ public class ManagerView {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // Title
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 3;
         gbc.gridx = 0;
         gbc.gridy = 0;
         JLabel label = new GlobalView().labelHeader("Manager Menu");
@@ -52,10 +52,10 @@ public class ManagerView {
         gbc.gridwidth = 1;
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        JButton printTransactionButton = new JButton("Print Transaction");
-        Dimension buttonSize = new Dimension(printTransactionButton.getPreferredSize().width, 60);
-        printTransactionButton.setPreferredSize(buttonSize);
-        panel.add(printTransactionButton, gbc);
+        JButton updateStaffButton = new JButton("Update Staff");
+        Dimension buttonSize = new Dimension(140, 60);
+        updateStaffButton.setPreferredSize(buttonSize);
+        panel.add(updateStaffButton, gbc);
 
         // Update fasilitas
         gbc.gridx = 1;
@@ -63,12 +63,18 @@ public class ManagerView {
         updateFacilityButton.setPreferredSize(buttonSize);
         panel.add(updateFacilityButton, gbc);
 
-        // Update staff
-        gbc.gridx = 0;
+        // Update menu fnb
+        gbc.gridx = 2;
+        JButton updateFnBButton = new JButton("Update FnB");
+        updateFnBButton.setPreferredSize(buttonSize);
+        panel.add(updateFnBButton, gbc);
+
+        // Print total pendapatan
         gbc.gridy = 3;
-        JButton updateStaffButton = new JButton("Update Staff");
-        updateStaffButton.setPreferredSize(buttonSize);
-        panel.add(updateStaffButton, gbc);
+        gbc.gridx = 0;
+        JButton printTransactionButton = new JButton("Print Transaction");
+        printTransactionButton.setPreferredSize(buttonSize);
+        panel.add(printTransactionButton, gbc);
 
         // Log out
         gbc.gridx = 1;
@@ -76,31 +82,43 @@ public class ManagerView {
         logOutButton.setPreferredSize(buttonSize);
         panel.add(logOutButton, gbc);
 
-        printTransactionButton.addActionListener(new ActionListener() {
+        updateStaffButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new PrintTransactionView();
+                new UpdateStaffView();
+                frame.dispose();
             }
         });
 
         updateFacilityButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                new UpdateFacilityView();
+                frame.dispose();
             }
         });
 
-        updateStaffButton.addActionListener(new ActionListener() {
+        updateFnBButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new UpdateStaffView();
+                new UpdateFnBView();
+                frame.dispose();
+            }
+        });
+
+        printTransactionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new PrintTransactionView();
+                frame.dispose();
             }
         });
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                new WelcomeScreen();
+                frame.dispose();
             }
         });
 
