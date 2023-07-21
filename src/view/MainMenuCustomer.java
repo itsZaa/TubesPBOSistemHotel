@@ -41,18 +41,21 @@ public class MainMenuCustomer {
         JButton pesanLaundry = new JButton("Pesan Laundry");
         JButton historyTransaction = new JButton("Riwayat Transaksi");
         JButton editProfile = new JButton("Edit Profile");
+        JButton lihatFasilitas = new JButton("Lihat Fasilitas");
 
         pesanKamar.setFocusable(false);
         pesanFnB.setFocusable(false);
         pesanLaundry.setFocusable(false);
         historyTransaction.setFocusable(false);
         editProfile.setFocusable(false);
+        lihatFasilitas.setFocusable(false);
 
         menuPanel.add(pesanKamar);
         menuPanel.add(pesanFnB);
         menuPanel.add(pesanLaundry);
         menuPanel.add(historyTransaction);
         menuPanel.add(editProfile);
+        menuPanel.add(lihatFasilitas);
 
         contentPanel.add(headerPanel);
         contentPanel.add(menuPanel);
