@@ -15,17 +15,17 @@ import javax.swing.SwingUtilities;
 import controller.DatabaseController;
 import controller.ReceptionistController;
 import model.RoomTransaction;
-import model.Staff;
+import model.User;
 import model.SingletonProfile;
 
 
 public class ReceptionistView {
     private JFrame frame;
-    private Staff staff;
+    private User user;
 
   
     public ReceptionistView() {
-        this.staff = (Staff) SingletonProfile.getInstance().getUser();
+        this.user = SingletonProfile.getInstance().getUser();
         initComponent();
     }
 
