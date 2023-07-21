@@ -1,7 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,27 +13,18 @@ import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyAdapter;
 
-import controller.DatabaseController;
 import controller.LaundryController;
-
-import model.GenderType;
 import model.Laundry;
-import model.Order;
-import model.RoomTransaction;
 import model.User;
-import model.Customer;
-import model.UserType;
-import model.Transaction;
+import model.SingletonProfile;
 
 public class LaundryMenuView {
     private LaundryController laundryController;
-    private ArrayList<Laundry> menuList;
     private User user;
 
     // butuh utk insert laundry_transaction db
@@ -43,12 +32,12 @@ public class LaundryMenuView {
     private double beratLaundry;
     private int roomNumber;
 
-    public LaundryMenuView(User user) {
+    public LaundryMenuView() {
         this.laundryController = new LaundryController(user);
-        this.user = user;
+        this.user = SingletonProfile.getInstance().getUser();
         this.laundry = new Laundry();
 
-        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(18, 0))) {
+        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 0))) {
             JFrame frame = new GlobalView().frame();
 
             JPanel panel = new JPanel();
@@ -163,6 +152,7 @@ public class LaundryMenuView {
 
                     if(paid){
                         frame.dispose();
+                        
                     }
                 }
             });
@@ -178,10 +168,7 @@ public class LaundryMenuView {
 
         
 
-    public static void main(String[] args) {
-        // dummy user
-        // ceritanya suatu customer yg udh check in ingin pesan laundry.
-        User user = new DatabaseController().getUser("marcelandrean");
-        new LaundryMenuView(user);
-    }
+    // public static void main(String[] args) {
+    //     new LaundryMenuView();
+    // }
 }

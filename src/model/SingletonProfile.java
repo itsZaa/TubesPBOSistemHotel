@@ -4,7 +4,7 @@ public class SingletonProfile {
     private static SingletonProfile instance;
     private User user = null;
     
-    private SingletonProfile(){
+    public SingletonProfile(){
         
     }
 

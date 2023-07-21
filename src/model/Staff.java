@@ -4,17 +4,15 @@ public class Staff extends User {
     private int staffId;
     private String NIK;
     private double salary;
-    private StaffType staffType;
 
     public Staff() {
     }
 
-    public Staff(int staffId, String NIK, double salary, StaffType staffType, String username, String fullname, String address,String password, GenderType gender, String phoneNumber, String email, UserType type) {
+    public Staff(int staffId, String NIK, double salary, String username, String fullname, String address,String password, GenderType gender, String phoneNumber, String email, UserType type) {
         super(username,fullname,address,password,gender,phoneNumber,email,type); 
         this.staffId = staffId;
         this.NIK = NIK;
         this.salary = salary;
-        this.staffType = staffType;
     }
 
     public int getStaffId() {
@@ -41,21 +39,12 @@ public class Staff extends User {
         this.salary = salary;
     }
 
-    public StaffType getStaffType() {
-        return this.staffType;
-    }
-
-    public void setStaffType(StaffType staffType) {
-        this.staffType = staffType;
-    }
-
     @Override
     public String toString() {
         return "{" +
                 " staffId='" + getStaffId() + "'" +
                 ", NIK='" + getNIK() + "'" +
                 ", salary='" + getSalary() + "'" +
-                ", staffType='" + getStaffType() + "'" +
                 "}";
     }
 }

@@ -11,12 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import model.Staff;
-import model.StaffType;
+import model.SingletonProfile;
 
 public class ReceptionistView {
     private JFrame frame;
+    private Staff staff;
 
-    public ReceptionistView(Staff staff) {
+    public ReceptionistView() {
+        this.staff = (Staff) SingletonProfile.getInstance().getUser();
         initComponent();
     }
 
@@ -57,7 +59,6 @@ public class ReceptionistView {
     }
 
     public static void main(String[] args) {
-        Staff staff = new Staff(1, "1122323345", 0, StaffType.RECEPTIONIST);
-        new ReceptionistView(staff);
+
     }
 }
