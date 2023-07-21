@@ -8,13 +8,15 @@ public class Member extends Customer {
 
     public Member() {
     }
-
-     public Member(String username, String fullname, String password, GenderType gender, String phoneNumber, String email, UserType type, ArrayList<Favorite> favList, ArrayList<Transaction> transactionList, int memberId, int point) {
-        super(username, fullname, password, gender, phoneNumber, email, type, favList, transactionList);
+    public Member(int memberId, int point) {
         this.memberId = memberId;
         this.point = point;
-     }
-
+    }
+    public Member(String username, String fullname, String address, String password, GenderType gender,String phoneNumber, String email, UserType type, ArrayList<Favorite> favList,ArrayList<Transaction> transactionList, int memberId, int point) {
+        super(username, fullname, address, password, gender, phoneNumber, email, type, favList, transactionList);
+        this.memberId = memberId;
+        this.point = point;
+    }
     public int getMemberId() {
         return this.memberId;
     }

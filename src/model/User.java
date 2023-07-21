@@ -13,16 +13,16 @@ public class User {
     public User() {
     }
 
-    public User(String username, String fullname, String password, GenderType gender, String phoneNumber, String email, UserType type) {
+    public User(String username, String fullname, String address, String password, GenderType gender, String phoneNumber, String email, UserType type) {
         this.username = username;
         this.fullname = fullname;
+        this.address = address;
         this.password = password;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.type = type;
     }
-
     public String getUsername() {
         return username;
     }

@@ -9,12 +9,12 @@ public class Customer extends User {
     public Customer() {
     }
 
-    public Customer(String username, String fullname, String password, GenderType gender, String phoneNumber, String email, UserType type, ArrayList<Favorite> favList, ArrayList<Transaction> transactionList) {
-        super(username, fullname, password, gender, phoneNumber, email, type);
+    public Customer(String username, String fullname, String address, String password, GenderType gender, String phoneNumber, String email, UserType type, ArrayList<Favorite> favList, ArrayList<Transaction> transactionList) {
+        super(username, fullname, address, password, gender, phoneNumber, email, type);
         this.favList = favList;
         this.transactionList = transactionList;
     }
-
+    
     public ArrayList<Favorite> getFavList() {
         return this.favList;
     }
