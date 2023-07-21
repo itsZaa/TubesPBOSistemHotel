@@ -22,7 +22,7 @@ public class RoomTransactionController {
         return "ROOM_" + formattedDateTime + "_" + String.format("%0" + 5 + "d", randomNumber);
     }
 
-    public boolean checkAvailability(LocalDate date, RoomType roomType, int quantity){
+    public boolean checkAvailability(LocalDate date, RoomType roomType, int quantity) {
         boolean cek = true;
         int availableQuantity = new DatabaseController().checkRoomAvailable(date, roomType);
         if (availableQuantity < quantity) {

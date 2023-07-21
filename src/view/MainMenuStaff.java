@@ -19,7 +19,7 @@ import java.awt.event.ActionEvent;
 public class MainMenuStaff {
     private User user;
 
-    public MainMenuStaff(){
+    public MainMenuStaff() {
         this.user = SingletonProfile.getInstance().getUser();
 
         JFrame frame = new GlobalView().frame();
@@ -39,15 +39,13 @@ public class MainMenuStaff {
         menuPanel.setLayout(new GridLayout(2, 2, 20, 20));
 
         JButton button1 = null;
-        JButton button2 = null;
-        JButton button3 = null;
+        // JButton button2 = null;
+        // JButton button3 = null;
 
-        if(user.getType() == UserType.RECEPTIONIST){
-
-                    frame.dispose();
-                    new ReceptionistView();
-
-        }else if(user.getType() == UserType.STAFF_FNB){
+        if (user.getType() == UserType.RECEPTIONIST) {
+            frame.dispose();
+            new ReceptionistView();
+        } else if (user.getType() == UserType.STAFF_FNB) {
             button1 = new JButton("Proses Pesanan F&B");
             button1.addActionListener(new ActionListener() {
                 @Override
@@ -56,7 +54,7 @@ public class MainMenuStaff {
                     new FnBStaffView();
                 }
             });
-        }else if(user.getType() == UserType.STAFF_LAUNDRY){
+        } else if (user.getType() == UserType.STAFF_LAUNDRY) {
             button1 = new JButton("Proses Pesanan Laundry");
             button1.addActionListener(new ActionListener() {
                 @Override
@@ -65,35 +63,29 @@ public class MainMenuStaff {
                     new LaundryStaffView();
                 }
             });
-        }else if(user.getType() == UserType.MANAGER){
+        } else if (user.getType() == UserType.MANAGER) {
             frame.dispose();
             new ManagerView();
         }
 
-        if(button1 != null){
+        if (button1 != null) {
             button1.setFocusable(false);
             menuPanel.add(button1);
         }
 
-        if(button2 != null){
-            button2.setFocusable(false);
-            menuPanel.add(button2);
-        }
+        // if (button2 != null) {
+        //     button2.setFocusable(false);
+        //     menuPanel.add(button2);
+        // }
 
-        if(button3 != null){
-            button3.setFocusable(false);
-            menuPanel.add(button3);
-        }
+        // if (button3 != null) {
+        //     button3.setFocusable(false);
+        //     menuPanel.add(button3);
+        // }
 
         contentPanel.add(headerPanel);
         contentPanel.add(menuPanel);
         frame.setContentPane(contentPanel);
         frame.setVisible(true);
     }
-
-    // public static void main(String[] args) {
-    //     //User dummy = new User(123, "123", 100000, StaffType.STAFF_LAUNDRY, null, null, null, null, null, null, null);
-
-    //     new MainMenuStaff();
-    // }
 }

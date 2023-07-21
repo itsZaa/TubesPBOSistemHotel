@@ -7,15 +7,15 @@ import model.FnBTransaction;
 public class FnBStaffController {
     private DatabaseController dbController;
 
-    public FnBStaffController(){
+    public FnBStaffController() {
         dbController = new DatabaseController();
     }
 
-     public ArrayList<FnBTransaction> getUnprocessedTransactions(){
+    public ArrayList<FnBTransaction> getUnprocessedFnBTransactions() {
         return dbController.getUnprocessedFnBTransactions();
     }
 
-    public boolean updateLaundryTransaction(FnBTransaction transaction){
+    public boolean updateFnBTransaction(FnBTransaction transaction) {
         return dbController.updateFnBTransaction(transaction);
-    }   
+    }
 }

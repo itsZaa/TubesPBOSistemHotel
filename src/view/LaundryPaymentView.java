@@ -32,11 +32,11 @@ public class LaundryPaymentView {
         this.isPay = false;
     }
 
-    private void setIsPayToTrue(){
+    private void setIsPayToTrue() {
         this.isPay = true;
     }
 
-    public boolean pay(User user, Laundry laundry, double beratLaundry, int roomNumber){
+    public boolean pay(User user, Laundry laundry, double beratLaundry, int roomNumber) {
 
         JFrame frame = new GlobalView().frame();
 
@@ -84,24 +84,27 @@ public class LaundryPaymentView {
                 if (selectedPaymentMethod != null) {
 
                     // Display a confirmation dialog with Yes/No options
-                    int result = JOptionPane.showConfirmDialog(null, "Sudah yakin dengan pesanan Anda dan ingin melakukan pembayaran?",
+                    int result = JOptionPane.showConfirmDialog(null,
+                            "Sudah yakin dengan pesanan Anda dan ingin melakukan pembayaran?",
                             "Confirmation", JOptionPane.YES_NO_OPTION);
 
                     // Check the user's choice
                     if (result == JOptionPane.YES_OPTION) {
                         // create object transaction
-                        new LaundryController().createLaundryTransaction(user, beratLaundry, roomNumber, laundry, selectedPaymentMethod);
+                        new LaundryController().createLaundryTransaction(user, beratLaundry, roomNumber, laundry,
+                                selectedPaymentMethod);
 
-                        //System.out.println("INI MASUK");
+                        // System.out.println("INI MASUK");
                         setIsPayToTrue();
-                        frame.dispose(); //ini nanti balik ke menu utama!!!
+                        frame.dispose(); // ini nanti balik ke menu utama!!!
                     } else {
-                        frame.dispose(); //ini balik ke formulir pemesanan laundry!!!
+                        frame.dispose(); // ini balik ke formulir pemesanan laundry!!!
                     }
 
                 } else {
                     // No payment method selected
-                    JOptionPane.showMessageDialog(frame, "Please select a payment method.", "Payment Method",JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(frame, "Please select a payment method.", "Payment Method",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
         });

@@ -2,30 +2,18 @@ package view;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-
 
 import controller.DatabaseController;
-import controller.ReceptionistController;
-import model.RoomTransaction;
-import model.User;
-import model.SingletonProfile;
-
 
 public class ReceptionistView {
     private JFrame frame;
-    private User user;
 
-  
     public ReceptionistView() {
-        this.user = SingletonProfile.getInstance().getUser();
         initComponent();
     }
 

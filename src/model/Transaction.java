@@ -40,6 +40,14 @@ public abstract class Transaction {
         this.user = user;
     }
 
+    public ArrayList<Order> getOrder() {
+        return order;
+    }
+
+    public void setOrder(ArrayList<Order> order) {
+        this.order = order;
+    }
+
     public abstract ArrayList<Order> getOrderList();
 
     @Override

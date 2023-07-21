@@ -4,8 +4,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import model.User;
-import model.SingletonProfile;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
@@ -14,12 +12,9 @@ import java.awt.GridLayout;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Font;
-import java.awt.Cursor;
 
 public class MainMenuCustomer {
     public MainMenuCustomer() {
-        Font font1 = new Font("Serif", Font.PLAIN, 20);
         JFrame frame = new GlobalView().frame();
         frame.setLayout(new BorderLayout());
 
@@ -65,7 +60,7 @@ public class MainMenuCustomer {
         pesanKamar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                //frame.dispose();
+                // frame.dispose();
                 new RoomTransactionView();
             }
         });
@@ -78,7 +73,6 @@ public class MainMenuCustomer {
             }
         });
 
-            
         pesanLaundry.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -105,6 +99,6 @@ public class MainMenuCustomer {
     JButton SignUp = new JButton("Sign Up");
 
     // public static void main(String[] args) {
-    //     new MainMenuCustomer();
+    // new MainMenuCustomer();
     // }
 }

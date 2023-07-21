@@ -77,7 +77,7 @@ public class LaundryMenuView {
                         }
                     }
                 });
-                
+
                 buttonStandard.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -150,9 +150,9 @@ public class LaundryMenuView {
 
                     boolean paid = new LaundryPaymentView().pay(user, laundry, beratLaundry, roomNumber);
 
-                    if(paid){
+                    if (paid) {
                         frame.dispose();
-                        
+
                     }
                 }
             });
@@ -166,9 +166,7 @@ public class LaundryMenuView {
         }
     }
 
-        
-
     // public static void main(String[] args) {
-    //     new LaundryMenuView();
+    // new LaundryMenuView();
     // }
 }

@@ -24,7 +24,6 @@ public class ReceptionistController {
         ArrayList<RoomOrder> order = null;
         order = new DatabaseController().getRoomOrder(transaction.getTransactionId());
         ArrayList<RoomType> roomType = new ArrayList<>();
- 
 
         if (order != null) {
             for (RoomOrder roomOrder : order) {

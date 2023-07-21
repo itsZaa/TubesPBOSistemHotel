@@ -1,23 +1,16 @@
 package controller;
 
-//import model.Customer;
 import model.Laundry;
 import model.LaundryTransaction;
 import model.OrderStatus;
 import model.PaymentMethod;
 import model.User;
 import model.RoomTransaction;
-//import model.Transaction;
 import java.time.LocalDate;
-import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-//import java.time.temporal.ChronoUnit;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
-
-//import com.mysql.cj.x.protobuf.MysqlxCrud.Order;
 
 public class LaundryController {
     private DatabaseController databaseController;

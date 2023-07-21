@@ -61,7 +61,6 @@ public class HistoryTransactionView {
             frame.dispose();
         });
 
-
         frame.setContentPane(panel);
         frame.add(footerPanel, BorderLayout.PAGE_END);
 

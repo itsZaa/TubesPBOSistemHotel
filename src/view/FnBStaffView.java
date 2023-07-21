@@ -23,7 +23,7 @@ public class FnBStaffView {
     private JPanel textAreaPanel;
 
     public FnBStaffView() {
-        this.queue = new LinkedList<>(new FnBStaffController().getUnprocessedTransactions());
+        this.queue = new LinkedList<>(new FnBStaffController().getUnprocessedFnBTransactions());
         initComponent();
     }
 
@@ -60,8 +60,19 @@ public class FnBStaffView {
         panel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel footerPanel = new JPanel();
+        JButton logOutButton = new JButton("Log out");
+        footerPanel.add(logOutButton);
+
         JButton processButton = new JButton("Process");
         footerPanel.add(processButton);
+
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+                new WelcomeScreen();
+            }
+        });
 
         processButton.addActionListener(new ActionListener() {
             @Override
@@ -69,7 +80,7 @@ public class FnBStaffView {
                 if (!queue.isEmpty()) {
                     FnBTransaction firstTransaction = queue.poll();
 
-                    boolean isSucceed = new FnBStaffController().updateLaundryTransaction(firstTransaction);
+                    boolean isSucceed = new FnBStaffController().updateFnBTransaction(firstTransaction);
 
                     if (isSucceed) {
                         new GlobalView().notif(firstTransaction.getTransactionId() + " successfully processed.");

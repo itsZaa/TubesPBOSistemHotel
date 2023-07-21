@@ -1,8 +1,10 @@
 package controller;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 public class Hasher {
-    public static String password (String pass) {
+    public static String password(String pass) {
         try {
             MessageDigest m = MessageDigest.getInstance("MD5");
             m.update(pass.getBytes());
@@ -18,4 +20,3 @@ public class Hasher {
         return pass;
     }
 }
-

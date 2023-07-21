@@ -1,6 +1,5 @@
 package view;
 
-import controller.DatabaseController;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,11 +11,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Cursor;
 import java.awt.Font;
-import model.Customer;
 import model.User;
 import model.SingletonProfile;
-import model.UserType;
-import model.Staff;
 
 public class SignInView {
     public static void main(String[] args) {

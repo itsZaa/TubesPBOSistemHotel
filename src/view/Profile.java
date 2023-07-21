@@ -1,18 +1,14 @@
 package view;
 
 import controller.ProfileController;
-import main.Main;
 import model.*;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Profile {
@@ -26,59 +22,59 @@ public class Profile {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Font font1 = new Font("Serif", Font.PLAIN, 20);
 
-        //label judul
+        // label judul
         JLabel judul = new JLabel("Profile");
         judul.setBounds(235, 5, 500, 60);
         judul.setFont(new Font("Serif", Font.BOLD, 35));
 
-        //label nama
+        // label nama
         JLabel namaLabel = new JLabel("Username");
         namaLabel.setBounds(100, 100, 90, 40);
         namaLabel.setFont(font1);
 
-        //textfield nama
+        // textfield nama
         JTextField tfNama = new JTextField();
         tfNama.setText(user.getUsername());
         tfNama.setEditable(false);
         tfNama.setBounds(240, 105, 240, 30);
         tfNama.setFont(font1);
 
-        //label username
+        // label username
         JLabel userNameLabel = new JLabel("Full_Name");
         userNameLabel.setBounds(100, 140, 90, 40);
         userNameLabel.setFont(font1);
 
-        //textfield username
+        // textfield username
         JTextField tfUserName = new JTextField();
         tfUserName.setText(user.getFullname());
         tfUserName.setEditable(false);
         tfUserName.setBounds(240, 145, 240, 30);
         tfUserName.setFont(font1);
 
-        //label alamat
+        // label alamat
         JLabel alamatLabel = new JLabel("Alamat");
         alamatLabel.setBounds(100, 185, 90, 40);
         alamatLabel.setFont(font1);
-        
+
         JTextField tfAlamat = new JTextField();
         tfAlamat.setText(user.getAddress());
         tfAlamat.setEditable(false);
         tfAlamat.setBounds(240, 195, 240, 30);
         tfAlamat.setFont(font1);
 
-        //button edit
+        // button edit
         JButton submit = new JButton("Edit");
         submit.setBounds(300, 510, 180, 50);
         submit.setFont(font1);
         submit.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        //button update
+        // button update
         JButton update = new JButton("Update");
         update.setBounds(300, 510, 180, 50);
         update.setFont(font1);
         update.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        
-        //button back
+
+        // button back
         JButton backProfile = new JButton("Kembali");
         backProfile.setBounds(100, 510, 180, 50);
         backProfile.setFont(font1);
@@ -126,12 +122,12 @@ public class Profile {
                 new MainMenuCustomer();
             }
         });
-        //button log out
+        // button log out
         JButton logout = new JButton("Log Out");
-        logout.setBounds(10,10,100,50);
+        logout.setBounds(10, 10, 100, 50);
         logout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        logout.setFont(new Font("Serif",Font.PLAIN,15));
-        logout.addActionListener(new ActionListener(){
+        logout.setFont(new Font("Serif", Font.PLAIN, 15));
+        logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 frame.dispose();

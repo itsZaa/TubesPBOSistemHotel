@@ -1,21 +1,17 @@
 package controller;
-import model.Customer;
-import java.util.ArrayList;
+
 import java.sql.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
-import view.*;
+
 public class SignUpController {
-    public String SignUp(String userName, String fullName, String email, String password, String alamat,String gender, String noTelp) {
+    public String SignUp(String userName, String fullName, String email, String password, String alamat, String gender,
+            String noTelp) {
         String query;
         password = Hasher.password(password);
         try {
             DatabaseHandler conn = new DatabaseHandler();
             conn.connect();
             PreparedStatement stmt;
-            //for insert customer data
+            // for insert customer data
             query = "INSERT INTO users(username, full_name, email, password, address, gender, phone_number, type) VALUES(?,?,?,?,?,?,?,?)";
             stmt = conn.con.prepareStatement(query);
             stmt.setString(1, userName);

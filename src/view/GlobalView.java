@@ -66,8 +66,4 @@ public class GlobalView {
         int confirmation = JOptionPane.showConfirmDialog(null, text, "Confirmation", JOptionPane.YES_NO_OPTION);
         return confirmation == JOptionPane.YES_OPTION;
     }
-
-    // public JTextField input () {
-
-    // }
 }

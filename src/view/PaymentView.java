@@ -113,7 +113,8 @@ public class PaymentView {
                         paymentObserver.onPaymentSuccess();
                     }
                     new GlobalView().notif("Payment successful!");
-                    new GlobalView().notif("Transaction completed, your transaction id: " + transaction.getTransactionId() + "! ");
+                    new GlobalView().notif(
+                            "Transaction completed, your transaction id: " + transaction.getTransactionId() + "! ");
                 } else {
                     new GlobalView().warning("Payment canceled.");
                 }
