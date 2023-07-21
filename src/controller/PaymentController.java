@@ -32,8 +32,7 @@ public class PaymentController {
                         .append(roomOrder.getOrderPrice()).append("\n");
             } else if (order instanceof FnBOrder) {
                 FnBOrder fnbOrder = (FnBOrder) order;
-                sb.append(" ").append(fnbOrder.getFood().getMenuName()).append(" x").append(fnbOrder.getQuantity())
-                        .append(" : ").append(fnbOrder.getOrderPrice()).append("\n");
+                sb.append(" ").append(fnbOrder.getFood().getMenuName()).append(" x").append(fnbOrder.getQuantity()).append(" : ").append(fnbOrder.getOrderPrice()).append("\n");
             }
         }
 

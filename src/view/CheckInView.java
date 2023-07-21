@@ -1,5 +1,8 @@
 package view;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -8,15 +11,16 @@ import model.Staff;
 
 public class CheckInView {
     JFrame frame;
+    Date date;
     public CheckInView (Staff staff) {
         initComponent();
     }
 
     private void initComponent(){
         frame = new GlobalView().frame();
-
         JLabel title = new GlobalView().labelHeader("Check-In");
         frame.add(title);
+
 
         JLabel labelUsername = new JLabel("Username :");
         JTextField fieldUsername = new JTextField();
@@ -29,7 +33,6 @@ public class CheckInView {
 
         //get Transaction where date + OrderList
 
-        //asumsi tidak dapat pilih kamar
         //check kamar kosong, kasih kamar value, kamar boolean filled
         //query update transaction, update kamar
     }
