@@ -14,18 +14,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import controller.UpdateFacilityController;
 import model.HotelFacility;
 
-public class UpdateFacilityView {
+public class HotelFacilityView {
     private JFrame frame;
     private JPanel mainPanel;
     private JPanel buttonPanel;
     private ArrayList<HotelFacility> facilities;
 
-    public UpdateFacilityView() {
+    public HotelFacilityView() {
         facilities = new UpdateFacilityController().getAllFacilities();
         initComponent();
     }
@@ -39,7 +38,7 @@ public class UpdateFacilityView {
         frame.setLayout(new BorderLayout(10, 10));
 
         // Title
-        JLabel title = new GlobalView().labelHeader("List Hotel Facility:");
+        JLabel title = new GlobalView().labelHeader("View Hotel Facility:");
         frame.add(title, BorderLayout.NORTH);
 
         mainPanel = new JPanel();
@@ -55,6 +54,7 @@ public class UpdateFacilityView {
             gbc.gridy = y;
             gbc.gridx = 0;
             JLabel facilityLabel = new JLabel((y + 1) + ") " + facility.getFacilityName());
+            facilityLabel.setFont(facilityLabel.getFont().deriveFont(14.0f));
             mainPanel.add(facilityLabel, gbc);
             y++;
         }
@@ -67,56 +67,17 @@ public class UpdateFacilityView {
         buttonPanel.setLayout(new GridBagLayout());
 
         gbc.gridy = 0;
-        gbc.gridx = 1;
-        JLabel inputLabel = new JLabel("Input Facility Name:");
-        buttonPanel.add(inputLabel, gbc);
-
-        gbc.gridx = 2;
-        JTextField inputField = new JTextField(10);
-        buttonPanel.add(inputField, gbc);
-
-        gbc.gridy = 1;
         gbc.gridx = 0;
         JButton backButton = new JButton("Back");
         buttonPanel.add(backButton, gbc);
-
-        gbc.gridx = 1;
-        JButton addButton = new JButton("Add");
-        buttonPanel.add(addButton, gbc);
-
-        gbc.gridx = 2;
-        JButton deleteButton = new JButton("Delete");
-        buttonPanel.add(deleteButton, gbc);
 
         frame.add(buttonPanel, BorderLayout.SOUTH);
 
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ManagerView();
+                new MainMenuCustomer();
                 frame.dispose();
-            }
-        });
-
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new FormAddFacility();
-                frame.dispose();
-            }
-        });
-
-        deleteButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean isDeleted = new UpdateFacilityController().deleteFacility(inputField.getText());
-                if (isDeleted) {
-                    new GlobalView().notif("Facility successfully deleted.");
-                    new ManagerView();
-                    frame.dispose();
-                } else {
-                    new GlobalView().error("Facility not found.");
-                }
             }
         });
 
@@ -125,6 +86,6 @@ public class UpdateFacilityView {
     }
 
     public static void main(String[] args) {
-        new UpdateFacilityView();
+        new HotelFacilityView();
     }
 }
