@@ -160,7 +160,7 @@ public class UpdateStaffController {
         User user = null;
         try {
             conn.connect();
-            String query = "SELECT * FROM users WHERE username = '" + username + "' AND type = 'staff'";
+            String query = "SELECT * FROM users WHERE username = '" + username + "'";
             Statement stmt = conn.con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
             if (rs.next()) {
