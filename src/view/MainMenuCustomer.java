@@ -31,7 +31,7 @@ public class MainMenuCustomer {
         JPanel menuPanel = new JPanel();
         menuPanel.setLayout(new GridLayout(2, 2, 20, 20));
 
-        JButton pesanKamar = new JButton("Pesan kamar");
+        JButton pesanKamar = new JButton("Pesan Kamar");
         JButton pesanFnB = new JButton("Pesan FnB");
         JButton pesanLaundry = new JButton("Pesan Laundry");
         JButton historyTransaction = new JButton("Riwayat Transaksi");
@@ -68,7 +68,7 @@ public class MainMenuCustomer {
         pesanFnB.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                frame.dispose();
+                // frame.dispose();
                 new FnBMenuView();
             }
         });
@@ -80,6 +80,7 @@ public class MainMenuCustomer {
                 new LaundryMenuView();
             }
         });
+
         historyTransaction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
@@ -87,11 +88,20 @@ public class MainMenuCustomer {
                 new HistoryTransactionView();
             }
         });
+
         editProfile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
                 frame.dispose();
                 new Profile();
+            }
+        });
+
+        lihatFasilitas.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                frame.dispose();
+                new HotelFacilityView();
             }
         });
     }
