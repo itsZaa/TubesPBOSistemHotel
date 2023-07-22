@@ -37,7 +37,7 @@ public class ReceptionistController {
                 if (!exist) {
                     roomType.add(type);
                     for (int i = 0; i < roomOrder.getQuantity(); i++) {
-                        int roomNumber = new DatabaseController().searchRoom(roomOrder.getRoomType());
+                        int roomNumber = new DatabaseController().searchRoom(type);
                         new DatabaseController().updateRoom(roomNumber, transaction.getDuration());
                         room.add(roomNumber);
                     }

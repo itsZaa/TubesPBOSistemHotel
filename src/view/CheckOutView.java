@@ -48,6 +48,7 @@ public class CheckOutView {
                     ArrayList<Integer> room = new ReceptionistController().getNewRoom(ts);
                     new GlobalView().notif(room.toString());
                 }
+                new ReceptionistView();
                 frame.dispose();
             }
         });

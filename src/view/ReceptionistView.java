@@ -52,8 +52,8 @@ public class ReceptionistView {
         });
         frame.add(checkOutButton);
 
-        JButton refreshDay = new JButton("reset day");
-        refreshDay.setBounds(175, 420, 150, 50);
+        JButton refreshDay = new JButton("Reset Day");
+        refreshDay.setBounds(50, 420, 150, 50);
         refreshDay.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,6 +62,17 @@ public class ReceptionistView {
             }
         });
         frame.add(refreshDay);
+
+        JButton logOutButton = new JButton("Log Out");
+        logOutButton.setBounds(300, 420, 150, 50);
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new WelcomeScreen();
+                frame.dispose();
+            }
+        });
+        frame.add(logOutButton);
 
         frame.setVisible(true);
     }

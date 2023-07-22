@@ -52,7 +52,7 @@ public class FnBMenuView implements PaymentObserver {
 
     public void initComponent() {
         // JAM OPERASIONAL 06:00 - 21:00
-        if (LocalTime.now().isAfter(LocalTime.of(0, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 59))) {
+        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(21, 00))) {
             frame = new JFrame("Aplikasi Sistem Hotel");
             frame.setSize(400, 400);
             frame.setResizable(false);

@@ -26,6 +26,7 @@ import model.SingletonProfile;
 public class LaundryMenuView {
     private LaundryController laundryController;
     private User user;
+    private JFrame frame;
 
     // butuh utk insert laundry_transaction db
     private Laundry laundry;
@@ -37,8 +38,12 @@ public class LaundryMenuView {
         this.user = SingletonProfile.getInstance().getUser();
         this.laundry = new Laundry();
 
-        if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(23, 0))) {
-            JFrame frame = new GlobalView().frame();
+        if(new LaundryController(user).getLamaInap() == 0){
+            frame = new GlobalView().frame();
+            frame.dispose();
+            new MainMenuCustomer();
+        } else if (LocalTime.now().isAfter(LocalTime.of(6, 0)) && LocalTime.now().isBefore(LocalTime.of(18, 0))) {
+            frame = new GlobalView().frame();
 
             JPanel panel = new JPanel();
             panel.setLayout(null);
@@ -46,7 +51,7 @@ public class LaundryMenuView {
             JLabel title = new GlobalView().labelHeader("Laundry List");
             panel.add(title);
 
-            if (new LaundryController(user).getLamaInap() <= 1) {
+            if (new LaundryController(user).getLamaInap() == 1) {
                 JRadioButton buttonExpress = new JRadioButton("Express");
                 buttonExpress.setBounds(10, 40, 100, 30);
 
@@ -135,8 +140,9 @@ public class LaundryMenuView {
             cancelButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
                     JOptionPane.showMessageDialog(null, "Pemesanan dibatalkan!");
+                    new MainMenuCustomer();
+                    frame.dispose();
                 }
             });
             cancelButton.setBounds(300, 420, 90, 25);

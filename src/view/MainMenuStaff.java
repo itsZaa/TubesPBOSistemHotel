@@ -42,6 +42,11 @@ public class MainMenuStaff {
         // JButton button2 = null;
         // JButton button3 = null;
 
+        contentPanel.add(headerPanel);
+        contentPanel.add(menuPanel);
+        frame.setContentPane(contentPanel);
+        frame.setVisible(true);
+
         if (user.getType() == UserType.RECEPTIONIST) {
             frame.dispose();
             new ReceptionistView();
@@ -82,10 +87,5 @@ public class MainMenuStaff {
         //     button3.setFocusable(false);
         //     menuPanel.add(button3);
         // }
-
-        contentPanel.add(headerPanel);
-        contentPanel.add(menuPanel);
-        frame.setContentPane(contentPanel);
-        frame.setVisible(true);
     }
 }

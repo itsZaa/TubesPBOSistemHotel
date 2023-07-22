@@ -131,7 +131,7 @@ public class DatabaseController {
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getFullname());
             stmt.setString(3, user.getEmail());
-            stmt.setString(4, user.getPassword());
+            stmt.setString(4, Hasher.password(user.getPassword()));
             stmt.setString(5, user.getAddress());
             stmt.setString(6, user.getGender().name());
             stmt.setString(7, user.getPhoneNumber());
@@ -227,7 +227,7 @@ public class DatabaseController {
                 transaction.setTransactionId(rs.getString("fnb_transaction_id"));
                 transaction.setUser(user);
                 transaction.setRoomNumber(rs.getInt("room_number"));
-                transaction.setStatus(OrderStatus.valueOf(rs.getString("status")));
+                transaction.setStatus(OrderStatus.valueOf(rs.getString("status").toUpperCase()));
                 transaction.setTotalPrice(rs.getDouble("total_price"));
 
                 String paymentMethodName = rs.getString("payment_method").toUpperCase();
@@ -300,8 +300,20 @@ public class DatabaseController {
 
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
-                transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
-                transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+
+                Timestamp timeCheckIn = rs.getTimestamp("time_check_in");
+                if (!rs.wasNull()) {
+                    transaction.setTimeStampCheckIn(new Date(timeCheckIn.getTime()));
+                }
+
+                Timestamp timeCheckOut = rs.getTimestamp("time_check_out");
+                if (!rs.wasNull()) {
+                    transaction.setTimeStampCheckOut(new Date(timeCheckOut.getTime()));
+                }
+
+
+                // transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+
                 transaction.setDateCheckIn(rs.getDate("date_check_in").toLocalDate());
                 transaction.setDuration(rs.getInt("stay_duration"));
 
@@ -334,8 +346,12 @@ public class DatabaseController {
     public boolean updateCheckIn(String id) {
         try {
             conn.connect();
-            String query = "UPDATE users SET status='" + BookingStatus.CHECK_IN + "' WHERE room_transaction_id='" + id
-                    + "'";
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String query = "UPDATE room_transaction" 
+                    + " SET status='" + BookingStatus.CHECK_IN 
+                    + "', time_check_in='" + timestamp
+                    + "' WHERE room_transaction_id='" + id + "'";
+
             Statement stmt = conn.con.createStatement();
             stmt.executeUpdate(query);
             return true;
@@ -350,8 +366,11 @@ public class DatabaseController {
     public boolean updateCheckOut(String id) {
         try {
             conn.connect();
-            String query = "UPDATE users SET status='" + BookingStatus.CHECK_OUT + "' WHERE room_transaction_id='" + id
-                    + "'";
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String query = "UPDATE room_transaction" 
+                    + " SET status='" + BookingStatus.CHECK_OUT 
+                    + "', time_check_outout='" + timestamp
+                    + "' WHERE room_transaction_id='" + id + "'";
             Statement stmt = conn.con.createStatement();
             stmt.executeUpdate(query);
             return true;
@@ -376,8 +395,24 @@ public class DatabaseController {
                 transaction = new RoomTransaction();
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
-                transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
-                transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+
+                // transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
+                // transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+
+
+
+                Timestamp timeCheckIn = rs.getTimestamp("time_check_in");
+                if (!rs.wasNull()) {
+                    transaction.setTimeStampCheckIn(new Date(timeCheckIn.getTime()));
+                }
+            
+                // Pengecekan timestamp time_check_out
+                Timestamp timeCheckOut = rs.getTimestamp("time_check_out");
+                if (!rs.wasNull()) {
+                    transaction.setTimeStampCheckOut(new Date(timeCheckOut.getTime()));
+                }
+
+
                 transaction.setDateCheckIn(rs.getDate("date_check_in").toLocalDate());
                 transaction.setDuration(rs.getInt("stay_duration"));
 
@@ -463,8 +498,19 @@ public class DatabaseController {
                 transaction.setUser(getUser(user.getUsername(), user.getPassword()));
                 transaction.setTransactionId(rs.getString("room_transaction_id"));
                 transaction.setDateBooked(new Date(rs.getTimestamp("time_booked").getTime()));
-                transaction.setTimeStampCheckIn(new Date(rs.getTimestamp("time_check_in").getTime()));
-                transaction.setTimeStampCheckOut(new Date(rs.getTimestamp("time_check_out").getTime()));
+               
+                Timestamp timeCheckIn = rs.getTimestamp("time_check_in");
+                if (!rs.wasNull()) {
+                    transaction.setTimeStampCheckIn(new Date(timeCheckIn.getTime()));
+                }
+            
+                // Pengecekan timestamp time_check_out
+                Timestamp timeCheckOut = rs.getTimestamp("time_check_out");
+                if (!rs.wasNull()) {
+                    transaction.setTimeStampCheckOut(new Date(timeCheckOut.getTime()));
+                }
+
+
                 transaction.setDateCheckIn(rs.getDate("date_check_in").toLocalDate());
                 transaction.setDuration(rs.getInt("stay_duration"));
 
