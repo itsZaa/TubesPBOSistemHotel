@@ -76,7 +76,7 @@ public class HotelFacilityView {
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ManagerView();
+                new MainMenuCustomer();
                 frame.dispose();
             }
         });
