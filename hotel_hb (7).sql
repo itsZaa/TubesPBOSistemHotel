@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Jul 2023 pada 18.48
--- Versi server: 10.4.22-MariaDB
--- Versi PHP: 8.1.1
+-- Generation Time: Jul 22, 2023 at 03:34 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,29 +24,29 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `favorite`
+-- Table structure for table `favorite`
 --
 
 CREATE TABLE `favorite` (
   `favorite_id` int(11) NOT NULL,
   `room_type` varchar(255) DEFAULT NULL,
   `username` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `fnb_menu`
+-- Table structure for table `fnb_menu`
 --
 
 CREATE TABLE `fnb_menu` (
   `menu_name` varchar(255) NOT NULL,
   `menu_type` varchar(255) DEFAULT NULL,
   `price` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `fnb_menu`
+-- Dumping data for table `fnb_menu`
 --
 
 INSERT INTO `fnb_menu` (`menu_name`, `menu_type`, `price`) VALUES
@@ -64,7 +64,7 @@ INSERT INTO `fnb_menu` (`menu_name`, `menu_type`, `price`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `fnb_order`
+-- Table structure for table `fnb_order`
 --
 
 CREATE TABLE `fnb_order` (
@@ -73,10 +73,10 @@ CREATE TABLE `fnb_order` (
   `menu_name` varchar(255) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `price` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `fnb_order`
+-- Dumping data for table `fnb_order`
 --
 
 INSERT INTO `fnb_order` (`order_id`, `fnb_transaction_id`, `menu_name`, `quantity`, `price`) VALUES
@@ -85,7 +85,7 @@ INSERT INTO `fnb_order` (`order_id`, `fnb_transaction_id`, `menu_name`, `quantit
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `fnb_transaction`
+-- Table structure for table `fnb_transaction`
 --
 
 CREATE TABLE `fnb_transaction` (
@@ -96,10 +96,10 @@ CREATE TABLE `fnb_transaction` (
   `total_price` double DEFAULT NULL,
   `payment_method` varchar(255) DEFAULT NULL,
   `transaction_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `fnb_transaction`
+-- Dumping data for table `fnb_transaction`
 --
 
 INSERT INTO `fnb_transaction` (`fnb_transaction_id`, `username`, `room_number`, `status`, `total_price`, `payment_method`, `transaction_date`) VALUES
@@ -108,27 +108,27 @@ INSERT INTO `fnb_transaction` (`fnb_transaction_id`, `username`, `room_number`, 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `hotel_facility`
+-- Table structure for table `hotel_facility`
 --
 
 CREATE TABLE `hotel_facility` (
   `hotel_facility_id` int(11) NOT NULL,
   `facility` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `laundry`
+-- Table structure for table `laundry`
 --
 
 CREATE TABLE `laundry` (
   `laundry_name` varchar(255) NOT NULL,
   `price` double DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `laundry`
+-- Dumping data for table `laundry`
 --
 
 INSERT INTO `laundry` (`laundry_name`, `price`) VALUES
@@ -138,7 +138,7 @@ INSERT INTO `laundry` (`laundry_name`, `price`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `laundry_transaction`
+-- Table structure for table `laundry_transaction`
 --
 
 CREATE TABLE `laundry_transaction` (
@@ -152,10 +152,10 @@ CREATE TABLE `laundry_transaction` (
   `date_delivered` timestamp NULL DEFAULT NULL,
   `laundry_name` varchar(255) DEFAULT NULL,
   `estimation_done` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `laundry_transaction`
+-- Dumping data for table `laundry_transaction`
 --
 
 INSERT INTO `laundry_transaction` (`laundry_transaction_id`, `username`, `room_number`, `status`, `total_price`, `payment_method`, `date_order`, `date_delivered`, `laundry_name`, `estimation_done`) VALUES
@@ -166,19 +166,19 @@ INSERT INTO `laundry_transaction` (`laundry_transaction_id`, `username`, `room_n
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `member`
+-- Table structure for table `member`
 --
 
 CREATE TABLE `member` (
   `member_id` int(11) NOT NULL,
   `username` varchar(255) DEFAULT NULL,
   `point` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `merchandise`
+-- Table structure for table `merchandise`
 --
 
 CREATE TABLE `merchandise` (
@@ -186,21 +186,21 @@ CREATE TABLE `merchandise` (
   `Merchandise_name` varchar(255) NOT NULL,
   `Point_required` int(11) NOT NULL,
   `Strock_merch` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `payment_method`
+-- Table structure for table `payment_method`
 --
 
 CREATE TABLE `payment_method` (
   `payment_method_id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `payment_method`
+-- Dumping data for table `payment_method`
 --
 
 INSERT INTO `payment_method` (`payment_method_id`, `name`) VALUES
@@ -210,19 +210,19 @@ INSERT INTO `payment_method` (`payment_method_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `redeem_merchandise`
+-- Table structure for table `redeem_merchandise`
 --
 
 CREATE TABLE `redeem_merchandise` (
   `redeem_id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
   `merchandise` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `room`
+-- Table structure for table `room`
 --
 
 CREATE TABLE `room` (
@@ -230,24 +230,24 @@ CREATE TABLE `room` (
   `room_type` varchar(255) DEFAULT NULL,
   `status` int(11) DEFAULT NULL,
   `occupied_length` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `room_facility`
+-- Table structure for table `room_facility`
 --
 
 CREATE TABLE `room_facility` (
   `room_facility_id` int(11) NOT NULL,
   `room_type` varchar(255) NOT NULL,
   `facility_name` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `room_order`
+-- Table structure for table `room_order`
 --
 
 CREATE TABLE `room_order` (
@@ -258,10 +258,10 @@ CREATE TABLE `room_order` (
   `quantity` int(11) NOT NULL,
   `price` double NOT NULL,
   `date` date DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `room_order`
+-- Dumping data for table `room_order`
 --
 
 INSERT INTO `room_order` (`room_order_id`, `room_transaction_id`, `room_number`, `room_type`, `quantity`, `price`, `date`) VALUES
@@ -308,7 +308,7 @@ INSERT INTO `room_order` (`room_order_id`, `room_transaction_id`, `room_number`,
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `room_transaction`
+-- Table structure for table `room_transaction`
 --
 
 CREATE TABLE `room_transaction` (
@@ -321,10 +321,10 @@ CREATE TABLE `room_transaction` (
   `time_check_in` timestamp NULL DEFAULT current_timestamp(),
   `time_check_out` timestamp NULL DEFAULT current_timestamp(),
   `payment_method` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `room_transaction`
+-- Dumping data for table `room_transaction`
 --
 
 INSERT INTO `room_transaction` (`room_transaction_id`, `username`, `date_check_in`, `stay_duration`, `status`, `time_booked`, `time_check_in`, `time_check_out`, `payment_method`) VALUES
@@ -368,7 +368,7 @@ INSERT INTO `room_transaction` (`room_transaction_id`, `username`, `date_check_i
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `room_type`
+-- Table structure for table `room_type`
 --
 
 CREATE TABLE `room_type` (
@@ -376,10 +376,10 @@ CREATE TABLE `room_type` (
   `type_name` varchar(255) NOT NULL,
   `price` double NOT NULL,
   `number_of_room` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `room_type`
+-- Dumping data for table `room_type`
 --
 
 INSERT INTO `room_type` (`room_type_id`, `type_name`, `price`, `number_of_room`) VALUES
@@ -391,7 +391,7 @@ INSERT INTO `room_type` (`room_type_id`, `type_name`, `price`, `number_of_room`)
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `staff`
+-- Table structure for table `staff`
 --
 
 CREATE TABLE `staff` (
@@ -400,10 +400,10 @@ CREATE TABLE `staff` (
   `NIK` varchar(255) DEFAULT NULL,
   `salary` double DEFAULT NULL,
   `type` enum('receptionist','staff_fnb','staff_laundry','manager') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `staff`
+-- Dumping data for table `staff`
 --
 
 INSERT INTO `staff` (`staff_id`, `username`, `NIK`, `salary`, `type`) VALUES
@@ -413,7 +413,7 @@ INSERT INTO `staff` (`staff_id`, `username`, `NIK`, `salary`, `type`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struktur dari tabel `users`
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -425,19 +425,20 @@ CREATE TABLE `users` (
   `gender` enum('male','female') DEFAULT NULL,
   `phone_number` varchar(20) DEFAULT NULL,
   `type` enum('CUSTOMER','RECEPTIONIST','STAFF_FNB','STAFF_LAUNDRY','MANAGER') DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data untuk tabel `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`username`, `full_name`, `email`, `password`, `address`, `gender`, `phone_number`, `type`) VALUES
-('epen', 'steven', 'steven@gmail.com', 'ed84089fcb1b864597cf6dc504859d1d', 'tki 1', 'male', '089522331', 'STAFF_FNB'),
-('marcelandrean', 'Marcel Andrean', 'marcel@gmail.com', 'marcel123', 'Taman Rahayu', 'male', '08798123445', 'CUSTOMER'),
-('nico.js', 'nico.js', 'niconew@gmail.com', '161993b745dae99f7cfd4fac0963623e', ' tki 1', 'male', '08123456789', 'CUSTOMER'),
-('otong123', 'otong surotong', 'tong@gmail.com', 'd72c59dcf784cafa940d06b1b75f3b70', 'BABI', 'male', '0812', 'CUSTOMER'),
+('epen', 'steven', 'steven@gmail.com', '202cb962ac59075b964b07152d234b70', 'tki 1', 'male', '089522331', 'STAFF_FNB'),
+('marcelandrean', 'Marcel Andrean', 'marcel@gmail.com', '202cb962ac59075b964b07152d234b70', 'Taman Rahayu', 'male', '08798123445', 'CUSTOMER'),
+('nico.js', 'nico.js', 'niconew@gmail.com', '202cb962ac59075b964b07152d234b70', ' tki 1', 'male', '08123456789', 'CUSTOMER'),
+('otong123', 'otong surotong', 'tong@gmail.com', '202cb962ac59075b964b07152d234b70', 'BABI', 'male', '0812', 'CUSTOMER'),
+('receptionist_ganteng', 'pokoknya ganteng deh', 'receptionist@gmail.com', '202cb962ac59075b964b07152d234b70', 'kepo dih', 'male', '087xxxxxx', 'RECEPTIONIST'),
 ('ril', 'ngabril', 'ngab@gmail.com', '202cb962ac59075b964b07152d234b70', 'tki11', 'male', '1234567', 'CUSTOMER'),
-('staff_laundry', 'Ujang Bujang', 'ujang@staff.hotelHB.ac.id', 'ed84089fcb1b864597cf6dc504859d1d', 'null', 'male', '0812345678', 'STAFF_LAUNDRY'),
+('staff_laundry', 'Ujang Bujang', 'ujang@staff.hotelHB.ac.id', '202cb962ac59075b964b07152d234b70', 'null', 'male', '0812345678', 'STAFF_LAUNDRY'),
 ('Username1', 'fullname', 'email@gmail.com', '123', 'adress123', 'male', '085xxxxxx', 'CUSTOMER');
 
 --
@@ -445,7 +446,7 @@ INSERT INTO `users` (`username`, `full_name`, `email`, `password`, `address`, `g
 --
 
 --
--- Indeks untuk tabel `favorite`
+-- Indexes for table `favorite`
 --
 ALTER TABLE `favorite`
   ADD PRIMARY KEY (`favorite_id`),
@@ -453,13 +454,13 @@ ALTER TABLE `favorite`
   ADD KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `fnb_menu`
+-- Indexes for table `fnb_menu`
 --
 ALTER TABLE `fnb_menu`
   ADD PRIMARY KEY (`menu_name`);
 
 --
--- Indeks untuk tabel `fnb_order`
+-- Indexes for table `fnb_order`
 --
 ALTER TABLE `fnb_order`
   ADD PRIMARY KEY (`order_id`),
@@ -467,7 +468,7 @@ ALTER TABLE `fnb_order`
   ADD KEY `menu_name` (`menu_name`);
 
 --
--- Indeks untuk tabel `fnb_transaction`
+-- Indexes for table `fnb_transaction`
 --
 ALTER TABLE `fnb_transaction`
   ADD PRIMARY KEY (`fnb_transaction_id`),
@@ -475,19 +476,19 @@ ALTER TABLE `fnb_transaction`
   ADD KEY `payment_method_ibfk_3` (`payment_method`);
 
 --
--- Indeks untuk tabel `hotel_facility`
+-- Indexes for table `hotel_facility`
 --
 ALTER TABLE `hotel_facility`
   ADD PRIMARY KEY (`hotel_facility_id`);
 
 --
--- Indeks untuk tabel `laundry`
+-- Indexes for table `laundry`
 --
 ALTER TABLE `laundry`
   ADD PRIMARY KEY (`laundry_name`);
 
 --
--- Indeks untuk tabel `laundry_transaction`
+-- Indexes for table `laundry_transaction`
 --
 ALTER TABLE `laundry_transaction`
   ADD PRIMARY KEY (`laundry_transaction_id`),
@@ -496,28 +497,28 @@ ALTER TABLE `laundry_transaction`
   ADD KEY `laundry_name` (`laundry_name`);
 
 --
--- Indeks untuk tabel `member`
+-- Indexes for table `member`
 --
 ALTER TABLE `member`
   ADD PRIMARY KEY (`member_id`),
   ADD KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `merchandise`
+-- Indexes for table `merchandise`
 --
 ALTER TABLE `merchandise`
   ADD PRIMARY KEY (`Merchandise_id`),
   ADD UNIQUE KEY `Merchandise_name` (`Merchandise_name`);
 
 --
--- Indeks untuk tabel `payment_method`
+-- Indexes for table `payment_method`
 --
 ALTER TABLE `payment_method`
   ADD PRIMARY KEY (`payment_method_id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indeks untuk tabel `redeem_merchandise`
+-- Indexes for table `redeem_merchandise`
 --
 ALTER TABLE `redeem_merchandise`
   ADD PRIMARY KEY (`redeem_id`),
@@ -525,20 +526,20 @@ ALTER TABLE `redeem_merchandise`
   ADD KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `room`
+-- Indexes for table `room`
 --
 ALTER TABLE `room`
   ADD PRIMARY KEY (`room_number`);
 
 --
--- Indeks untuk tabel `room_facility`
+-- Indexes for table `room_facility`
 --
 ALTER TABLE `room_facility`
   ADD PRIMARY KEY (`room_facility_id`),
   ADD KEY `room_type` (`room_type`);
 
 --
--- Indeks untuk tabel `room_order`
+-- Indexes for table `room_order`
 --
 ALTER TABLE `room_order`
   ADD PRIMARY KEY (`room_order_id`),
@@ -547,7 +548,7 @@ ALTER TABLE `room_order`
   ADD KEY `room_order_ibfk_3` (`room_type`);
 
 --
--- Indeks untuk tabel `room_transaction`
+-- Indexes for table `room_transaction`
 --
 ALTER TABLE `room_transaction`
   ADD PRIMARY KEY (`room_transaction_id`),
@@ -555,7 +556,7 @@ ALTER TABLE `room_transaction`
   ADD KEY `payment_method` (`payment_method`);
 
 --
--- Indeks untuk tabel `room_type`
+-- Indexes for table `room_type`
 --
 ALTER TABLE `room_type`
   ADD PRIMARY KEY (`room_type_id`),
@@ -564,121 +565,121 @@ ALTER TABLE `room_type`
   ADD UNIQUE KEY `type_name_3` (`type_name`);
 
 --
--- Indeks untuk tabel `staff`
+-- Indexes for table `staff`
 --
 ALTER TABLE `staff`
   ADD PRIMARY KEY (`staff_id`),
   ADD KEY `username` (`username`);
 
 --
--- Indeks untuk tabel `users`
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`username`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `favorite`
+-- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
   MODIFY `favorite_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `fnb_order`
+-- AUTO_INCREMENT for table `fnb_order`
 --
 ALTER TABLE `fnb_order`
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT untuk tabel `hotel_facility`
+-- AUTO_INCREMENT for table `hotel_facility`
 --
 ALTER TABLE `hotel_facility`
   MODIFY `hotel_facility_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `member`
+-- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
   MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `merchandise`
+-- AUTO_INCREMENT for table `merchandise`
 --
 ALTER TABLE `merchandise`
   MODIFY `Merchandise_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `payment_method`
+-- AUTO_INCREMENT for table `payment_method`
 --
 ALTER TABLE `payment_method`
   MODIFY `payment_method_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT untuk tabel `redeem_merchandise`
+-- AUTO_INCREMENT for table `redeem_merchandise`
 --
 ALTER TABLE `redeem_merchandise`
   MODIFY `redeem_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `room`
+-- AUTO_INCREMENT for table `room`
 --
 ALTER TABLE `room`
   MODIFY `room_number` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `room_facility`
+-- AUTO_INCREMENT for table `room_facility`
 --
 ALTER TABLE `room_facility`
   MODIFY `room_facility_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT untuk tabel `room_order`
+-- AUTO_INCREMENT for table `room_order`
 --
 ALTER TABLE `room_order`
   MODIFY `room_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
--- AUTO_INCREMENT untuk tabel `room_type`
+-- AUTO_INCREMENT for table `room_type`
 --
 ALTER TABLE `room_type`
   MODIFY `room_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT untuk tabel `staff`
+-- AUTO_INCREMENT for table `staff`
 --
 ALTER TABLE `staff`
   MODIFY `staff_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+-- Constraints for dumped tables
 --
 
 --
--- Ketidakleluasaan untuk tabel `favorite`
+-- Constraints for table `favorite`
 --
 ALTER TABLE `favorite`
   ADD CONSTRAINT `favorite_ibfk_1` FOREIGN KEY (`room_type`) REFERENCES `room_type` (`type_name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `favorite_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `fnb_order`
+-- Constraints for table `fnb_order`
 --
 ALTER TABLE `fnb_order`
   ADD CONSTRAINT `fnb_order_ibfk_1` FOREIGN KEY (`fnb_transaction_id`) REFERENCES `fnb_transaction` (`fnb_transaction_id`),
   ADD CONSTRAINT `fnb_order_ibfk_2` FOREIGN KEY (`menu_name`) REFERENCES `fnb_menu` (`menu_name`) ON DELETE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `fnb_transaction`
+-- Constraints for table `fnb_transaction`
 --
 ALTER TABLE `fnb_transaction`
   ADD CONSTRAINT `fnb_transaction_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `payment_method_ibfk_3` FOREIGN KEY (`payment_method`) REFERENCES `payment_method` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `laundry_transaction`
+-- Constraints for table `laundry_transaction`
 --
 ALTER TABLE `laundry_transaction`
   ADD CONSTRAINT `laundry_transaction_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -686,26 +687,26 @@ ALTER TABLE `laundry_transaction`
   ADD CONSTRAINT `payment_method_ibfk_2` FOREIGN KEY (`payment_method`) REFERENCES `payment_method` (`name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `member`
+-- Constraints for table `member`
 --
 ALTER TABLE `member`
   ADD CONSTRAINT `member_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `redeem_merchandise`
+-- Constraints for table `redeem_merchandise`
 --
 ALTER TABLE `redeem_merchandise`
   ADD CONSTRAINT `redeem_merchandise_ibfk_1` FOREIGN KEY (`merchandise`) REFERENCES `merchandise` (`Merchandise_name`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `redeem_merchandise_ibfk_2` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `room_facility`
+-- Constraints for table `room_facility`
 --
 ALTER TABLE `room_facility`
   ADD CONSTRAINT `room_facility_ibfk_2` FOREIGN KEY (`room_type`) REFERENCES `room_type` (`type_name`);
 
 --
--- Ketidakleluasaan untuk tabel `room_order`
+-- Constraints for table `room_order`
 --
 ALTER TABLE `room_order`
   ADD CONSTRAINT `room_order_ibfk_1` FOREIGN KEY (`room_transaction_id`) REFERENCES `room_transaction` (`room_transaction_id`),
@@ -713,7 +714,7 @@ ALTER TABLE `room_order`
   ADD CONSTRAINT `room_order_ibfk_3` FOREIGN KEY (`room_type`) REFERENCES `room_type` (`type_name`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `room_transaction`
+-- Constraints for table `room_transaction`
 --
 ALTER TABLE `room_transaction`
   ADD CONSTRAINT `fk_room_transaction_username` FOREIGN KEY (`username`) REFERENCES `users` (`username`),
@@ -721,7 +722,7 @@ ALTER TABLE `room_transaction`
   ADD CONSTRAINT `room_transaction_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Ketidakleluasaan untuk tabel `staff`
+-- Constraints for table `staff`
 --
 ALTER TABLE `staff`
   ADD CONSTRAINT `staff_ibfk_1` FOREIGN KEY (`username`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;

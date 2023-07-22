@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -34,7 +35,7 @@ public class FormAddUpdateStaff {
     private JTextField usernameField;
     private JTextField fullNameField;
     private JTextField emailField;
-    private JTextField passwordField;
+    private JPasswordField passwordField;
     private JTextField addressField;
     private ButtonGroup genderGroup;
     private JRadioButton maleRadioButton;
@@ -96,7 +97,7 @@ public class FormAddUpdateStaff {
         // Password
         createLabel("Password:", 3);
         getInputAttributes();
-        passwordField = new JTextField(staff.getPassword());
+        passwordField = new JPasswordField(staff.getPassword());
         formPanel.add(passwordField, gbc);
 
         // Address
@@ -312,8 +313,8 @@ public class FormAddUpdateStaff {
                 Double.parseDouble(salaryField.getText()),
                 usernameField.getText(),
                 fullNameField.getText(),
-                passwordField.getText(),
                 addressField.getText(),
+                passwordField.getText(),
                 genderCommand != null ? GenderType.valueOf(genderCommand) : null,
                 phoneNumberField.getText(),
                 emailField.getText(),

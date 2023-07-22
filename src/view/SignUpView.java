@@ -10,9 +10,9 @@ import model.Customer;
 public class SignUpView {
     Customer data;
 
-    public static void main(String[] args) {
-        new SignUpView();
-    }
+    // public static void main(String[] args) {
+    //     new SignUpView();
+    // }
 
     public SignUpView() {
         SignUpController controller = new SignUpController();
@@ -164,6 +164,14 @@ public class SignUpView {
                         tfNoTelp.requestFocus();
                     }
                 }
+            }
+        });
+
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               frame.dispose();
+               new WelcomeScreen();
             }
         });
     }

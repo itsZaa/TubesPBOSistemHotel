@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
+import view.GlobalView;
 
 public class LaundryController {
     private DatabaseController databaseController;
@@ -27,7 +28,6 @@ public class LaundryController {
 
     private RoomTransaction findTransaction() {
         RoomTransaction selected = databaseController.getRoomTransaction(user.getUsername());
-
         return selected;
     }
 
@@ -35,15 +35,21 @@ public class LaundryController {
         int lamaInap = 0;
 
         RoomTransaction selected = findTransaction();
-        LocalDate getDateCheckIn = selected.getDateCheckIn(); // Get the check-in date
-        int duration = selected.getDuration(); // Get the duration in days
-        LocalDate currentDate = LocalDate.now(); // Get the current date
 
-        long diffInDays = ChronoUnit.DAYS.between(getDateCheckIn, currentDate);
-        long durationInDays = diffInDays + duration;
+        if(selected.getTimeStampCheckIn() == null){
+            new GlobalView().error("Belum Check-In");
+        }else{
+            LocalDate getDateCheckIn = selected.getDateCheckIn(); // Get the check-in date
+            int duration = selected.getDuration(); // Get the duration in days
+            LocalDate currentDate = LocalDate.now(); // Get the current date
 
-        lamaInap = (int) durationInDays;
+            long diffInDays = ChronoUnit.DAYS.between(getDateCheckIn, currentDate);
+            long durationInDays = diffInDays + duration;
 
+            lamaInap = (int) durationInDays;
+        }
+
+    
         return lamaInap;
     }
 

@@ -8,6 +8,7 @@ import controller.HistoryTransactionController;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class HistoryTransactionView {
     private HistoryTransactionController controller;
@@ -34,14 +35,22 @@ public class HistoryTransactionView {
         // Displaying items from the queue on the panel
         int transactionNumber = 1;
 
-        for (Transaction transaction : controller.getListTransaction()) {
-            String transactionInfo = transaction.toString();
-            String indentedTransactionInfo = addIndentation(transactionInfo, "    ");
+        ArrayList<Transaction> listTransaction = controller.getListTransaction();
+        
+        for (Transaction transaction : listTransaction) {
+            JTextArea textArea = new JTextArea();
+            if(transaction.getUser() == null){
+                String transactionInfo = transaction.toString();
+                String indentedTransactionInfo = addIndentation(transactionInfo, "    ");
 
-            JTextArea textArea = new JTextArea(transactionNumber + "." + indentedTransactionInfo);
-            textArea.setLineWrap(true);
-            textArea.setWrapStyleWord(true);
-            textArea.setEditable(false);
+                textArea = new JTextArea(transactionNumber + "." + indentedTransactionInfo);
+                textArea.setLineWrap(true);
+                textArea.setWrapStyleWord(true);
+                textArea.setEditable(false);
+            }else{
+                
+            }
+ 
             this.textAreaPanel.add(textArea);
             transactionNumber++;
         }
@@ -59,6 +68,7 @@ public class HistoryTransactionView {
 
         backButton.addActionListener(e -> {
             frame.dispose();
+            new MainMenuCustomer();
         });
 
         frame.setContentPane(panel);
@@ -76,7 +86,7 @@ public class HistoryTransactionView {
         return indentedString.toString();
     }
 
-    public static void main(String[] args) {
-        new HistoryTransactionView();
-    }
+    // public static void main(String[] args) {
+    //     new HistoryTransactionView();
+    // }
 }

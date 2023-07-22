@@ -49,6 +49,7 @@ public class CheckInView {
                     new DatabaseController().updateCheckIn(ts.getTransactionId());
                     new GlobalView().notif(room.toString());
                 }
+                new ReceptionistView();
                 frame.dispose();
             }
         });

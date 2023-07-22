@@ -101,7 +101,12 @@ public class UpdateFacilityView {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FormAddFacility();
+                HotelFacility facility = new HotelFacility();
+                facility.setFacilityName(inputField.getText());
+
+                new UpdateFacilityController().insertNewFacility(facility);
+                new ManagerView();
+                new GlobalView().notif("Insert success");
                 frame.dispose();
             }
         });

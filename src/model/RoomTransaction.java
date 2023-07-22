@@ -115,6 +115,10 @@ public class RoomTransaction extends Transaction {
     @Override
     public String toString() {
 
+        if(super.getUser() == null){
+            return " ";
+        }
+
         return "Transaction ID: \t" + super.getTransactionId() +
                 "\n   Username: \t" + super.getUser().getUsername() +
                 "\n   Order List: \t" + orderList +
